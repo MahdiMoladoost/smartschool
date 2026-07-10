@@ -1,0 +1,41 @@
+name: SmartSchool CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NODE_ENV: test
+      REQUIRE_DB: "false"
+      JWT_SECRET: ci-only-non-production-secret-change-in-prod
+      AI_API_BASE_URL: https://api.gapgpt.app/v1
+      AI_API_KEY: ""
+      AI_DEFAULT_MODEL: gpt-4o
+      SMS_API_KEY: ""
+      SMS_API_URL: ""
+      SMS_SENDER_NUMBER: "9982002811"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Syntax, schema, panel, route, flow, security, and audit checks
+        run: npm run verify:ci
+
+      - name: No-DB server smoke test
+        run: npm run smoke:nodb

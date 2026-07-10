@@ -1,0 +1,723 @@
+/* ============================================
+   CONTACT PAGE STYLES - دبیرستان پلیس
+   تماس با ما - نسخه حرفه‌ای و مدرن
+   ============================================ */
+
+/* ============================================
+   PAGE HEADER HERO
+   ============================================ */
+.page-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    padding: 4rem 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.page-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.05)" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+    background-size: cover;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    animation: fadeInDown 0.8s ease;
+}
+
+.page-header p {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.95);
+    max-width: 600px;
+    margin: 0 auto;
+    animation: fadeInUp 0.8s ease;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   CONTACT INFO CARDS
+   ============================================ */
+.contact-info {
+    padding: 5rem 0;
+    background: var(--light);
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.contact-card {
+    background: var(--white);
+    border-radius: 28px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transform: scaleX(0);
+    transition: transform 0.4s;
+}
+
+.contact-card:hover::before {
+    transform: scaleX(1);
+}
+
+.contact-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+}
+
+.contact-card i {
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 1rem;
+    display: inline-block;
+}
+
+.contact-card h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 0.75rem;
+}
+
+.contact-card p {
+    color: var(--gray);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+}
+
+.contact-card small {
+    color: var(--gray);
+    font-size: 0.75rem;
+    display: block;
+}
+
+.contact-card a {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* ============================================
+   MAP SECTION
+   ============================================ */
+.map-section {
+    padding: 0 0 5rem 0;
+}
+
+.map-container {
+    border-radius: 32px;
+    overflow: hidden;
+    box-shadow: var(--shadow-xl);
+    height: 450px;
+    position: relative;
+}
+
+#advancedMap {
+    height: 100%;
+    width: 100%;
+}
+
+.map-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 32px;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,0.2);
+}
+
+/* Leaflet Custom Styles */
+.leaflet-popup-content-wrapper {
+    border-radius: 16px;
+    font-family: 'Vazir', system-ui, sans-serif;
+}
+
+.leaflet-popup-content {
+    font-family: 'Vazir', system-ui, sans-serif;
+    font-size: 0.875rem;
+    color: var(--dark);
+}
+
+/* ============================================
+   CONTACT FORM SECTION
+   ============================================ */
+.contact-form-section {
+    padding: 0 0 5rem 0;
+}
+
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--white);
+    border-radius: 32px;
+    padding: 2.5rem;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.4s;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.form-container:hover {
+    box-shadow: var(--shadow-xl);
+}
+
+.form-container h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.form-container > p {
+    text-align: center;
+    color: var(--gray);
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.875rem 1.25rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    font-family: 'Vazir', system-ui, sans-serif;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+    background: var(--white);
+    direction: rtl;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.error-message {
+    color: var(--danger);
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.btn-loading {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+#formStatus {
+    animation: fadeInUp 0.4s ease;
+}
+
+/* ============================================
+   HOURS SECTION
+   ============================================ */
+.hours-section {
+    padding: 0 0 5rem 0;
+}
+
+.hours-card {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 32px;
+    padding: 2.5rem;
+    color: white;
+    text-align: center;
+}
+
+.hours-card h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.hours-card h3 i {
+    margin-left: 0.75rem;
+}
+
+.hours-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hour-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.1);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    font-size: 0.9rem;
+}
+
+.hour-item span:first-child {
+    font-weight: 600;
+}
+
+.hour-item span:last-child {
+    font-family: monospace;
+    font-size: 0.85rem;
+}
+
+/* ============================================
+   FLOATING CHAT (حرفه‌ای‌تر از قبل)
+   ============================================ */
+.chat-floating {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 1000;
+}
+
+.chat-button {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(37,99,235,0.4);
+    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    color: white;
+    font-size: 1.5rem;
+}
+
+.chat-button:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 10px 30px rgba(37,99,235,0.5);
+}
+
+.chat-box {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 360px;
+    background: var(--white);
+    border-radius: 24px;
+    box-shadow: var(--shadow-xl);
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    transform-origin: bottom right;
+}
+
+.chat-box.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.chat-header {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.chat-header span:last-child {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.chat-header span:last-child:hover {
+    background: rgba(255,255,255,0.2);
+    transform: rotate(90deg);
+}
+
+.chat-messages {
+    height: 350px;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    background: #f8fafc;
+}
+
+.chat-message {
+    display: flex;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.chat-message.bot {
+    justify-content: flex-start;
+}
+
+.chat-message.user {
+    justify-content: flex-end;
+}
+
+.bubble {
+    max-width: 80%;
+    padding: 0.625rem 1rem;
+    border-radius: 18px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+.chat-message.bot .bubble {
+    background: var(--white);
+    color: var(--dark);
+    border-radius: 18px 18px 18px 4px;
+    box-shadow: var(--shadow-sm);
+}
+
+.chat-message.user .bubble {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white;
+    border-radius: 18px 18px 4px 18px;
+}
+
+.chat-input-area {
+    display: flex;
+    padding: 1rem;
+    gap: 0.5rem;
+    border-top: 1px solid #e2e8f0;
+    background: var(--white);
+}
+
+.chat-input-area input {
+    flex: 1;
+    padding: 0.625rem 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 40px;
+    font-family: 'Vazir', system-ui, sans-serif;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+}
+
+.chat-input-area input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.chat-input-area button {
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.chat-input-area button:hover {
+    transform: scale(1.05);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 768px) {
+    .page-header {
+        padding: 3rem 0;
+    }
+
+    .page-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .page-header p {
+        font-size: 0.9rem;
+        padding: 0 1rem;
+    }
+
+    .contact-info {
+        padding: 3rem 0;
+    }
+
+    .contact-card {
+        padding: 1.5rem;
+    }
+
+    .contact-card i {
+        font-size: 2rem;
+    }
+
+    .map-container {
+        height: 350px;
+    }
+
+    .form-container {
+        padding: 1.5rem;
+        margin: 0 1rem;
+    }
+
+    .form-container h2 {
+        font-size: 1.4rem;
+    }
+
+    .hours-card {
+        padding: 1.5rem;
+        margin: 0 1rem;
+    }
+
+    .hours-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .hour-item {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+
+    .chat-box {
+        width: calc(100vw - 40px);
+        right: -10px;
+        bottom: 80px;
+    }
+
+    .chat-messages {
+        height: 400px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr !important;
+    }
+
+    .chat-button {
+        width: 50px;
+        height: 50px;
+        font-size: 1.25rem;
+    }
+
+    .chat-box {
+        width: calc(100vw - 30px);
+        right: -5px;
+    }
+}
+
+/* ============================================
+   ANIMATIONS & UTILITIES
+   ============================================ */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+/* بهبود اسکرول برای چت */
+.chat-messages::-webkit-scrollbar {
+    width: 4px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 10px;
+}
+
+/* استایل برای نوتیفیکیشن */
+#formStatus {
+    animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* بهبود لینک دریافت مسیر */
+#getDirections {
+    transition: all 0.3s;
+}
+
+#getDirections:hover {
+    color: var(--primary-dark) !important;
+    text-decoration: underline;
+}
+
+/* Hover Effects روی کارت‌ها */
+.contact-card {
+    position: relative;
+}
+
+.contact-card i {
+    transition: all 0.3s;
+}
+
+.contact-card:hover i {
+    transform: scale(1.1);
+}
+
+/* بهبود دکمه ارسال */
+#submitBtn {
+    position: relative;
+    overflow: hidden;
+}
+
+#submitBtn i {
+    transition: transform 0.3s;
+}
+
+#submitBtn:hover i {
+    transform: translateX(-5px);
+}
+
+/* استایل برای select هنگام انتخاب */
+select option {
+    font-family: 'Vazir', system-ui, sans-serif;
+}
+
+/* بهبود نمایش در حالت دارک مود (اختیاری) */
+@media (prefers-color-scheme: dark) {
+    .contact-card,
+    .form-container,
+    .chat-box,
+    .chat-message.bot .bubble {
+        background: #1e293b;
+        color: #e2e8f0;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea,
+    .chat-input-area input {
+        background: #334155;
+        border-color: #475569;
+        color: #e2e8f0;
+    }
+    
+    .chat-messages {
+        background: #0f172a;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        border-color: var(--primary-light);
+    }
+}

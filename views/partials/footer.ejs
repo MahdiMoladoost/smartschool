@@ -1,0 +1,105 @@
+<%
+// تابع تبدیل اعداد انگلیسی به فارسی
+function toPersianNumber(str) {
+    if (!str) return '';
+    const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    return str.toString().replace(/\d/g, function(x) {
+        return persianDigits[parseInt(x)];
+    });
+}
+%>
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="logo">
+                    <div class="logo-icon logo-image-wrap footer-logo-image-wrap"><img src="/public/assets/images/logo.png" alt="لوگوی <%= settings.school_name %>" loading="lazy" onerror="this.onerror=null;this.src='/public/assets/img/honors/school-logo.png';"></div>
+                    <div class="logo-text">
+                        <h3><%= settings.school_name %></h3>
+                        <p><%= settings.school_slogan %></p>
+                    </div>
+                </div>
+                <p><%= settings.footer_text %></p>
+            </div>
+            <div class="footer-links">
+                <h4>دسترسی سریع</h4>
+                <ul>
+                    <li><a href="/">صفحه اصلی</a></li>
+                    <li><a href="/services">خدمات</a></li>
+                    <li><a href="/about">درباره ما</a></li>
+                    <li><a href="/contact">تماس با ما</a></li>
+                </ul>
+            </div>
+            <div class="footer-links footer-systems">
+                <h4>سامانه‌ها</h4>
+                <ul class="systems-links-list">
+                    <li><a href="/pages/homepage/auth/login.html">ورود به سامانه</a></li>
+                    <li><a href="/pages/homepage/auth/register.html">ثبت‌نام</a></li>
+                    <li><a href="https://my.medu.ir" target="_blank" rel="noopener">مای مدیو</a></li>
+                    <li><a href="https://shad.ir" target="_blank" rel="noopener">شاد</a></li>
+                    <li><a href="https://www.roshd.ir" target="_blank" rel="noopener">رشد</a></li>
+                    <li><a href="https://www.irtextbook.ir" target="_blank" rel="noopener">کتاب‌های درسی</a></li>
+                    <li><a href="https://hamgam.medu.ir" target="_blank" rel="noopener">همگام</a></li>
+                    <li><a href="https://noorino.medu.ir" target="_blank" rel="noopener">نورینو</a></li>
+                    <li><a href="https://snd.medu.ir" target="_blank" rel="noopener">سناد</a></li>
+                    <li><a href="https://sida.medu.ir" target="_blank" rel="noopener">سیدا</a></li>
+                </ul>
+            </div>
+            <div class="footer-links footer-contact">
+                <h4>تماس با ما</h4>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i><span><%= settings.school_address %></span></li>
+                    <li dir="ltr"><i class="fas fa-phone"></i><span><%= toPersianNumber(settings.school_phone) %></span></li>
+                    <li dir="ltr"><i class="fas fa-mobile-alt"></i><span><%= toPersianNumber(settings.support_phone) %></span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p><%= settings.copyright_text %></p>
+            <div class="social-links social-links-apps"><a href="#" class="social-app-link" aria-label="شاد"><img src="/public/assets/img/honors/shad-icon.png" alt="شاد" loading="lazy"></a><a href="#" class="social-app-link" aria-label="بله"><img src="/public/assets/img/honors/bale-icon.png" alt="بله" loading="lazy"></a><a href="#" class="social-app-link" aria-label="ایتا"><img src="/public/assets/img/honors/eitaa-clean-icon.png" alt="ایتا" loading="lazy"></a></div>
+        </div>
+    </div>
+</footer>
+
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0, behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+
+<script src="/public/assets/js/aos.js"></script>
+<script src="/public/assets/js/homepage.js?v=fix-24-news-modal"></script>
+<script>
+    AOS.init({ duration: 800, once: true, offset: 100 });
+    
+    function openMobileMenu() {
+        const menu = document.getElementById('mobile-menu');
+        const overlay = document.getElementById('mobile-overlay');
+        if (menu) menu.classList.add('active');
+        if (overlay) overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeMobileMenu() {
+        const menu = document.getElementById('mobile-menu');
+        const overlay = document.getElementById('mobile-overlay');
+        if (menu) menu.classList.remove('active');
+        if (overlay) overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    function toggleAccordion(header) {
+        const content = header.nextElementSibling;
+        const icon = header.querySelector('.fa-chevron-down');
+        if (content) content.classList.toggle('active');
+        if (icon) {
+            icon.style.transform = content && content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0)';
+        }
+    }
+    
+    window.addEventListener('scroll', function() {
+        const scrollBtn = document.getElementById('scrollTop');
+        if (scrollBtn) {
+            scrollBtn.classList.toggle('visible', window.scrollY > 500);
+        }
+    });
+</script>
+</body>
+</html>

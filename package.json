@@ -1,0 +1,46 @@
+{
+  "name": "smart-school-management",
+  "version": "2.0.0",
+  "description": "سیستم مدیریت هوشمند مدارس",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "db:init": "node init-db.js",
+    "db:seed": "node seed-data.js",
+    "panels:generate": "node scripts/generate-panel-pages.mjs",
+    "panels:validate": "node scripts/validate-panel-pages.mjs",
+    "schema:verify": "node scripts/verify-schema-contracts.mjs",
+    "routes:inventory": "node scripts/inventory-routes.mjs",
+    "flows:simulate": "node scripts/simulate-enterprise-flows.mjs",
+    "smoke:nodb": "node scripts/no-db-smoke.mjs",
+    "live:verify": "node scripts/live-environment-verify.mjs",
+    "security:check": "node scripts/check-production-security.mjs",
+    "verify:ci": "find src scripts \\( -name \"*.js\" -o -name \"*.mjs\" \\) -type f | sort | xargs -n1 node --check && node --check server.js && npm run schema:verify && npm run panels:validate && npm run routes:inventory && npm run flows:simulate && npm run security:check && npm audit --omit=dev",
+    "module:generate": "node scripts/generate-enterprise-module.mjs",
+    "typecheck:discipline": "tsc -p tsconfig.discipline.json",
+    "db:fix-local-schema": "node scripts/fix-local-mysql-schema.mjs"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "ejs": "^5.0.2",
+    "express": "^4.22.1",
+    "express-rate-limit": "^8.5.2",
+    "helmet": "^8.1.0",
+    "jalali-moment": "^3.3.11",
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.10.1",
+    "mysql2": "^3.22.3",
+    "persian-datepicker": "^1.2.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.17",
+    "nodemon": "^3.1.14",
+    "typescript": "^6.0.3"
+  }
+}

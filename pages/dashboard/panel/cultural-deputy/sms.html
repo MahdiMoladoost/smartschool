@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>پیامک‌ها | پنل معاون پرورشی و فرهنگی</title>
+  <link rel="stylesheet" href="/public/assets/css/all.min.css">
+  <link rel="stylesheet" href="/public/assets/css/panel/role-panel.css?v=admin-like-v2">
+</head>
+<body data-panel="cultural-deputy" data-page="sms">
+<button class="mobile-menu" onclick="toggleRoleSidebar()" aria-label="باز کردن منو"><i class="fas fa-bars"></i></button>
+<div class="overlay" id="overlay" onclick="toggleRoleSidebar()"></div>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-icon"><i class="fas fa-school"></i></div>
+      <div><h1 id="panelTitle">پنل معاون پرورشی و فرهنگی</h1><p>سامانه مدرسه هوشمند</p></div>
+    </div>
+    <div class="user-card"><strong id="userName">کاربر</strong><span id="userRole">role</span></div>
+    <nav class="nav-section" aria-label="منوی پنل">
+      <div class="nav-section">
+          <div class="nav-section-title">داشبورد</div>
+          <a class="nav-item" data-tab="dashboard" href="/dashboard/cultural-deputy/dashboard">
+              <i class="fas fa-chart-line"></i> 
+              <span>داشبورد پرورشی</span>
+          </a>
+      </div>
+      <div class="nav-section">
+          <div class="nav-section-title">فعالیت‌های پرورشی</div>
+          <a class="nav-item" data-tab="events" href="/dashboard/cultural-deputy/events">
+              <i class="fas fa-calendar-star"></i> 
+              <span>مدیریت فعالیت‌های فرهنگی</span>
+          </a>
+          <a class="nav-item" data-tab="competitions" href="/dashboard/cultural-deputy/competitions">
+              <i class="fas fa-trophy"></i> 
+              <span>مدیریت مسابقات</span>
+          </a>
+          <a class="nav-item" data-tab="competition-results" href="/dashboard/cultural-deputy/competition-results">
+              <i class="fas fa-square-poll-vertical"></i> 
+              <span>ثبت نتایج مسابقات</span>
+          </a>
+          <a class="nav-item" data-tab="ceremonies" href="/dashboard/cultural-deputy/ceremonies">
+              <i class="fas fa-champagne-glasses"></i> 
+              <span>مدیریت جشن‌ها و مراسم</span>
+          </a>
+          <a class="nav-item" data-tab="camps" href="/dashboard/cultural-deputy/camps">
+              <i class="fas fa-bus"></i> 
+              <span>مدیریت اردوها</span>
+          </a>
+          <a class="nav-item" data-tab="religious-programs" href="/dashboard/cultural-deputy/religious-programs">
+              <i class="fas fa-mosque"></i> 
+              <span>مدیریت برنامه‌های مذهبی</span>
+          </a>
+      </div>
+      <div class="nav-section">
+          <div class="nav-section-title">انضباط و تشویق</div>
+          <a class="nav-item" data-tab="recognition" href="/dashboard/cultural-deputy/recognition">
+              <i class="fas fa-award"></i> 
+              <span>ثبت تشویقی‌ها</span>
+          </a>
+          <a class="nav-item" data-tab="behavior" href="/dashboard/cultural-deputy/behavior">
+              <i class="fas fa-scale-balanced"></i> 
+              <span>ثبت موارد انضباطی</span>
+          </a>
+          <a class="nav-item" data-tab="ethics-ranking" href="/dashboard/cultural-deputy/ethics-ranking">
+              <i class="fas fa-ranking-star"></i> 
+              <span>رتبه‌بندی اخلاقی دانش‌آموزان</span>
+          </a>
+      </div>
+      <div class="nav-section">
+          <div class="nav-section-title">محتوا و مشارکت</div>
+          <a class="nav-item" data-tab="gallery-manager" href="/dashboard/cultural-deputy/gallery-manager">
+              <i class="fas fa-images"></i> 
+              <span>مدیریت گالری تصاویر</span>
+          </a>
+          <a class="nav-item" data-tab="announcements" href="/dashboard/cultural-deputy/announcements">
+              <i class="fas fa-bullhorn"></i> 
+              <span>انتشار اطلاعیه فرهنگی</span>
+          </a>
+          <a class="nav-item" data-tab="student-surveys" href="/dashboard/cultural-deputy/student-surveys">
+              <i class="fas fa-square-poll-vertical"></i> 
+              <span>نظرسنجی‌های دانش‌آموزی</span>
+          </a>
+          <a class="nav-item" data-tab="student-council-voting" href="/dashboard/cultural-deputy/student-council-voting">
+              <i class="fas fa-check-to-slot"></i> 
+              <span>رأی‌گیری شورای دانش‌آموزی</span>
+          </a>
+          <a class="nav-item" data-tab="student-associations" href="/dashboard/cultural-deputy/student-associations">
+              <i class="fas fa-people-group"></i> 
+              <span>مدیریت انجمن‌های دانش‌آموزی</span>
+          </a>
+          <a class="nav-item" data-tab="participation" href="/dashboard/cultural-deputy/participation">
+              <i class="fas fa-hands-holding-circle"></i> 
+              <span>مشارکت دانش‌آموزان</span>
+          </a>
+      </div>
+      <div class="nav-section">
+          <div class="nav-section-title">گزارش و ارتباطات</div>
+          <a class="nav-item" data-tab="reports" href="/dashboard/cultural-deputy/reports">
+              <i class="fas fa-file-lines"></i> 
+              <span>گزارش فعالیت‌های پرورشی</span>
+          </a>
+          <a class="nav-item" data-tab="student-communication" href="/dashboard/cultural-deputy/student-communication">
+              <i class="fas fa-comments"></i> 
+              <span>ارتباط با دانش‌آموزان</span>
+          </a>
+          <a class="nav-item" data-tab="parent-communication" href="/dashboard/cultural-deputy/parent-communication">
+              <i class="fas fa-users"></i> 
+              <span>ارتباط با والدین</span>
+          </a>
+          <a class="nav-item" data-tab="admin-communication" href="/dashboard/cultural-deputy/admin-communication">
+              <i class="fas fa-user-shield"></i> 
+              <span>ارتباط با مدیر</span>
+          </a>
+          <a class="nav-item" data-tab="ai-insights" href="/dashboard/cultural-deputy/ai-insights">
+              <i class="fas fa-brain"></i> 
+              <span>تحلیل هوشمند</span>
+          </a>
+          <a class="nav-item active" data-tab="sms" href="/dashboard/cultural-deputy/sms">
+              <i class="fas fa-comment-sms"></i> 
+              <span>پیامک‌ها</span>
+          </a>
+      </div>
+    </nav>
+    <div class="nav-section"><a class="nav-item" href="/" target="_blank"><i class="fas fa-home"></i><span>صفحه اصلی</span></a><button class="btn danger" onclick="logout()" style="width:100%;margin-top:12px"><i class="fas fa-sign-out-alt"></i> خروج</button></div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <div><h2 id="pageTitle">داشبورد فرهنگی</h2><p>داده‌ها از API امن نقش و پایگاه داده MySQL خوانده می‌شود.</p></div>
+      <div class="actions"><button class="btn secondary" onclick="location.reload()"><i class="fas fa-rotate"></i> بروزرسانی</button></div>
+    </header>
+    <section id="content"><div class="state">در حال بارگذاری...</div></section>
+  </main>
+</div>
+<script src="/public/assets/js/role-panel.js?v=admin-like-v2"></script>
+</body>
+</html>

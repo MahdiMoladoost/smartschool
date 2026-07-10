@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>همه معلمان | مدرسه هوشمند</title><link rel="stylesheet" href="/public/assets/css/all.min.css"><link rel="stylesheet" href="/public/assets/css/home page/homepage.css?v=shared-home-layout-13"><style>
+body{background:#f8fafc}
+.teachers-hero{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;text-align:center;padding:4.3rem 1rem;border-radius:0 0 36px 36px}
+.teachers-hero h1{font-size:2.7rem;margin:0 0 .8rem;font-weight:950}
+.teachers-hero p{margin:0;color:#eaf2ff;font-weight:850}
+.teachers-page{background:#f8fafc;padding:4.5rem 0 5rem;min-height:70vh}
+.teachers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,330px));justify-content:center;gap:1.6rem;margin-top:2.5rem}
+.teacher-full-card{position:relative;overflow:hidden;background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid #dbeafe;border-radius:30px;padding:1.75rem 1.25rem;text-align:center;box-shadow:0 18px 46px rgba(15,23,42,.07);transition:.22s;min-height:390px}
+.teacher-full-card:before{content:'';position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(90deg,#2563eb,#22c55e)}
+.teacher-full-card:hover{transform:translateY(-5px);box-shadow:0 26px 60px rgba(37,99,235,.12)}
+.teacher-avatar{width:142px;height:142px;border-radius:34px;margin:0 auto 1.15rem;background:linear-gradient(135deg,#eef6ff,#dbeafe);color:#2563eb;border:1px solid #bfdbfe;display:grid;place-items:center;font-size:2.05rem;font-weight:950;overflow:hidden;box-shadow:0 16px 34px rgba(37,99,235,.10)}
+.teacher-avatar img{width:100%;height:100%;object-fit:cover}
+.teacher-initials{font-size:1.9rem;font-weight:950;letter-spacing:-.03em}
+.teacher-full-card h3{margin:0;color:#0f172a;font-size:1.25rem;font-weight:950}
+.teacher-specialty-pill{display:inline-flex;align-items:center;justify-content:center;color:#2563eb;background:#eff6ff;border:1px solid #dbeafe;border-radius:999px;padding:.42rem .85rem;margin:.72rem 0 .6rem;font-weight:950;font-size:.86rem}
+.teacher-full-card strong{display:inline-flex;color:#2563eb;background:#eff6ff;border:1px solid #dbeafe;border-radius:999px;padding:.38rem .8rem;margin:.7rem 0 .85rem;font-weight:950}
+.teacher-meta{display:grid;gap:.55rem;margin:.25rem 0 .75rem}
+.teacher-meta span{display:flex;align-items:center;justify-content:center;gap:.42rem;background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:.58rem .7rem;color:#475569;font-weight:900;font-size:.82rem;line-height:1.65}
+.teacher-meta i{color:#2563eb}
+.teacher-full-card p{color:#64748b;margin:0;font-weight:850;line-height:1.8;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.empty-teachers{text-align:center;background:#fff;border:1px dashed #cbd5e1;border-radius:26px;padding:3rem;margin-top:2rem;color:#64748b;font-weight:850}
+@media(max-width:1000px){.teachers-grid{grid-template-columns:repeat(auto-fit,minmax(280px,330px));justify-content:center}}
+@media(max-width:620px){.teachers-hero h1{font-size:2rem}.teachers-grid{grid-template-columns:minmax(0,330px);justify-content:center}.teacher-full-card{min-height:auto}.teacher-avatar{width:132px;height:132px}}
+
+
+/* premium teacher cards override */
+.about-teacher-card,.teacher-full-card{background:linear-gradient(180deg,#fff 0%,#f9fbff 100%)!important;border:1px solid #dbeafe!important;border-radius:34px!important;box-shadow:0 22px 55px rgba(15,23,42,.075)!important}
+.about-teacher-card:before,.teacher-full-card:before{height:6px!important;background:linear-gradient(90deg,#2563eb 0%,#06b6d4 55%,#22c55e 100%)!important}
+.teacher-avatar{width:152px!important;height:152px!important;border-radius:36px!important;background:linear-gradient(135deg,#eff6ff,#ffffff)!important;border:1px solid #bfdbfe!important;box-shadow:0 18px 42px rgba(37,99,235,.14)!important}
+.about-teacher-card h3,.teacher-full-card h3{font-size:1.32rem!important;margin-top:.25rem!important}
+.teacher-specialty-pill,.teacher-full-card strong{background:linear-gradient(135deg,#eff6ff,#fff)!important;border:1px solid #bfdbfe!important;color:#1d4ed8!important;box-shadow:0 8px 18px rgba(37,99,235,.06)!important}
+.teacher-meta span{background:linear-gradient(180deg,#fff,#f8fafc)!important;border:1px solid #dbeafe!important;border-radius:18px!important}
+
+</style></head><body data-page="about"><section class="teachers-hero"><div class="container"><h1>همه معلمان</h1><p id="teachersSubtitle">معلمان فعال ثبت‌شده در سامانه</p></div></section><main class="teachers-page"><div class="container"><div class="teachers-grid" id="teachersGrid"></div></div></main><script src="/public/assets/js/shared-home-layout.js?v=shared-layout-13"></script><script>const esc=v=>String(v||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));fetch('/api/v1/public/teachers?_='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(j=>{const list=j.teachers||[];teachersSubtitle.textContent=j.subtitle||'معلمان فعال ثبت‌شده در سامانه';teachersGrid.innerHTML=list.length?list.map(t=>`<article class="teacher-full-card"><div class="teacher-avatar">${t.image?`<img src="${esc(t.image)}" alt="${esc(t.image_alt||t.name)}">`:`<span class="teacher-initials">${esc(String(t.name||'م').trim().split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]||'').join('')||'م')}</span>`}</div><h3>${esc(t.name)}</h3><span class="teacher-specialty-pill">${esc(t.specialty||t.role||'تخصص ثبت نشده')}</span><div class="teacher-meta"><span><i class="fas fa-medal"></i>${esc(t.experience||'سابقه ثبت نشده')}</span><span><i class="fas fa-graduation-cap"></i>${esc(t.degree||'مدرک ثبت نشده')}</span></div>${t.bio?`<p>${esc(t.bio)}</p>`:''}</article>`).join(''):'<div class="empty-teachers">فعلاً معلم فعالی برای نمایش ثبت نشده است.</div>';});</script></body></html>

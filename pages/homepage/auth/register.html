@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="فرم پیش‌ثبت‌نام دانش‌آموزان">
+    <title>پیش‌ثبت‌نام دانش‌آموز | مدیریت هوشمند مدارس</title>
+    <link rel="stylesheet" href="/public/assets/css/all.min.css">
+    <link rel="stylesheet" href="/public/assets/css/home page/register/register.css">
+</head>
+<body>
+    <main class="registration-shell">
+        <header class="registration-hero">
+            <a href="/" class="home-link"><i class="fas fa-arrow-right"></i><span>بازگشت به صفحه اصلی</span></a>
+            <div class="hero-icon"><i class="fas fa-user-graduate"></i></div>
+            <div>
+                <span class="hero-eyebrow">سامانه پیش‌ثبت‌نام مدرسه</span>
+                <h1>ثبت درخواست پذیرش دانش‌آموز</h1>
+                <p>اطلاعات را مطابق مدارک رسمی وارد و کارنامه سال گذشته را بارگذاری کنید.</p>
+            </div>
+        </header>
+
+        <section class="registration-card">
+            <nav class="stepper" aria-label="مراحل ثبت نام">
+                <button type="button" class="stepper-item is-active" data-step="1"><span>۱</span><strong>دانش‌آموز</strong></button>
+                <button type="button" class="stepper-item" data-step="2"><span>۲</span><strong>سوابق تحصیلی</strong></button>
+                <button type="button" class="stepper-item" data-step="3"><span>۳</span><strong>والدین</strong></button>
+                <button type="button" class="stepper-item" data-step="4"><span>۴</span><strong>محل سکونت</strong></button>
+                <button type="button" class="stepper-item" data-step="5"><span>۵</span><strong>بازبینی</strong></button>
+            </nav>
+
+            <div id="messageContainer" aria-live="polite"></div>
+
+            <form id="registerForm" novalidate>
+                <section class="form-step is-active" data-form-step="1">
+                    <div class="section-heading"><span class="section-icon"><i class="fas fa-id-card"></i></span><div><h2>اطلاعات دانش‌آموز</h2><p>مشخصات باید دقیقاً مطابق شناسنامه دانش‌آموز باشد.</p></div></div>
+
+                    <div class="profile-uploader">
+                        <button type="button" class="profile-preview" id="studentPhotoPreview" aria-label="انتخاب عکس دانش آموز"><i class="fas fa-user"></i></button>
+                        <div class="profile-copy"><h3>تصویر پرسنلی دانش‌آموز</h3><p>عکس واضح و جدید با فرمت JPG، PNG یا WEBP و حداکثر ۴ مگابایت.</p><div class="upload-actions"><button type="button" class="btn btn-outline" data-file-target="studentPhoto"><i class="fas fa-upload"></i> انتخاب عکس</button><button type="button" class="btn btn-ghost is-hidden" id="removeStudentPhoto"><i class="fas fa-trash"></i> حذف</button></div></div>
+                        <input type="file" id="studentPhoto" accept="image/jpeg,image/png,image/webp" hidden>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="field"><label for="firstName">نام <span>*</span></label><div class="control"><i class="fas fa-user"></i><input id="firstName" autocomplete="given-name" placeholder="مثلاً علیرضا"></div><small class="field-error" id="firstNameError"></small></div>
+                        <div class="field"><label for="lastName">نام خانوادگی <span>*</span></label><div class="control"><i class="fas fa-user-group"></i><input id="lastName" autocomplete="family-name" placeholder="مثلاً مولادوست"></div><small class="field-error" id="lastNameError"></small></div>
+                        <div class="field"><label for="nationalCode">کد ملی <span>*</span></label><div class="control ltr"><i class="fas fa-id-card"></i><input id="nationalCode" inputmode="numeric" maxlength="10" placeholder="0012345678"></div><small class="field-error" id="nationalCodeError"></small></div>
+                        <div class="field"><label for="birthDate">تاریخ تولد شمسی <span>*</span></label><div class="control ltr"><i class="fas fa-calendar-days"></i><input id="birthDate" inputmode="numeric" maxlength="10" placeholder="1391/07/15"></div><small class="field-error" id="birthDateError"></small></div>
+                        <div class="field"><label for="requestedGrade">پایه درخواستی <span>*</span></label><div class="control select-control"><i class="fas fa-graduation-cap"></i><select id="requestedGrade" disabled><option value="">در حال دریافت پایه‌های فعال...</option></select></div><small class="field-error" id="requestedGradeError"></small></div>
+                    </div>
+                </section>
+
+                <section class="form-step" data-form-step="2">
+                    <div class="section-heading"><span class="section-icon"><i class="fas fa-school"></i></span><div><h2>سوابق تحصیلی سال گذشته</h2><p>اطلاعات آخرین پایه تحصیلی و نسخه رسمی کارنامه را ثبت کنید.</p></div></div>
+                    <div class="form-grid">
+                        <div class="field"><label for="previousSchool">نام مدرسه سال گذشته <span>*</span></label><div class="control"><i class="fas fa-building-columns"></i><input id="previousSchool" placeholder="نام کامل مدرسه"></div><small class="field-error" id="previousSchoolError"></small></div>
+                        <div class="field"><label for="previousGrade">پایه سال گذشته <span>*</span></label><div class="control select-control"><i class="fas fa-layer-group"></i><select id="previousGrade"><option value="">انتخاب پایه</option><option value="1">اول</option><option value="2">دوم</option><option value="3">سوم</option><option value="4">چهارم</option><option value="5">پنجم</option><option value="6">ششم</option><option value="7">هفتم</option><option value="8">هشتم</option><option value="9">نهم</option><option value="10">دهم</option><option value="11">یازدهم</option><option value="12">دوازدهم</option></select></div><small class="field-error" id="previousGradeError"></small></div>
+                        <div class="field"><label for="previousAverage">معدل سال گذشته</label><div class="control ltr"><i class="fas fa-chart-line"></i><input id="previousAverage" inputmode="decimal" placeholder="مثلاً 18.75"></div><small class="field-error" id="previousAverageError"></small></div>
+                        <div class="field field-wide"><label>کارنامه رسمی سال گذشته <span>*</span></label><div class="document-uploader" id="reportCardDrop"><div class="document-icon"><i class="fas fa-file-lines"></i></div><div><strong id="reportCardLabel">تصویر یا PDF کارنامه را انتخاب کنید</strong><p>حداکثر ۸ مگابایت؛ مشخصات دانش‌آموز، نام مدرسه، نمرات و معدل باید خوانا باشد.</p></div><button type="button" class="btn btn-outline" data-file-target="reportCard"><i class="fas fa-upload"></i> انتخاب فایل</button><input type="file" id="reportCard" accept="image/jpeg,image/png,image/webp,application/pdf" hidden></div><small class="field-error" id="reportCardError"></small></div>
+                        <div class="field field-wide"><label for="achievementsDescription">افتخارات علمی، فرهنگی یا ورزشی</label><textarea id="achievementsDescription" rows="3" placeholder="در صورت وجود، عنوان افتخارات یا رتبه‌ها را بنویسید."></textarea></div>
+                        <div class="field field-wide"><label>مدرک افتخارات (اختیاری)</label><div class="document-uploader compact"><div class="document-icon"><i class="fas fa-award"></i></div><div><strong id="achievementsLabel">فایلی انتخاب نشده</strong><p>تصویر یا PDF، حداکثر ۸ مگابایت</p></div><button type="button" class="btn btn-outline" data-file-target="achievements"><i class="fas fa-paperclip"></i> انتخاب فایل</button><input type="file" id="achievements" accept="image/jpeg,image/png,image/webp,application/pdf" hidden></div></div>
+                        <div class="field field-wide"><label for="healthNotes">شرایط پزشکی یا دارویی</label><textarea id="healthNotes" rows="3" placeholder="حساسیت، بیماری زمینه‌ای، داروی مصرفی یا نکته‌ای که مدرسه باید بداند."></textarea></div>
+                        <div class="field field-wide"><label for="specialNeeds">نیازهای آموزشی یا شرایط خاص</label><textarea id="specialNeeds" rows="3" placeholder="اختیاری"></textarea></div>
+                    </div>
+                </section>
+
+                <section class="form-step" data-form-step="3">
+                    <div class="section-heading"><span class="section-icon"><i class="fas fa-people-roof"></i></span><div><h2>اطلاعات والدین و سرپرست</h2><p>پیامک نتیجه پذیرش برای شماره‌های معتبر این بخش ارسال می‌شود.</p></div></div>
+                    <div class="form-grid">
+                        <div class="field"><label for="fatherName">نام و نام خانوادگی پدر</label><div class="control"><i class="fas fa-person"></i><input id="fatherName" placeholder="نام کامل پدر"></div></div>
+                        <div class="field"><label for="fatherPhone">شماره همراه پدر</label><div class="control ltr"><i class="fas fa-mobile-screen"></i><input id="fatherPhone" inputmode="tel" maxlength="11" placeholder="09123456789"></div><small class="field-error" id="fatherPhoneError"></small></div>
+                        <div class="field"><label for="motherName">نام و نام خانوادگی مادر</label><div class="control"><i class="fas fa-person-dress"></i><input id="motherName" placeholder="نام کامل مادر"></div></div>
+                        <div class="field"><label for="motherPhone">شماره همراه مادر</label><div class="control ltr"><i class="fas fa-mobile-screen"></i><input id="motherPhone" inputmode="tel" maxlength="11" placeholder="09123456789"></div><small class="field-error" id="motherPhoneError"></small></div>
+                        <div class="field"><label for="guardianName">نام ولی / سرپرست اصلی <span>*</span></label><div class="control"><i class="fas fa-user-shield"></i><input id="guardianName" placeholder="نام کامل فرد پاسخ‌گو"></div><small class="field-error" id="guardianNameError"></small></div>
+                        <div class="field"><label for="guardianRelation">نسبت با دانش‌آموز <span>*</span></label><div class="control select-control"><i class="fas fa-link"></i><select id="guardianRelation"><option value="">انتخاب کنید</option><option value="father">پدر</option><option value="mother">مادر</option><option value="other">سایر</option></select></div><small class="field-error" id="guardianRelationError"></small></div>
+                        <div class="field"><label for="guardianGender">عنوان ولی</label><div class="control select-control"><i class="fas fa-user-tag"></i><select id="guardianGender"><option value="">بدون عنوان</option><option value="male">آقا</option><option value="female">خانم</option></select></div></div>
+                        <div class="field"><label for="guardianPhone">شماره همراه ولی اصلی <span>*</span></label><div class="control ltr"><i class="fas fa-phone"></i><input id="guardianPhone" inputmode="tel" maxlength="11" placeholder="09123456789"></div><small class="field-error" id="guardianPhoneError"></small></div>
+                        <div class="field field-wide"><label for="email">ایمیل</label><div class="control ltr"><i class="fas fa-envelope"></i><input id="email" type="email" autocomplete="email" placeholder="example@email.com"></div><small class="field-error" id="emailError"></small></div>
+                    </div>
+                </section>
+
+                <section class="form-step" data-form-step="4">
+                    <div class="section-heading"><span class="section-icon"><i class="fas fa-house"></i></span><div><h2>اطلاعات محل سکونت</h2><p>نشانی و کد پستی را مطابق محل سکونت فعلی وارد کنید.</p></div></div>
+                    <div class="form-grid">
+                        <div class="field"><label for="province">استان <span>*</span></label><div class="control"><i class="fas fa-map"></i><input id="province" placeholder="مثلاً تهران"></div><small class="field-error" id="provinceError"></small></div>
+                        <div class="field"><label for="city">شهر <span>*</span></label><div class="control"><i class="fas fa-city"></i><input id="city" placeholder="نام شهر"></div><small class="field-error" id="cityError"></small></div>
+                        <div class="field"><label for="district">منطقه / محله</label><div class="control"><i class="fas fa-location-dot"></i><input id="district" placeholder="منطقه یا محله"></div></div>
+                        <div class="field"><label for="postalCode">کد پستی <span>*</span></label><div class="control ltr"><i class="fas fa-envelopes-bulk"></i><input id="postalCode" inputmode="numeric" maxlength="10" placeholder="۱۰ رقم"></div><small class="field-error" id="postalCodeError"></small></div>
+                        <div class="field"><label for="homePhone">تلفن منزل</label><div class="control ltr"><i class="fas fa-phone-volume"></i><input id="homePhone" inputmode="tel" placeholder="با کد شهر"></div></div>
+                        <div class="field field-wide"><label for="address">نشانی کامل <span>*</span></label><textarea id="address" rows="4" placeholder="خیابان، کوچه، پلاک، واحد و نشانی دقیق"></textarea><small class="field-error" id="addressError"></small></div>
+                    </div>
+                </section>
+
+                <section class="form-step" data-form-step="5">
+                    <div class="section-heading"><span class="section-icon"><i class="fas fa-clipboard-check"></i></span><div><h2>بازبینی و ثبت نهایی</h2><p>پیش از ارسال، خلاصه اطلاعات را بررسی کنید.</p></div></div>
+                    <div id="reviewContent" class="review-grid"></div>
+                    <label class="consent-box"><input type="checkbox" id="consent"><span><strong>صحت اطلاعات را تأیید می‌کنم.</strong><small>مسئولیت صحت مشخصات و مدارک واردشده بر عهده ثبت‌کننده است.</small></span></label>
+                    <small class="field-error" id="consentError"></small>
+                </section>
+
+                <footer class="form-footer">
+                    <button type="button" class="btn btn-ghost is-hidden" id="prevButton"><i class="fas fa-arrow-right"></i> مرحله قبل</button>
+                    <span class="form-progress-text" id="formProgressText">مرحله ۱ از ۵</span>
+                    <button type="button" class="btn btn-primary" id="nextButton">مرحله بعد <i class="fas fa-arrow-left"></i></button>
+                    <button type="submit" class="btn btn-success is-hidden" id="submitButton"><i class="fas fa-paper-plane"></i> ثبت نهایی درخواست</button>
+                </footer>
+            </form>
+        </section>
+    </main>
+
+    <div class="overlay" id="loadingOverlay"><div class="overlay-card"><span class="loader"></span><h3>در حال ثبت درخواست</h3><p>لطفاً صفحه را نبندید.</p></div></div>
+    <div class="overlay" id="successOverlay"><div class="overlay-card success"><span class="success-mark"><i class="fas fa-check"></i></span><h3>درخواست با موفقیت ثبت شد</h3><p>کد پیگیری خود را برای بررسی‌های بعدی نگه دارید.</p><div class="tracking-box" id="trackingCode">-</div><button class="btn btn-primary" onclick="window.location.href='/'">بازگشت به صفحه اصلی</button></div></div>
+
+    <script src="/public/assets/js/register.js"></script>
+</body>
+</html>

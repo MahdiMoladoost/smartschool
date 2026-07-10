@@ -1,0 +1,76 @@
+<%
+    const servicesPageData = (typeof servicesPage !== 'undefined' && servicesPage) ? servicesPage : {};
+%>
+<%- include('../partials/header', { title: servicesPageData.hero?.title || 'خدمات آموزشی', activePage: 'services' }) %>
+<%
+    const data = servicesPageData;
+    const hero = data.hero || {};
+    const serviceItems = Array.isArray(data.services) ? data.services : [];
+    const cta = data.cta || {};
+%>
+
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <h1><%= hero.title || 'خدمات آموزشی' %></h1>
+        <p><%= hero.subtitle || 'ما متعهد به ارائه آموزش‌ کیفیت بالا برای همه دانش‌آموزان' %></p>
+    </div>
+</section>
+
+<% serviceItems.forEach(function(service, index) { %>
+<section class="service-detail <%= service.alt_bg ? 'alt-bg' : '' %>" id="<%= service.id || ('service-' + index) %>">
+    <div class="container">
+        <div class="service-detail-grid <%= service.reverse ? 'reverse' : '' %>">
+            <div class="service-detail-content" data-aos="<%= service.reverse ? 'fade-left' : 'fade-right' %>">
+                <h2><%= service.title %></h2>
+                <p><%= service.description %></p>
+                <div class="service-features">
+                    <% (Array.isArray(service.features) ? service.features : []).forEach(function(feature) { %>
+                        <div class="feature"><i class="fas fa-check-circle"></i> <%= feature %></div>
+                    <% }) %>
+                </div>
+                <a href="<%= service.button_link || '/pages/homepage/auth/register.html' %>" class="btn btn-primary"><%= service.button_text || 'ثبت‌نام' %></a>
+            </div>
+            <div class="service-detail-image" data-aos="<%= service.reverse ? 'fade-right' : 'fade-left' %>">
+                <img src="<%= service.image %>" alt="<%= service.image_alt || service.title %>">
+            </div>
+        </div>
+    </div>
+</section>
+<% }) %>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-container" data-aos="zoom-in">
+            <div class="cta-content">
+                <h2><%= cta.title || 'آماده شروع هستید؟' %></h2>
+                <p><%= cta.subtitle || 'همین امروز برای ثبت‌نام اقدام کنید و از خدمات ما بهره‌مند شوید' %></p>
+                <a href="<%= cta.button_link || '/pages/homepage/auth/register.html' %>" class="btn btn-secondary"><i class="fas fa-pen-fancy"></i> <%= cta.button_text || 'شروع ثبت‌نام' %></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .page-header { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; padding: 4rem 0; text-align: center; }
+    .page-header h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+    .service-detail { padding: 5rem 0; }
+    .service-detail.alt-bg { background: #f8fafc; }
+    .service-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .service-detail-grid.reverse { direction: ltr; }
+    .service-detail-grid.reverse .service-detail-content { direction: rtl; }
+    .service-detail-content h2 { font-size: 2rem; color: #1e293b; margin-bottom: 1.5rem; }
+    .service-detail-content p { color: #64748b; line-height: 1.8; margin-bottom: 2rem; }
+    .service-features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .feature { display: flex; align-items: center; gap: 0.75rem; color: #334155; }
+    .feature i { color: #10b981; font-size: 1.25rem; }
+    .service-detail-image img { width: 100%; border-radius: 24px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); object-fit: cover; display: block; }
+    @media (max-width: 768px) { 
+        .service-detail-grid { grid-template-columns: 1fr; gap: 2rem; } 
+        .service-features { grid-template-columns: 1fr; }
+    }
+</style>
+
+<%- include('../partials/footer') %>
+<script src="/public/assets/js/shared-home-layout.js?v=shared-layout-39"></script>

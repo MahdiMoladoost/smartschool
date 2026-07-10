@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پروفایل | پنل والدین</title>
+    
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="/public/assets/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="/public/assets/js/chart.umd.min.js"></script>
+    
+    <!-- Flatpickr (تاریخ شمسی) -->
+    <link rel="/public/assets/css/flatpickr.min.css">
+    <script src="/public/assets/js/flatpickr.js"></script>
+    <script src="/public/assets/js/fa.js"></script>
+    
+    <!-- CSS اختصاصی والدین -->
+    <link rel="stylesheet" href="/public/assets/css/panel/parent/parent.css">
+    <style>.nav-item { text-decoration: none; }</style>
+</head>
+<body data-panel="parent" data-page="profile">
+
+<!-- لودینگ Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+</div>
+
+<!-- دکمه منوی موبایل -->
+<button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+</button>
+
+<!-- ============================================ -->
+<!-- سایدبار پنل والدین -->
+<!-- ============================================ -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="logo">
+            <div class="logo-icon"><i class="fas fa-user-friends"></i></div>
+            <div>
+                <h3>پنل والدین</h3>
+                <small>نسخه ۲.۰</small>
+            </div>
+        </div>
+        <div class="user-info" id="userInfo">
+            <div class="user-avatar" id="parentAvatar"><i class="fas fa-user-friends"></i></div>
+            <div class="user-details">
+                <h4 id="parentName">والدین</h4>
+                <p id="parentPhone">شماره تماس</p>
+            </div>
+            <div class="user-status online" title="آنلاین"></div>
+        </div>
+    </div>
+    
+    <div class="nav-menu" id="navMenu">
+        <div class="nav-section">
+            <div class="nav-section-title">داشبورد</div>
+            <a class="nav-item" data-tab="dashboard" href="/dashboard/parent/dashboard">
+                <i class="fas fa-chart-line"></i> <span>داشبورد</span>
+            </a>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">فرزندان</div>
+            <a class="nav-item" data-tab="children" href="/dashboard/parent/children">
+                <i class="fas fa-child"></i> <span>مدیریت فرزندان</span>
+            </a>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">آموزشی</div>
+            <a class="nav-item" data-tab="grades" href="/dashboard/parent/grades">
+                <i class="fas fa-star"></i> <span>کارنامه و نمرات</span>
+            </a>
+            <a class="nav-item" data-tab="schedule" href="/dashboard/parent/schedule">
+                <i class="fas fa-calendar-week"></i> <span>برنامه هفتگی</span>
+            </a>
+            <a class="nav-item" data-tab="assignments" href="/dashboard/parent/assignments">
+                <i class="fas fa-tasks"></i> <span>تکالیف</span>
+            </a>
+            <a class="nav-item" data-tab="attendance" href="/dashboard/parent/attendance">
+                <i class="fas fa-clipboard-check"></i> <span>حضور و غیاب</span>
+            </a>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">ارتباطات</div>
+            <a class="nav-item" data-tab="messages" href="/dashboard/parent/messages">
+                <i class="fas fa-envelope"></i> <span>پیام‌ها</span>
+                <span class="nav-badge" id="messagesBadge">0</span>
+            </a>
+            <a class="nav-item" data-tab="meetings" href="/dashboard/parent/meetings">
+                <i class="fas fa-calendar-alt"></i> <span>درخواست ملاقات</span>
+            </a>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">مالی</div>
+            <a class="nav-item" data-tab="payments" href="/dashboard/parent/payments">
+                <i class="fas fa-credit-card"></i> <span>وضعیت مالی</span>
+            </a>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">سیستم</div>
+            <a class="nav-item active" data-tab="profile" href="/dashboard/parent/profile">
+                <i class="fas fa-user-circle"></i> <span>پروفایل</span>
+            </a>
+            <a class="nav-item" data-tab="announcements" href="/dashboard/parent/announcements">
+                <i class="fas fa-bullhorn"></i> <span>اطلاعیه‌ها</span>
+            </a>
+        </div>
+    </div>
+    
+    <div class="sidebar-footer">
+        <div class="system-info">
+            <small><i class="fas fa-server"></i> وضعیت سرور: <span class="status-online">آنلاین</span></small>
+        </div>
+        <button class="btn-logout" id="logoutBtn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> خروج از سیستم
+        </button>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- محتوای اصلی -->
+<!-- ============================================ -->
+<div class="main-content" id="mainContent">
+    <div class="page-header">
+        <div class="page-title">
+            <h1><i class="fas fa-chart-line" id="pageIcon"></i> <span id="pageTitle">داشبورد</span></h1>
+            <p class="page-subtitle" id="pageSubtitle">خلاصه وضعیت فرزندان</p>
+        </div>
+        <div class="header-actions">
+            <div class="search-global">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="جستجوی سریع..." id="globalSearch">
+            </div>
+            <div class="btn-icon" onclick="refreshData()" title="بروزرسانی">
+                <i class="fas fa-sync-alt"></i>
+            </div>
+            <div class="btn-icon" id="fullscreenBtn" title="تمام صفحه">
+                <i class="fas fa-expand"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="content-area" id="contentArea">
+        <div class="loading-content">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>در حال بارگذاری...</p>
+        </div>
+    </div>
+</div>
+
+<!-- پنل اعلانات -->
+<div class="notification-panel" id="notificationPanel">
+    <div class="notification-header">
+        <h3><i class="fas fa-bell"></i> اعلانات</h3>
+        <button class="btn-icon-sm" onclick="closeNotificationPanel()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="notification-list" id="notificationList">
+        
+    </div>
+</div>
+
+<!-- کانتینر توست و مودال‌ها -->
+<div class="toast-container" id="toastContainer"></div>
+<div id="modalsContainer"></div>
+
+<!-- کتابخانه‌های جانبی -->
+<script src="/public/assets/js/jalali-moment.browser.js"></script>
+<script src="/public/assets/js/xlsx.full.min.js"></script>
+
+<!-- اسکریپت اصلی پنل والدین -->
+<script src="/public/assets/js/parent.js"></script>
+
+<script>
+    // اتصال منوها به توابع
+    (function() {
+        function initManual() {
+            if (typeof window.showTab === 'function') {
+                const navItems = document.querySelectorAll('.nav-item');
+                navItems.forEach(function(item) {
+                    if (item.matches('a[href]')) return;
+                    item.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const tabName = this.getAttribute('data-tab');
+                        if (tabName) {
+                            window.showTab(tabName);
+                        }
+                    });
+                });
+                console.log('✅ منوهای والدین متصل شدند');
+            } else {
+                setTimeout(initManual, 200);
+            }
+        }
+        initManual();
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تحلیل هوشمند | پنل معاون پرورشی و فرهنگی</title>
+  <link rel="stylesheet" href="/public/assets/css/all.min.css">
+  <link rel="stylesheet" href="/public/assets/css/panel/role-panel.css">
+</head>
+<body data-panel="cultural-deputy" data-page="ai-insights">
+<button class="mobile-menu" onclick="toggleRoleSidebar()" aria-label="باز کردن منو"><i class="fas fa-bars"></i></button>
+<div class="overlay" id="overlay" onclick="toggleRoleSidebar()"></div>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-icon"><i class="fas fa-school"></i></div>
+      <div><h1 id="panelTitle">پنل معاون پرورشی و فرهنگی</h1><p>سامانه مدرسه هوشمند</p></div>
+    </div>
+    <div class="user-card"><strong id="userName">کاربر</strong><span id="userRole">role</span></div>
+    <nav class="nav-section" aria-label="منوی پنل">
+      <div class="nav-section-title">بخش‌های پنل</div>
+            <a class="nav-item" data-tab="dashboard" href="/dashboard/cultural-deputy/dashboard"><i class="fas fa-chart-line"></i><span>داشبورد فرهنگی</span></a>
+            <a class="nav-item" data-tab="events" href="/dashboard/cultural-deputy/events"><i class="fas fa-calendar-star"></i><span>رویدادها</span></a>
+            <a class="nav-item" data-tab="behavior" href="/dashboard/cultural-deputy/behavior"><i class="fas fa-scale-balanced"></i><span>رفتار و انضباط</span></a>
+            <a class="nav-item" data-tab="participation" href="/dashboard/cultural-deputy/participation"><i class="fas fa-hands-holding-circle"></i><span>مشارکت دانش‌آموزان</span></a>
+            <a class="nav-item" data-tab="recognition" href="/dashboard/cultural-deputy/recognition"><i class="fas fa-award"></i><span>تشویق‌ها</span></a>
+            <a class="nav-item" data-tab="announcements" href="/dashboard/cultural-deputy/announcements"><i class="fas fa-bullhorn"></i><span>اطلاعیه‌های فرهنگی</span></a>
+            <a class="nav-item" data-tab="reports" href="/dashboard/cultural-deputy/reports"><i class="fas fa-file-lines"></i><span>گزارش فرهنگی</span></a>
+            <a class="nav-item active" data-tab="ai-insights" href="/dashboard/cultural-deputy/ai-insights"><i class="fas fa-brain"></i><span>تحلیل هوشمند</span></a>
+            <a class="nav-item" data-tab="sms" href="/dashboard/cultural-deputy/sms"><i class="fas fa-comment-sms"></i><span>پیامک‌ها</span></a>
+    </nav>
+    <div class="nav-section"><a class="nav-item" href="/" target="_blank"><i class="fas fa-home"></i><span>صفحه اصلی</span></a><button class="btn danger" onclick="logout()" style="width:100%;margin-top:12px"><i class="fas fa-sign-out-alt"></i> خروج</button></div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <div><h2 id="pageTitle">داشبورد فرهنگی</h2><p>داده‌ها از API امن نقش و پایگاه داده MySQL خوانده می‌شود.</p></div>
+      <div class="actions"><button class="btn secondary" onclick="location.reload()"><i class="fas fa-rotate"></i> بروزرسانی</button></div>
+    </header>
+    <section id="content"><div class="state">در حال بارگذاری...</div></section>
+  </main>
+</div>
+<script src="/public/assets/js/role-panel.js"></script>
+</body>
+</html>

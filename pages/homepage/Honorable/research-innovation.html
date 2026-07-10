@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="پژوهش و نوآوری - مدیریت هوشمند">
+    <meta name="theme-color" content="#2563eb">
+    <title>پژوهش و نوآوری | مدیریت هوشمند</title>
+    <link rel="stylesheet" href="/public/assets/css/all.min.css">
+    <link rel="stylesheet" href="/public/assets/css/home page/homepage.css?v=shared-layout-02">
+    <link rel="stylesheet" href="/public/assets/css/home page/responsive.css?v=shared-layout-02">
+    <style id="honors-live-prehide">
+        body[data-honor-page] {
+            margin: 0;
+            background: #f6f8fc;
+        }
+        body[data-honor-page] > *:not(#honorsInitialLoader) {
+            visibility: hidden !important;
+            opacity: 0 !important;
+        }
+        #honorsInitialLoader {
+            position: fixed;
+            inset: 0;
+            z-index: 2147483647;
+            display: grid;
+            place-items: center;
+            direction: rtl;
+            font-family: Vazirmatn, Vazir, Shabnam, Tahoma, sans-serif;
+            background: linear-gradient(180deg, #f8fbff 0%, #eef5ff 100%);
+            color: #1d4ed8;
+        }
+        .honors-initial-loader-card {
+            width: min(360px, calc(100% - 48px));
+            border-radius: 28px;
+            padding: 2rem 1.4rem;
+            text-align: center;
+            background: rgba(255, 255, 255, .86);
+            border: 1px solid #dbeafe;
+            box-shadow: 0 24px 70px rgba(15, 23, 42, .12);
+        }
+        .honors-initial-loader-spinner {
+            width: 54px;
+            height: 54px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            border: 5px solid #dbeafe;
+            border-top-color: #2563eb;
+            animation: honorsInitialSpin .8s linear infinite;
+        }
+        .honors-initial-loader-card p {
+            margin: 0;
+            color: #334155;
+            font-weight: 900;
+            line-height: 1.9;
+        }
+        @keyframes honorsInitialSpin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body data-honor-page="research_innovation">
+    <div id="honorsInitialLoader" aria-live="polite">
+        <div class="honors-initial-loader-card">
+            <div class="honors-initial-loader-spinner"></div>
+            <p>در حال آماده‌سازی صفحه افتخارآفرینان...</p>
+        </div>
+    </div>
+    <main class="honors-live-page" id="honorsApp">
+        <section class="honors-page-hero">
+            <div class="honors-hero-icon"><i class="fas fa-lightbulb" data-honors-icon></i></div>
+            <h1 data-honors-title>پژوهش و نوآوری</h1>
+            <p data-honors-subtitle>نمایش دستاوردهای پژوهشی و نوآورانه ثبت‌شده در پنل مدیر.</p>
+        </section>
+        <section class="honors-live-shell">
+            <div id="honorsDynamicYearRoot" class="honors-dynamic-year-root">
+                <div class="honors-loading"><i class="fas fa-spinner fa-spin"></i><p>در حال دریافت اطلاعات ثبت‌شده از پنل مدیر...</p></div>
+            </div>
+        </section>
+    </main>
+    <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0, behavior:'smooth'})" aria-label="بازگشت به بالا">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    <script src="/public/assets/js/shared-home-layout.js?v=shared-layout-02"></script>
+    <script src="/public/assets/js/honors-live.js?v=honors-real-data-73"></script>
+</body>
+</html>

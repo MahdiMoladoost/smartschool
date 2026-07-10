@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پروفایل شخصی | پنل دانش‌آموز</title>
+    
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="/public/assets/css/panel/student/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="/public/assets/js/student/chart.umd.min.js"></script>
+    
+    <!-- Flatpickr (تاریخ شمسی) -->
+    <link rel="stylesheet" href="/public/assets/js/student/flatpickr.min.css">
+    <script src="/public/assets/js/student/flatpickr.js"></script>
+    <script src="/public/assets/js/student/fa.js"></script>
+    
+    <!-- CSS اختصاصی دانش‌آموز -->
+    <link rel="stylesheet" href="/public/assets/css/panel/student/student.css?v=admin-like-v2">
+    <style>.nav-item { text-decoration: none; }</style>
+</head>
+<body data-panel="student" data-page="profile">
+
+<!-- لودینگ Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+</div>
+
+<!-- دکمه منوی موبایل -->
+<button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+</button>
+
+<!-- ============================================ -->
+<!-- سایدبار پنل دانش‌آموز -->
+<!-- ============================================ -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="logo">
+            <div class="logo-icon"><i class="fas fa-user-graduate"></i></div>
+            <div>
+                <h3>پنل دانش‌آموز</h3>
+                <small>نسخه ۲.۰</small>
+            </div>
+        </div>
+        <div class="user-info" id="userInfo">
+            <div class="user-avatar" id="studentAvatar"><i class="fas fa-user-graduate"></i></div>
+            <div class="user-details">
+                <h4 id="studentName">دانش‌آموز</h4>
+                <p id="studentClass">کلاس</p>
+            </div>
+            <div class="user-status online" title="آنلاین"></div>
+        </div>
+    </div>
+    
+    <div class="nav-menu" id="navMenu">
+        <div class="nav-section">
+            <div class="nav-section-title">داشبورد</div>
+            <a class="nav-item" data-tab="dashboard" href="/dashboard/student/dashboard">
+                <i class="fas fa-chart-line"></i> 
+                <span>داشبورد شخصی</span>
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">آموزشی</div>
+            <a class="nav-item" data-tab="schedule" href="/dashboard/student/schedule">
+                <i class="fas fa-calendar-week"></i> 
+                <span>برنامه هفتگی کلاس‌ها</span>
+            </a>
+            <a class="nav-item" data-tab="courses-view" href="/dashboard/student/courses-view">
+                <i class="fas fa-book-open"></i> 
+                <span>مشاهده دروس</span>
+            </a>
+            <a class="nav-item" data-tab="assignments" href="/dashboard/student/assignments">
+                <i class="fas fa-list-check"></i> 
+                <span>مشاهده تکالیف</span>
+            </a>
+            <a class="nav-item" data-tab="assignment-submit" href="/dashboard/student/assignment-submit">
+                <i class="fas fa-upload"></i> 
+                <span>ارسال تکالیف</span>
+            </a>
+            <a class="nav-item" data-tab="grades" href="/dashboard/student/grades">
+                <i class="fas fa-star"></i> 
+                <span>مشاهده نمرات</span>
+            </a>
+            <a class="nav-item" data-tab="report-card" href="/dashboard/student/report-card">
+                <i class="fas fa-award"></i> 
+                <span>مشاهده کارنامه</span>
+            </a>
+            <a class="nav-item" data-tab="progress-chart" href="/dashboard/student/progress-chart">
+                <i class="fas fa-chart-line"></i> 
+                <span>مشاهده نمودار پیشرفت تحصیلی</span>
+            </a>
+            <a class="nav-item" data-tab="exam-schedule" href="/dashboard/student/exam-schedule">
+                <i class="fas fa-calendar-days"></i> 
+                <span>مشاهده برنامه امتحانات</span>
+            </a>
+            <a class="nav-item" data-tab="online-exam" href="/dashboard/student/online-exam">
+                <i class="fas fa-pen-to-square"></i> 
+                <span>شرکت در آزمون آنلاین</span>
+            </a>
+            <a class="nav-item" data-tab="exam-results" href="/dashboard/student/exam-results">
+                <i class="fas fa-square-poll-vertical"></i> 
+                <span>مشاهده نتایج آزمون‌ها</span>
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">کلاس و محتوا</div>
+            <a class="nav-item" data-tab="online-class" href="/dashboard/student/online-class">
+                <i class="fas fa-video"></i> 
+                <span>شرکت در کلاس آنلاین</span>
+            </a>
+            <a class="nav-item" data-tab="virtual-class-content" href="/dashboard/student/virtual-class-content">
+                <i class="fas fa-cloud-arrow-down"></i> 
+                <span>مشاهده کلاس مجازی و محتوای آموزشی</span>
+            </a>
+            <a class="nav-item" data-tab="educational-files" href="/dashboard/student/educational-files">
+                <i class="fas fa-download"></i> 
+                <span>دانلود فایل‌های آموزشی</span>
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">اطلاع‌رسانی و ارتباطات</div>
+            <a class="nav-item" data-tab="announcements" href="/dashboard/student/announcements">
+                <i class="fas fa-bullhorn"></i> 
+                <span>مشاهده اطلاعیه‌های مدرسه</span>
+            </a>
+            <a class="nav-item" data-tab="school-news" href="/dashboard/student/school-news">
+                <i class="fas fa-newspaper"></i> 
+                <span>مشاهده اخبار مدرسه</span>
+            </a>
+            <a class="nav-item" data-tab="teacher-messenger" href="/dashboard/student/teacher-messenger">
+                <i class="fas fa-comments"></i> 
+                <span>پیام‌رسان داخلی با معلمان</span>
+            </a>
+            <a class="nav-item" data-tab="admin-messenger" href="/dashboard/student/admin-messenger">
+                <i class="fas fa-user-shield"></i> 
+                <span>پیام‌رسان با مدیر مدرسه</span>
+            </a>
+            <a class="nav-item" data-tab="counselor-messenger" href="/dashboard/student/counselor-messenger">
+                <i class="fas fa-heart-pulse"></i> 
+                <span>پیام‌رسان با مشاور</span>
+            </a>
+            <a class="nav-item" data-tab="sms-messages" href="/dashboard/student/sms-messages">
+                <i class="fas fa-comment-sms"></i> 
+                <span>دریافت پیامک‌های مدرسه</span>
+            </a>
+            <a class="nav-item" data-tab="notifications" href="/dashboard/student/notifications">
+                <i class="fas fa-bell"></i> 
+                <span>دریافت نوتیفیکیشن‌ها</span>
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">حضور، انضباط و فعالیت</div>
+            <a class="nav-item" data-tab="attendance" href="/dashboard/student/attendance">
+                <i class="fas fa-clipboard-check"></i> 
+                <span>مشاهده حضور و غیاب</span>
+            </a>
+            <a class="nav-item" data-tab="absence-late-history" href="/dashboard/student/absence-late-history">
+                <i class="fas fa-clock-rotate-left"></i> 
+                <span>مشاهده سوابق غیبت و تأخیر</span>
+            </a>
+            <a class="nav-item" data-tab="discipline-cases" href="/dashboard/student/discipline-cases">
+                <i class="fas fa-scale-balanced"></i> 
+                <span>مشاهده موارد انضباطی</span>
+            </a>
+            <a class="nav-item" data-tab="encouragements" href="/dashboard/student/encouragements">
+                <i class="fas fa-medal"></i> 
+                <span>مشاهده تشویقی‌ها</span>
+            </a>
+            <a class="nav-item" data-tab="cultural-activities" href="/dashboard/student/cultural-activities">
+                <i class="fas fa-hands-holding-circle"></i> 
+                <span>مشاهده فعالیت‌های فرهنگی</span>
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">مشاوره و رویدادها</div>
+            <a class="nav-item" data-tab="counseling-request" href="/dashboard/student/counseling-request">
+                <i class="fas fa-calendar-plus"></i> 
+                <span>ثبت درخواست مشاوره</span>
+            </a>
+            <a class="nav-item" data-tab="counseling-sessions" href="/dashboard/student/counseling-sessions">
+                <i class="fas fa-user-doctor"></i> 
+                <span>مشاهده برنامه جلسات مشاوره</span>
+            </a>
+            <a class="nav-item" data-tab="competitions" href="/dashboard/student/competitions">
+                <i class="fas fa-trophy"></i> 
+                <span>مشاهده مسابقات مدرسه</span>
+            </a>
+            <a class="nav-item" data-tab="competition-registration" href="/dashboard/student/competition-registration">
+                <i class="fas fa-clipboard-list"></i> 
+                <span>ثبت‌نام در مسابقات</span>
+            </a>
+            <a class="nav-item" data-tab="gallery" href="/dashboard/student/gallery">
+                <i class="fas fa-images"></i> 
+                <span>مشاهده گالری تصاویر مدرسه</span>
+            </a>
+            <a class="nav-item" data-tab="academic-calendar" href="/dashboard/student/academic-calendar">
+                <i class="fas fa-calendar"></i> 
+                <span>تقویم آموزشی</span>
+            </a>
+            <a class="nav-item" data-tab="school-events" href="/dashboard/student/school-events">
+                <i class="fas fa-calendar-star"></i> 
+                <span>مشاهده رویدادهای مدرسه</span>
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">مالی</div>
+            <a class="nav-item" data-tab="finance-status" href="/dashboard/student/finance-status">
+                <i class="fas fa-wallet"></i> 
+                <span>مشاهده وضعیت مالی</span>
+            </a>
+            <a class="nav-item" data-tab="tuition-view" href="/dashboard/student/tuition-view">
+                <i class="fas fa-money-check"></i> 
+                <span>مشاهده شهریه</span>
+            </a>
+            <a class="nav-item" data-tab="tuition-payment" href="/dashboard/student/tuition-payment">
+                <i class="fas fa-credit-card"></i> 
+                <span>پرداخت آنلاین شهریه</span>
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">پروفایل و هوش مصنوعی</div>
+            <a class="nav-item active" data-tab="profile" href="/dashboard/student/profile">
+                <i class="fas fa-user-circle"></i> 
+                <span>پروفایل شخصی</span>
+            </a>
+            <a class="nav-item" data-tab="edit-profile" href="/dashboard/student/edit-profile">
+                <i class="fas fa-user-pen"></i> 
+                <span>ویرایش اطلاعات شخصی</span>
+            </a>
+            <a class="nav-item" data-tab="change-password" href="/dashboard/student/change-password">
+                <i class="fas fa-key"></i> 
+                <span>تغییر رمز عبور</span>
+            </a>
+            <a class="nav-item" data-tab="ai-study-assistant" href="/dashboard/student/ai-study-assistant">
+                <i class="fas fa-robot"></i> 
+                <span>دستیار هوشمند درسی</span>
+            </a>
+            <a class="nav-item" data-tab="ai-homework-help" href="/dashboard/student/ai-homework-help">
+                <i class="fas fa-wand-magic-sparkles"></i> 
+                <span>حل تمرین با توضیح مرحله‌ای</span>
+            </a>
+            <a class="nav-item" data-tab="ai-lesson-summary" href="/dashboard/student/ai-lesson-summary">
+                <i class="fas fa-file-lines"></i> 
+                <span>خلاصه‌سازی درس</span>
+            </a>
+            <a class="nav-item" data-tab="ai-question-generator" href="/dashboard/student/ai-question-generator">
+                <i class="fas fa-circle-question"></i> 
+                <span>تولید نمونه سوال</span>
+            </a>
+            <a class="nav-item" data-tab="ai-study-plan" href="/dashboard/student/ai-study-plan">
+                <i class="fas fa-calendar-check"></i> 
+                <span>برنامه‌ریزی مطالعه</span>
+            </a>
+            <a class="nav-item" data-tab="ai-weakness-analysis" href="/dashboard/student/ai-weakness-analysis">
+                <i class="fas fa-chart-simple"></i> 
+                <span>تحلیل نقاط ضعف درسی</span>
+            </a>
+            <a class="nav-item" data-tab="ai-resource-suggestions" href="/dashboard/student/ai-resource-suggestions">
+                <i class="fas fa-book"></i> 
+                <span>پیشنهاد منابع آموزشی</span>
+            </a>
+        </div>
+    </div>
+    
+    <div class="sidebar-footer">
+        <div class="system-info">
+            <small><i class="fas fa-server"></i> وضعیت سرور: <span class="status-online">آنلاین</span></small>
+        </div>
+        <button class="btn-logout" id="logoutBtn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> خروج از سیستم
+        </button>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- محتوای اصلی -->
+<!-- ============================================ -->
+<div class="main-content" id="mainContent">
+    <div class="page-header">
+        <div class="page-title">
+            <h1><i class="fas fa-chart-line" id="pageIcon"></i> <span id="pageTitle">داشبورد</span></h1>
+            <p class="page-subtitle" id="pageSubtitle">خلاصه وضعیت آموزشی</p>
+        </div>
+        <div class="header-actions">
+            <div class="search-global">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="جستجوی سریع..." id="globalSearch">
+            </div>
+            <div class="btn-icon" onclick="refreshData()" title="بروزرسانی">
+                <i class="fas fa-sync-alt"></i>
+            </div>
+            <div class="btn-icon" id="fullscreenBtn" title="تمام صفحه">
+                <i class="fas fa-expand"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="content-area" id="contentArea">
+        <div class="loading-content">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>در حال بارگذاری...</p>
+        </div>
+    </div>
+</div>
+
+<!-- پنل اعلانات -->
+<div class="notification-panel" id="notificationPanel">
+    <div class="notification-header">
+        <h3><i class="fas fa-bell"></i> اعلانات</h3>
+        <button class="btn-icon-sm" onclick="closeNotificationPanel()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="notification-list" id="notificationList">
+        <div class="empty-state">اعلانی وجود ندارد</div>
+    </div>
+</div>
+
+<!-- کانتینر توست و مودال‌ها -->
+<div class="toast-container" id="toastContainer"></div>
+<div id="modalsContainer"></div>
+
+<!-- کتابخانه‌های جانبی -->
+<script src="/public/assets/js/student/jalali-moment.browser.js"></script>
+<script src="/public/assets/js/student/xlsx.full.min.js"></script>
+
+<!-- اسکریپت اصلی پنل دانش‌آموز -->
+<script src="/public/assets/js/student.js"></script>
+
+<script>
+    // اتصال منوها به توابع
+    (function() {
+        function initManual() {
+            if (typeof window.showTab === 'function') {
+                const navItems = document.querySelectorAll('.nav-item');
+                navItems.forEach(function(item) {
+                    if (item.matches('a[href]')) return;
+                    item.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const tabName = this.getAttribute('data-tab');
+                        if (tabName) {
+                            window.showTab(tabName);
+                        }
+                    });
+                });
+                console.log('✅ منوهای دانش‌آموز متصل شدند');
+            } else {
+                setTimeout(initManual, 200);
+            }
+        }
+        initManual();
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+{
+  "admin": {
+    "titlePrefix": "پنل مدیریت",
+    "pages": {
+      "dashboard": "داشبورد",
+      "users": "مدیریت کاربران",
+      "registrations": "ثبت نام کنندگان",
+      "classes": "مدیریت کلاس‌ها",
+      "courses": "مدیریت دروس",
+      "schedule": "برنامه هفتگی",
+      "announcements": "اطلاعیه‌ها",
+      "home-news": "اخبار صفحه اصلی",
+      "gallery-manager": "مدیریت گالری",
+      "honors": "مدیریت افتخارآفرینان",
+      "polls": "رأی‌گیری",
+      "payments": "مدیریت مالی",
+      "reports": "گزارش‌ها",
+      "attendance": "حضور و غیاب",
+      "tickets": "تیکت‌ها",
+      "settings": "تنظیمات سیستم",
+      "logs": "لاگ فعالیت‌ها",
+      "backup": "پشتیبان‌گیری"
+    }
+  },
+  "teacher": {
+    "titlePrefix": "پنل معلم",
+    "pages": {
+      "dashboard": "داشبورد معلم",
+      "classes": "کلاس‌های من",
+      "students": "دانش‌آموزان",
+      "attendance": "حضور و غیاب",
+      "grades": "مدیریت نمرات",
+      "exams": "آزمون‌ها",
+      "ai-exam": "ساخت آزمون با AI",
+      "grade-predict": "پیش‌بینی نمرات",
+      "assignments": "تکالیف",
+      "library": "کتابخانه دیجیتال",
+      "schedule": "برنامه هفتگی",
+      "parent-chat": "ارتباط با والدین",
+      "assistant": "دستیار هوشمند",
+      "announcements": "اطلاعیه‌ها",
+      "reports": "گزارشات تحلیلی",
+      "profile": "پروفایل"
+    }
+  },
+  "student": {
+    "titlePrefix": "پنل دانش‌آموز",
+    "pages": {
+      "dashboard": "داشبورد دانش‌آموز",
+      "grades": "کارنامه و نمرات",
+      "schedule": "برنامه هفتگی",
+      "assignments": "تکالیف",
+      "exams": "آزمون‌ها",
+      "attendance": "حضور و غیاب",
+      "messages": "پیام‌ها",
+      "assistant": "دستیار هوشمند",
+      "profile": "پروفایل شخصی",
+      "announcements": "اطلاعیه‌ها"
+    }
+  },
+  "parent": {
+    "titlePrefix": "پنل والدین",
+    "pages": {
+      "dashboard": "داشبورد والدین",
+      "children": "مدیریت فرزندان",
+      "grades": "کارنامه و نمرات",
+      "schedule": "برنامه هفتگی",
+      "assignments": "تکالیف",
+      "attendance": "حضور و غیاب",
+      "messages": "پیام‌ها",
+      "meetings": "درخواست ملاقات",
+      "payments": "وضعیت مالی",
+      "announcements": "اطلاعیه‌ها",
+      "profile": "پروفایل"
+    }
+  },
+  "principal": {
+    "titlePrefix": "پنل مدیر مدرسه",
+    "pages": {
+      "dashboard": "داشبورد مدیر مدرسه",
+      "analytics": "تحلیل‌های کلان",
+      "users": "خلاصه کاربران",
+      "reports": "گزارش‌های مدیریتی",
+      "announcements": "اطلاعیه‌ها",
+      "ai-insights": "تحلیل هوشمند",
+      "sms": "پیامک‌ها",
+      "activity": "فعالیت سیستم"
+    }
+  },
+  "executive-deputy": {
+    "titlePrefix": "پنل معاون اجرایی",
+    "pages": {
+      "dashboard": "داشبورد معاون اجرایی",
+      "students": "پرونده دانش‌آموزان",
+      "classes": "کلاس‌ها",
+      "enrollment": "ثبت‌نام و نام‌نویسی",
+      "attendance": "پایش حضور",
+      "schedule": "برنامه هفتگی",
+      "documents": "اسناد اداری",
+      "announcements": "اطلاعیه‌ها",
+      "reports": "گزارش اجرایی",
+      "sms": "پیامک‌ها"
+    }
+  },
+  "cultural-deputy": {
+    "titlePrefix": "پنل معاون پرورشی و فرهنگی",
+    "pages": {
+      "dashboard": "داشبورد فرهنگی",
+      "events": "رویدادها",
+      "behavior": "رفتار و انضباط",
+      "participation": "مشارکت دانش‌آموزان",
+      "recognition": "تشویق‌ها",
+      "announcements": "اطلاعیه‌های فرهنگی",
+      "reports": "گزارش فرهنگی",
+      "ai-insights": "تحلیل هوشمند",
+      "sms": "پیامک‌ها"
+    }
+  },
+  "counselor": {
+    "titlePrefix": "پنل مشاور",
+    "pages": {
+      "dashboard": "داشبورد مشاور",
+      "requests": "درخواست‌های مشاوره",
+      "appointments": "نوبت‌ها",
+      "sessions": "جلسات مشاوره",
+      "followups": "پیگیری‌ها",
+      "reports": "گزارش مشاوره",
+      "ai-insights": "خلاصه‌سازی هوشمند",
+      "profile": "پروفایل"
+    }
+  },
+  "super-admin": {
+    "titlePrefix": "پنل راهبر ارشد",
+    "pages": {
+      "dashboard": "داشبورد راهبر",
+      "roles": "نقش‌ها و دسترسی‌ها",
+      "users": "کاربران",
+      "security": "امنیت",
+      "activity": "فعالیت سیستم",
+      "sms": "پیامک‌ها",
+      "ai": "هوش مصنوعی",
+      "backups": "پشتیبان‌گیری",
+      "settings": "تنظیمات"
+    }
+  }
+}

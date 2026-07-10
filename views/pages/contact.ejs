@@ -1,0 +1,646 @@
+<%
+    const page = (typeof contactPage !== 'undefined' && contactPage) ? contactPage : {"hero": {"kicker": "راه‌های ارتباطی مدرسه", "title": "ارتباط با ما", "subtitle": "برای دریافت راهنمایی، پیگیری ثبت‌نام یا ارتباط با واحدهای مدرسه مدیریت هوشمند، از مسیرهای زیر با ما در ارتباط باشید."}, "methods": [{"id": "phone", "title": "تماس تلفنی", "value": "۰۲۱-۴۴۷۰۶۶۴۴", "description": "پاسخ‌گویی واحد اداری و پذیرش مدرسه", "icon": "fa-phone", "link": "tel:02144706644", "sort": 1, "active": true, "featured": true}, {"id": "mobile", "title": "پشتیبانی همراه", "value": "۰۹۱۰۶۶۶۱۲۸۶", "description": "پیگیری سریع درخواست‌ها و هماهنگی با مدرسه", "icon": "fa-mobile-alt", "link": "tel:09106661286", "sort": 2, "active": true, "featured": false}, {"id": "address", "title": "آدرس مدرسه", "value": "در حال خواندن آدرس دقیق از نقشه نشان...", "description": "برای مراجعه حضوری، لطفاً از قبل هماهنگ کنید.", "icon": "fa-location-dot", "link": "#contact-map", "sort": 3, "active": true, "featured": true}], "hours": {"title": "ساعات پاسخ‌گویی", "subtitle": "تیم اداری مدرسه در بازه‌های زیر آماده پاسخ‌گویی است.", "items": [{"day": "شنبه تا چهارشنبه", "time": "۸:۰۰ تا ۱۵:۰۰"}, {"day": "پنجشنبه", "time": "۸:۰۰ تا ۱۲:۰۰"}, {"day": "جمعه و تعطیلات رسمی", "time": "تعطیل"}]}, "form": {"title": "پیام خود را برای ما بفرستید", "subtitle": "فرم زیر برای ثبت سریع درخواست شماست. کارشناسان مدرسه در اولین فرصت پاسخ خواهند داد.", "button_text": "ارسال پیام", "success_text": "پیام شما ثبت شد؛ به‌زودی با شما تماس می‌گیریم."}, "map": {"title": "موقعیت مدرسه", "subtitle": "نشانی مدرسه و راه‌های مراجعه حضوری", "address": "در حال خواندن آدرس دقیق از نقشه نشان...", "embed_url": "https://neshan.org/maps/iframe/places/_bv2qSyxdpym#c35.762-51.242-18z-0p/35.76199643248418/51.24127343027115", "button_text": "مشاهده مسیر", "button_link": "https://nshn.ir/_bv2qSyxdpym"}, "socials": [{"id": "shad", "title": "شاد", "icon": "/public/assets/img/honors/shad-icon.png", "link": "#"}, {"id": "bale", "title": "بله", "icon": "/public/assets/img/honors/bale-icon.png", "link": "#"}, {"id": "eitaa", "title": "ایتا", "icon": "/public/assets/img/honors/eitaa-clean-icon.png", "link": "#"}], "cta": {"title": "آماده پاسخ‌گویی به شما هستیم", "subtitle": "برای ثبت‌نام، مشاوره یا دریافت اطلاعات بیشتر، همین حالا با مدرسه در ارتباط باشید.", "button_text": "شروع ثبت‌نام", "button_link": "/register"}};
+    const stats = (typeof contactStats !== 'undefined' && contactStats) ? contactStats : { methods: String((page.methods || []).filter(i => i.active !== false).length).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]), featured: String((page.methods || []).filter(i => i.featured && i.active !== false).length).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]), socials: String((page.socials || []).length).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]) };
+    const methods = Array.isArray(page.methods) ? page.methods.filter(item => item.active !== false) : [];
+    const hours = page.hours || {};
+    const form = page.form || {};
+    const map = page.map || {};
+    const socials = Array.isArray(page.socials) ? page.socials : [];
+
+    if (map.address) {
+        methods.forEach(m => {
+            if (/address|آدرس|نشانی|location|map|موقعیت/i.test(String((m.id || '') + ' ' + (m.title || '') + ' ' + (m.link || '')))) {
+                m.value = map.address;
+                m.link = map.button_link || map.embed_url || m.link;
+            }
+        });
+    }
+%>
+<%- include('../partials/header', { title: page.hero?.title || 'ارتباط با ما', activePage: 'contact' }) %>
+<link rel="stylesheet" href="/public/assets/css/home page/homepage.css?v=shared-home-layout-45">
+<style>
+.contact-page{background:#f8fafc;overflow:hidden}.contact-hero{background:linear-gradient(135deg,#172554 0%,#2563eb 52%,#0ea5e9 100%);color:#fff;padding:5.2rem 0 4.7rem;text-align:center}.contact-badge{display:inline-flex;align-items:center;gap:.55rem;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:.55rem 1rem;font-weight:950;margin-bottom:1.1rem}.contact-hero h1{font-size:3.05rem;margin:0 0 1rem;font-weight:950;letter-spacing:-.03em}.contact-hero p{max-width:800px;margin:0 auto;color:#eaf2ff;font-weight:850;line-height:2;font-size:1.05rem}.contact-main{padding:0 0 5rem}.contact-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.1rem;margin-top:-48px;position:relative;z-index:2}.contact-card{position:relative;overflow:hidden;background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid #dbeafe;border-radius:30px;padding:1.25rem;text-align:center;box-shadow:0 22px 52px rgba(15,23,42,.075);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background .22s ease;will-change:transform;text-decoration:none;color:inherit}.contact-card:before{content:'';position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(90deg,#2563eb,#06b6d4,#22c55e)}.contact-card-icon{width:66px;height:66px;border-radius:22px;background:linear-gradient(135deg,#eff6ff,#dbeafe);color:#2563eb;display:grid;place-items:center;margin:0 auto .9rem;font-size:1.35rem;border:1px solid #bfdbfe;transition:transform .22s ease,box-shadow .22s ease,background .22s ease}.contact-card h3{margin:0;color:#0f172a;font-size:1.03rem;font-weight:950}.contact-card strong{display:block;color:#1d4ed8;margin:.55rem 0 .45rem;font-size:1.05rem;font-weight:950;line-height:1.65;transition:color .22s ease,transform .22s ease}.contact-card p{margin:0;color:#64748b;line-height:1.85;font-weight:830;font-size:.86rem}.contact-card:hover{transform:translateY(-8px);border-color:#bfdbfe;box-shadow:0 30px 68px rgba(37,99,235,.16),inset 0 1px 0 rgba(255,255,255,.95);background:linear-gradient(180deg,#fff,#f8fbff)}.contact-card:hover .contact-card-icon{transform:translateY(-3px) scale(1.06);box-shadow:0 16px 34px rgba(37,99,235,.16);background:linear-gradient(135deg,#eaf2ff,#fff)}.contact-card:hover strong{transform:translateY(-1px);color:#0f172a}.contact-grid{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:1.35rem;margin-top:2rem}.contact-panel{background:#fff;border:1px solid #dbeafe;border-radius:34px;padding:1.35rem;box-shadow:0 20px 50px rgba(15,23,42,.06)}.contact-panel-title{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem}.contact-panel-title h2,.contact-panel-title h3{margin:0;color:#0f172a;font-weight:950}.contact-panel-title p{margin:.35rem 0 0;color:#64748b;font-weight:850;line-height:1.8}.contact-panel-title i{width:58px;height:58px;border-radius:20px;background:#eff6ff;color:#2563eb;display:grid;place-items:center;border:1px solid #dbeafe}.contact-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem}.contact-field{display:flex;flex-direction:column;gap:.45rem}.contact-field.full{grid-column:1/-1}.contact-field label{color:#334155;font-weight:950;font-size:.84rem}.contact-field input,.contact-field textarea{border:0;background:#f8fafc;border-radius:18px;padding:1rem;font-family:inherit;font-weight:850;color:#0f172a;outline:none;box-shadow:inset 0 0 0 1px #edf2f7;transition:.18s}.contact-field input:focus,.contact-field textarea:focus{background:#fff;box-shadow:inset 0 0 0 2px #bfdbfe,0 10px 26px rgba(37,99,235,.08)}.contact-field textarea{min-height:145px;resize:vertical;line-height:1.9}.contact-submit{border:0;background:#2563eb;color:#fff;border-radius:18px;padding:1rem 1.35rem;font-family:inherit;font-weight:950;cursor:pointer;box-shadow:0 14px 30px rgba(37,99,235,.22);display:inline-flex;align-items:center;justify-content:center;gap:.55rem;transition:.2s}.contact-submit:hover{transform:translateY(-3px);box-shadow:0 20px 42px rgba(37,99,235,.28)}.contact-side{display:flex;flex-direction:column;gap:1.1rem}.contact-hours{display:flex;flex-direction:column;gap:.7rem}.contact-hour{display:flex;align-items:center;justify-content:space-between;gap:1rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:18px;padding:.85rem 1rem;color:#334155;font-weight:900}.contact-hour span:last-child{color:#2563eb}.contact-map-box{border-radius:26px;overflow:hidden;background:linear-gradient(135deg,#eff6ff,#fff);border:1px solid #dbeafe;min-height:250px;display:grid;place-items:center;text-align:center;color:#64748b;padding:1.2rem}.contact-map-box iframe{width:100%;height:300px;border:0}.contact-map-box i{font-size:2.4rem;color:#2563eb;margin-bottom:.8rem}.contact-map-action{display:inline-flex;align-items:center;gap:.5rem;margin-top:1rem;text-decoration:none;background:#2563eb;color:#fff;border-radius:16px;padding:.78rem 1rem;font-weight:950}.contact-socials{display:flex;gap:.7rem;flex-wrap:wrap}.contact-socials a{flex:1;min-width:120px;display:inline-flex;align-items:center;justify-content:center;gap:.45rem;text-decoration:none;background:#eff6ff;border:1px solid #dbeafe;color:#2563eb;border-radius:16px;padding:.78rem 1rem;font-weight:950;transition:.2s}.contact-socials a img{width:24px;height:24px;object-fit:contain;display:block}.contact-socials a:hover{transform:translateY(-4px);background:#2563eb;color:#fff;box-shadow:0 16px 34px rgba(37,99,235,.18)}.contact-cta{padding:0 0 5rem;background:#f8fafc}.contact-cta-box{background:linear-gradient(135deg,#2563eb,#1d4ed8);border-radius:34px;padding:3.2rem 2rem;color:#fff;text-align:center;box-shadow:0 25px 60px rgba(37,99,235,.18)}.contact-cta-box h2{margin:0 0 .8rem;font-weight:950;font-size:2rem}.contact-cta-box p{margin:0 0 1.35rem;color:#eaf2ff;font-weight:850}.contact-cta-box a{display:inline-flex;align-items:center;gap:.55rem;background:#f59e0b;color:#fff;text-decoration:none;border-radius:18px;padding:.9rem 1.35rem;font-weight:950;box-shadow:0 14px 30px rgba(245,158,11,.24);transition:.2s}.contact-cta-box a:hover{transform:translateY(-4px);box-shadow:0 20px 42px rgba(245,158,11,.3)}@media(max-width:1100px){.contact-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.contact-grid{grid-template-columns:1fr}.contact-side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}}@media(max-width:760px){.contact-hero{padding:4rem 0 3.5rem}.contact-hero h1{font-size:2.2rem}.contact-cards{grid-template-columns:1fr;margin-top:1rem}.contact-card{max-width:560px;margin-inline:auto;width:100%}.contact-side{display:flex}.contact-form{grid-template-columns:1fr}.contact-panel{border-radius:28px;padding:1rem}.contact-panel-title{align-items:flex-start}.contact-hour{align-items:flex-start;flex-direction:column}.contact-socials a{min-width:calc(50% - .7rem)}}@media(max-width:480px){.contact-socials a{min-width:100%}.contact-card-icon{width:60px;height:60px}.contact-card strong{font-size:1rem}}
+
+/* contact page refined layout, cards, panels, and Neshan-safe map */
+.contact-cards{
+    grid-template-columns:repeat(auto-fit,minmax(260px,360px))!important;
+    justify-content:center!important;
+    align-items:stretch!important;
+}
+.contact-card{
+    min-height:255px!important;
+    padding:1.55rem 1.25rem!important;
+}
+.contact-grid{
+    grid-template-columns:minmax(0,1.08fr) minmax(360px,.92fr)!important;
+    align-items:start!important;
+}
+.contact-panel{
+    position:relative!important;
+    overflow:hidden!important;
+    border-radius:36px!important;
+    background:linear-gradient(180deg,#ffffff 0%,#f9fbff 100%)!important;
+    border:1px solid #dbeafe!important;
+    box-shadow:0 24px 64px rgba(15,23,42,.075)!important;
+    transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease!important;
+}
+.contact-panel:hover{
+    transform:translateY(-4px)!important;
+    border-color:#bfdbfe!important;
+    box-shadow:0 30px 74px rgba(37,99,235,.12)!important;
+}
+.contact-panel:before{
+    content:''!important;
+    position:absolute!important;
+    inset:0 0 auto 0!important;
+    height:5px!important;
+    background:linear-gradient(90deg,#2563eb,#06b6d4,#22c55e)!important;
+}
+.contact-panel-title{
+    align-items:flex-start!important;
+    padding-bottom:1rem!important;
+    border-bottom:1px solid #edf2f7!important;
+}
+.contact-panel-title i{
+    flex:0 0 auto!important;
+    width:64px!important;
+    height:64px!important;
+    border-radius:24px!important;
+    background:linear-gradient(135deg,#eff6ff,#fff)!important;
+    box-shadow:0 14px 30px rgba(37,99,235,.1)!important;
+}
+.contact-form{
+    margin-top:1rem!important;
+}
+.contact-field input,.contact-field textarea{
+    background:#fff!important;
+    border:1px solid #e2e8f0!important;
+    box-shadow:0 8px 22px rgba(15,23,42,.035)!important;
+}
+.contact-hour{
+    background:linear-gradient(135deg,#fff,#f8fbff)!important;
+    border-color:#dbeafe!important;
+    box-shadow:0 10px 22px rgba(15,23,42,.04)!important;
+}
+.contact-map-box{
+    min-height:330px!important;
+    padding:1rem!important;
+    border-radius:28px!important;
+    background:linear-gradient(135deg,#eff6ff 0%,#ffffff 100%)!important;
+    box-shadow:inset 0 0 0 1px rgba(191,219,254,.75)!important;
+}
+.contact-map-box iframe{
+    width:100%!important;
+    height:330px!important;
+    border:0!important;
+    border-radius:22px!important;
+    background:#eff6ff!important;
+}
+.contact-map-fallback{
+    width:100%;
+    min-height:300px;
+    border-radius:24px;
+    background:
+        linear-gradient(135deg,rgba(37,99,235,.12),rgba(14,165,233,.1)),
+        repeating-linear-gradient(45deg,rgba(37,99,235,.055) 0,rgba(37,99,235,.055) 1px,transparent 1px,transparent 18px);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:.8rem;
+    padding:1.4rem;
+    text-align:center;
+    border:1px solid #bfdbfe;
+}
+.contact-map-fallback .map-pin{
+    width:76px;
+    height:76px;
+    border-radius:26px;
+    display:grid;
+    place-items:center;
+    background:#2563eb;
+    color:#fff;
+    box-shadow:0 18px 38px rgba(37,99,235,.24);
+    font-size:1.8rem;
+}
+.contact-map-fallback h3{
+    margin:.25rem 0 0;
+    color:#0f172a;
+    font-weight:950;
+}
+.contact-map-fallback p{
+    margin:0;
+    color:#64748b;
+    font-weight:850;
+    line-height:1.9;
+}
+.contact-map-actions{
+    display:flex;
+    gap:.7rem;
+    flex-wrap:wrap;
+    justify-content:center;
+    margin-top:.4rem;
+}
+.contact-map-action.secondary{
+    background:#eff6ff!important;
+    color:#2563eb!important;
+    border:1px solid #bfdbfe!important;
+}
+.contact-socials a{
+    min-height:56px!important;
+    border-radius:18px!important;
+    background:linear-gradient(135deg,#eff6ff,#fff)!important;
+    box-shadow:0 10px 24px rgba(37,99,235,.06)!important;
+}
+.contact-socials a:hover{
+    background:#2563eb!important;
+}
+@media(max-width:1180px){
+    .contact-grid{grid-template-columns:1fr!important}
+}
+@media(max-width:840px){
+    .contact-cards{grid-template-columns:minmax(0,430px)!important}
+    .contact-map-box{min-height:280px!important}
+    .contact-map-fallback{min-height:260px!important}
+}
+
+
+/* force real Neshan iframe map and restore messenger icons */
+.contact-map-box{
+    padding:.85rem!important;
+    min-height:370px!important;
+    background:#eef6ff!important;
+}
+.contact-map-box iframe{
+    display:block!important;
+    width:100%!important;
+    height:370px!important;
+    border:0!important;
+    border-radius:24px!important;
+    background:#eef6ff!important;
+}
+.contact-socials a img{
+    width:30px!important;
+    height:30px!important;
+    object-fit:contain!important;
+    border-radius:50%!important;
+}
+@media(max-width:760px){
+    .contact-map-box{min-height:320px!important}
+    .contact-map-box iframe{height:320px!important}
+}
+
+
+/* messenger clean logo sizing */
+.contact-socials a img{
+    width:28px!important;
+    height:28px!important;
+    object-fit:contain!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+}
+
+/* contact page professional layout v2 */
+.contact-main{
+    padding-bottom:5.5rem!important;
+    background:
+        radial-gradient(circle at 14% 10%,rgba(37,99,235,.055),transparent 30%),
+        linear-gradient(180deg,#f8fafc 0%,#f1f5f9 100%)!important;
+}
+.contact-cards{
+    max-width:1120px!important;
+    margin-inline:auto!important;
+    grid-template-columns:repeat(auto-fit,minmax(250px,330px))!important;
+    justify-content:center!important;
+    gap:1.05rem!important;
+}
+.contact-card{
+    min-height:230px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:center!important;
+}
+.contact-grid{
+    max-width:1220px!important;
+    margin:2.2rem auto 0!important;
+    grid-template-columns:minmax(0,1.08fr) minmax(340px,.92fr)!important;
+    gap:1.35rem!important;
+    align-items:start!important;
+}
+.contact-grid > .contact-panel{
+    order:1!important;
+}
+.contact-side{
+    order:2!important;
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:1.15rem!important;
+}
+.contact-side .contact-panel{
+    min-height:unset!important;
+}
+.contact-panel{
+    border-radius:34px!important;
+    background:rgba(255,255,255,.92)!important;
+    border:1px solid #dbeafe!important;
+    box-shadow:0 24px 64px rgba(15,23,42,.075)!important;
+}
+.contact-panel-title{
+    display:grid!important;
+    grid-template-columns:1fr auto!important;
+    align-items:start!important;
+    gap:1rem!important;
+    padding-bottom:1rem!important;
+}
+.contact-panel-title h2,
+.contact-panel-title h3{
+    font-size:1.35rem!important;
+    line-height:1.8!important;
+}
+.contact-panel-title p{
+    max-width:680px!important;
+}
+.contact-panel-title i{
+    width:62px!important;
+    height:62px!important;
+    border-radius:22px!important;
+}
+.contact-form{
+    gap:1rem!important;
+}
+.contact-submit{
+    width:100%!important;
+    margin-inline-start:0!important;
+    justify-self:stretch!important;
+}
+.contact-side .contact-panel:nth-child(1) .contact-hours{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:.72rem!important;
+}
+.contact-hour{
+    min-height:54px!important;
+    border-radius:18px!important;
+}
+.contact-side .contact-panel:nth-child(2){
+    padding:1.15rem!important;
+}
+.contact-map-box{
+    min-height:390px!important;
+}
+.contact-map-box iframe{
+    height:390px!important;
+}
+.contact-socials{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+}
+.contact-socials a{
+    min-width:0!important;
+}
+@media(max-width:1180px){
+    .contact-grid{
+        grid-template-columns:1fr!important;
+        max-width:900px!important;
+    }
+    .contact-grid > .contact-panel{order:2!important}
+    .contact-side{order:1!important;grid-template-columns:1fr!important}
+}
+@media(max-width:760px){
+    .contact-cards{grid-template-columns:minmax(0,430px)!important}
+    .contact-grid{margin-top:1.35rem!important}
+    .contact-socials{grid-template-columns:1fr!important}
+    .contact-map-box{min-height:320px!important}
+    .contact-map-box iframe{height:320px!important}
+}
+
+
+/* contact cards overlay on blue hero + final balanced layout */
+.contact-hero{
+    padding-bottom:7.4rem!important;
+}
+.contact-main{
+    margin-top:0!important;
+}
+.contact-main > .container{
+    position:relative!important;
+    z-index:5!important;
+}
+.contact-cards{
+    margin-top:-118px!important;
+    max-width:1160px!important;
+    grid-template-columns:repeat(auto-fit,minmax(270px,350px))!important;
+    justify-content:center!important;
+    align-items:stretch!important;
+    gap:1.25rem!important;
+}
+.contact-card{
+    min-height:245px!important;
+    border-radius:32px!important;
+}
+.contact-grid{
+    margin-top:2.2rem!important;
+    max-width:1200px!important;
+    grid-template-columns:minmax(0,1.04fr) minmax(360px,.96fr)!important;
+}
+@media(max-width:1180px){
+    .contact-hero{padding-bottom:5.2rem!important}
+    .contact-cards{margin-top:-78px!important}
+    .contact-grid{grid-template-columns:1fr!important;max-width:900px!important}
+}
+@media(max-width:760px){
+    .contact-hero{padding-bottom:3.4rem!important}
+    .contact-cards{margin-top:-38px!important;grid-template-columns:minmax(0,430px)!important}
+}
+
+
+/* contact final overlay exactly like FAQ */
+.contact-hero{
+    padding-bottom:8.8rem!important;
+}
+.contact-main{
+    position:relative!important;
+    z-index:5!important;
+    margin-top:-132px!important;
+    padding-top:0!important;
+}
+.contact-main > .container{
+    position:relative!important;
+    z-index:6!important;
+}
+.contact-cards{
+    margin-top:0!important;
+    transform:none!important;
+    max-width:1120px!important;
+    grid-template-columns:repeat(auto-fit,minmax(270px,350px))!important;
+    justify-content:center!important;
+    gap:1.25rem!important;
+}
+.contact-grid{
+    margin-top:2.2rem!important;
+}
+@media(max-width:1180px){
+    .contact-hero{padding-bottom:7.1rem!important}
+    .contact-main{margin-top:-96px!important}
+}
+@media(max-width:760px){
+    .contact-hero{padding-bottom:4.5rem!important}
+    .contact-main{margin-top:-42px!important}
+    .contact-cards{grid-template-columns:minmax(0,430px)!important}
+}
+
+
+/* contact cards must sit visually ON the blue hero */
+.contact-page{
+    background:#f1f5f9!important;
+}
+.contact-hero{
+    position:relative!important;
+    z-index:1!important;
+    padding-bottom:9.6rem!important;
+}
+.contact-main{
+    position:relative!important;
+    z-index:4!important;
+    margin-top:0!important;
+    padding-top:0!important;
+    background:linear-gradient(180deg,#f8fafc 0%,#f1f5f9 100%)!important;
+}
+.contact-main > .container{
+    position:relative!important;
+    z-index:5!important;
+}
+.contact-cards{
+    position:relative!important;
+    z-index:30!important;
+    margin-top:0!important;
+    transform:translateY(-124px)!important;
+    margin-bottom:-124px!important;
+    max-width:1120px!important;
+    grid-template-columns:repeat(auto-fit,minmax(270px,350px))!important;
+    justify-content:center!important;
+    align-items:stretch!important;
+    gap:1.25rem!important;
+}
+.contact-card{
+    position:relative!important;
+    z-index:31!important;
+    min-height:245px!important;
+    border-radius:32px!important;
+}
+.contact-grid{
+    margin-top:2.4rem!important;
+}
+@media(max-width:1180px){
+    .contact-hero{padding-bottom:8rem!important}
+    .contact-cards{
+        transform:translateY(-96px)!important;
+        margin-bottom:-96px!important;
+    }
+}
+@media(max-width:760px){
+    .contact-hero{padding-bottom:5.8rem!important}
+    .contact-cards{
+        grid-template-columns:minmax(0,430px)!important;
+        transform:translateY(-56px)!important;
+        margin-bottom:-56px!important;
+    }
+}
+
+
+/* balanced contact cards overlap: same amount as FAQ cards */
+.contact-hero{
+    padding-bottom:7.2rem!important;
+}
+.contact-cards{
+    transform:translateY(-62px)!important;
+    margin-bottom:-62px!important;
+}
+.contact-grid{
+    margin-top:2.05rem!important;
+}
+@media(max-width:1180px){
+    .contact-hero{padding-bottom:6.4rem!important}
+    .contact-cards{
+        transform:translateY(-54px)!important;
+        margin-bottom:-54px!important;
+    }
+}
+@media(max-width:760px){
+    .contact-hero{padding-bottom:4.6rem!important}
+    .contact-cards{
+        transform:translateY(-34px)!important;
+        margin-bottom:-34px!important;
+    }
+}
+
+
+.contact-form-status{
+    width:100%;
+    margin-top:.4rem;
+    border-radius:20px;
+    padding:0;
+    font-weight:950;
+    line-height:1.9;
+    display:none;
+}
+.contact-form-status.show{
+    display:flex;
+    align-items:flex-start;
+    gap:.75rem;
+    padding:1rem 1.1rem;
+    border:1px solid #dbeafe;
+    background:linear-gradient(180deg,#ffffff,#f8fbff);
+    box-shadow:0 14px 32px rgba(15,23,42,.07);
+}
+.contact-form-status.success{
+    border-color:#bbf7d0;
+    background:linear-gradient(180deg,#f0fdf4,#ffffff);
+    color:#047857;
+}
+.contact-form-status.error{
+    border-color:#fecaca;
+    background:linear-gradient(180deg,#fff1f2,#ffffff);
+    color:#dc2626;
+}
+.contact-form-status.info{
+    border-color:#bfdbfe;
+    background:linear-gradient(180deg,#eff6ff,#ffffff);
+    color:#2563eb;
+}
+.contact-form-status i{
+    width:34px;
+    height:34px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    flex:0 0 auto;
+}
+.contact-form-status.success i{background:#dcfce7;color:#16a34a}
+.contact-form-status.error i{background:#fee2e2;color:#dc2626}
+.contact-form-status.info i{background:#dbeafe;color:#2563eb}
+.contact-form-status strong{display:block;color:inherit;font-size:.95rem}
+.contact-form-status span{display:block;color:#64748b;font-size:.82rem;margin-top:.1rem}
+
+/* contact form final success card + button layout */
+.contact-form .contact-form-status{
+    grid-column:1/-1!important;
+    order:20!important;
+    width:100%!important;
+    box-sizing:border-box!important;
+    margin-top:.6rem!important;
+}
+.contact-form button[type="submit"]{
+    grid-column:1/-1!important;
+    justify-self:stretch!important;
+    width:100%!important;
+    min-height:58px!important;
+    border-radius:16px!important;
+}
+.contact-form-status.show{
+    max-width:100%!important;
+    min-height:auto!important;
+    justify-content:flex-start!important;
+}
+@media(max-width:700px){
+    .contact-form button[type="submit"]{width:100%!important}
+}
+
+/* contact submit button full-width final fix */
+.contact-form .contact-submit,
+.contact-form button[type="submit"]{
+    grid-column:1/-1!important;
+    justify-self:stretch!important;
+    width:100%!important;
+    max-width:100%!important;
+    margin-inline:0!important;
+}
+
+
+/* force contact submit button to full form width */
+.contact-form > .contact-submit,
+.contact-form > button[type="submit"],
+#contactMessageForm > .contact-submit,
+#contactMessageForm > button[type="submit"],
+#contactFormButton{
+    grid-column:1 / -1!important;
+    width:100%!important;
+    max-width:none!important;
+    min-width:100%!important;
+    justify-self:stretch!important;
+    align-self:stretch!important;
+    display:flex!important;
+    flex:1 1 100%!important;
+    margin:0!important;
+    box-sizing:border-box!important;
+}
+
+</style>
+<main class="contact-page">
+<section class="contact-hero"><div class="container"><div class="contact-badge"><i class="fas fa-headset"></i><%= page.hero?.kicker || 'راه‌های ارتباطی مدرسه' %></div><h1><%= page.hero?.title || 'ارتباط با ما' %></h1><p><%= page.hero?.subtitle || '' %></p></div></section>
+<section class="contact-main"><div class="container">
+    <div class="contact-cards"><% methods.forEach(function(item){ const isAddressCard = /address|آدرس|نشانی|location|map|موقعیت/i.test(String((item.id || '') + ' ' + (item.title || '') + ' ' + (item.link || ''))); const cardValue = isAddressCard && map.address ? map.address : item.value; const cardLink = isAddressCard && (map.button_link || map.embed_url) ? (map.button_link || map.embed_url) : (item.link || '#'); %><a class="contact-card" href="<%= cardLink || '#' %>"><span class="contact-card-icon"><i class="fas <%= item.icon || 'fa-phone' %>"></i></span><h3><%= item.title %></h3><strong <%= isAddressCard ? "data-contact-address-value" : "" %>><%= cardValue %></strong><p><%= item.description %></p></a><% }) %></div>
+    <div class="contact-grid">
+        <section class="contact-panel"><div class="contact-panel-title"><div><h2><%= form.title || 'پیام خود را برای ما بفرستید' %></h2><p><%= form.subtitle || '' %></p></div><i class="fas fa-paper-plane"></i></div><form class="contact-form" id="contactMessageForm" onsubmit="submitContactMessage(event)"><div class="contact-field"><label>نام و نام خانوادگی</label><input id="contactMessageName" name="full_name" required maxlength="150" placeholder="نام شما" autocomplete="name"></div><div class="contact-field"><label>شماره تماس</label><input id="contactMessagePhone" name="phone" required maxlength="30" placeholder="شماره تماس" inputmode="tel" autocomplete="tel"></div><div class="contact-field full"><label>موضوع پیام</label><input id="contactMessageSubject" name="subject" maxlength="220" placeholder="موضوع درخواست"></div><div class="contact-field full"><label>متن پیام</label><textarea id="contactMessageBody" name="message" required maxlength="2500" placeholder="پیام خود را بنویسید..."></textarea></div><button class="contact-submit" type="submit" style="grid-column:1 / -1;width:100%;max-width:none;min-width:100%;display:flex;justify-self:stretch;align-self:stretch;box-sizing:border-box;margin:0;"><i class="fas fa-paper-plane"></i><%= form.button_text || 'ارسال پیام' %></button><div id="contactFormStatus" class="contact-form-status" aria-live="polite"></div></form></section>
+        <aside class="contact-side"><section class="contact-panel"><div class="contact-panel-title"><div><h3><%= hours.title || 'ساعات پاسخ‌گویی' %></h3><p><%= hours.subtitle || '' %></p></div><i class="fas fa-clock"></i></div><div class="contact-hours"><% (hours.items || []).forEach(function(item){ %><div class="contact-hour"><span><%= item.day %></span><span><%= item.time %></span></div><% }) %></div></section><section class="contact-panel" id="contact-map"><div class="contact-panel-title"><div><h3><%= map.title || 'موقعیت مدرسه' %></h3><p><%= map.subtitle || '' %></p></div><i class="fas fa-location-dot"></i></div><div class="contact-map-box"><% const rawMapEmbed = String(map.embed_url || ''); const mapEmbedMatch = rawMapEmbed.match(/src=["']([^"']+)["']/i); const mapEmbed = mapEmbedMatch ? mapEmbedMatch[1] : rawMapEmbed; const mapHref = map.button_link || (mapEmbed.includes('neshan.org/maps/iframe/places/') ? ('https://nshn.ir/' + (mapEmbed.match(/\/places\/([^#/?]+)/) || [,''])[1]) : mapEmbed) || '#'; %><% if(mapEmbed){ %><iframe title="map-iframe" src="<%= mapEmbed %>" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe><% } else { %><div class="contact-map-fallback"><span class="map-pin"><i class="fas fa-map-location-dot"></i></span><h3><%= map.address || 'نشانی مدرسه' %></h3><p>برای نمایش نقشه نشان، کد iframe یا لینک iframe نشان را در پنل وارد کنید.</p></div><% } %></div><div class="contact-socials" style="margin-top:1rem"><% socials.forEach(function(item){ %><a href="<%= item.link || '#' %>" target="_blank"><% if(String(item.icon || '').startsWith('/')){ %><img src="<%= item.icon %>" alt="<%= item.title %>"><% } else { %><i class="fas <%= item.icon || 'fa-link' %>"></i><% } %><%= item.title %></a><% }) %></div></section></aside>
+    </div>
+</div></section>
+<section class="contact-cta"><div class="container"><div class="contact-cta-box"><h2><%= page.cta?.title || 'آماده پاسخ‌گویی به شما هستیم' %></h2><p><%= page.cta?.subtitle || '' %></p><a href="<%= page.cta?.button_link || '/register' %>"><i class="fas fa-user-plus"></i><%= page.cta?.button_text || 'شروع ثبت‌نام' %></a></div></div></section>
+</main>
+<%- include('../partials/footer') %>
+<script src="/public/assets/js/shared-home-layout.js?v=shared-layout-45"></script>
+
+<script>
+(function(){
+    function updateContactAddressCard(address){
+        var clean=String(address||'').trim();
+        if(!clean)return;
+        document.querySelectorAll('[data-contact-address-value]').forEach(function(el){el.textContent=clean;});
+    }
+    fetch('/api/v1/public/contact-page/resolve-address?_='+Date.now(),{cache:'no-store'})
+        .then(function(r){return r.ok?r.json():null;})
+        .then(function(data){if(data&&data.address)updateContactAddressCard(data.address);})
+        .catch(function(){});
+})();
+</script>
+
+
+<script>
+function contactPersianDigits(value){
+    return String(value||'').replace(/\d/g,function(d){return '۰۱۲۳۴۵۶۷۸۹'[d];});
+}
+function setContactFormStatus(type,message,detail){
+    const status=document.getElementById('contactFormStatus');
+    if(!status)return;
+    const icon=type==='success'?'fa-check-circle':type==='error'?'fa-triangle-exclamation':'fa-spinner fa-spin';
+    status.className=`contact-form-status show ${type||'info'}`;
+    status.innerHTML=`<i class="fas ${icon}"></i><div><strong>${message||''}</strong>${detail?`<span>${detail}</span>`:''}</div>`;
+}
+async function submitContactMessage(event){
+    event.preventDefault();
+    const form=event.target;
+    const button=form.querySelector('button[type="submit"]');
+    const payload={
+        full_name:document.getElementById('contactMessageName')?.value?.trim()||'',
+        phone:document.getElementById('contactMessagePhone')?.value?.trim()||'',
+        subject:document.getElementById('contactMessageSubject')?.value?.trim()||'پیام از صفحه ارتباط با ما',
+        message:document.getElementById('contactMessageBody')?.value?.trim()||''
+    };
+    setContactFormStatus('info','در حال ثبت پیام...','لطفاً چند لحظه صبر کنید.');
+    if(button){button.disabled=true;button.style.opacity='.7';}
+    try{
+        const res=await fetch('/api/v1/public/contact-messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+        const data=await res.json().catch(()=>({}));
+        if(!res.ok||data.success===false)throw new Error(data.error||data.message||'ثبت پیام انجام نشد');
+        setContactFormStatus('success',data.message||window.contactSuccessText||'پیام شما با موفقیت دریافت شد.',data.tracking_code?`کد پیگیری شما: ${data.tracking_code}`:'به‌زودی کارشناسان مدرسه با شما در ارتباط خواهند بود.');
+        form.reset();
+    }catch(error){
+        setContactFormStatus('error',error.message||'خطا در ثبت پیام','لطفاً شماره تماس و متن پیام را بررسی کنید.');
+    }finally{
+        if(button){button.disabled=false;button.style.opacity='1';}
+    }
+}
+</script>
+

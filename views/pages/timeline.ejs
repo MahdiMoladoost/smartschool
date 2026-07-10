@@ -1,0 +1,143 @@
+<%
+    const page = (typeof timelinePage !== 'undefined' && timelinePage) ? timelinePage : {"hero": {"title": "تاریخچه مدرسه", "subtitle": "مروری بر مسیر رشد، تجربه‌ها و دستاوردهای مدرسه مدیریت هوشمند"}, "stats": [{"value": "۱۴+", "label": "سال تجربه آموزشی", "icon": "fa-calendar-check"}, {"value": "۵۰+", "label": "رویداد و دستاورد", "icon": "fa-trophy"}, {"value": "۱۰۰۰+", "label": "دانش‌آموز در مسیر رشد", "icon": "fa-user-graduate"}], "events": [{"year": "۱۳۹۰", "title": "آغاز مسیر مدرسه", "tag": "تأسیس", "description": "مدرسه مدیریت هوشمند با هدف ایجاد محیطی امن، پویا و مجهز برای آموزش نسل آینده آغاز به کار کرد.", "image": "/assets/images/about/about-school-collage.jpg", "features": ["شروع فعالیت آموزشی", "تمرکز بر کیفیت یادگیری"]}, {"year": "۱۳۹۵", "title": "توسعه امکانات آموزشی", "tag": "رشد", "description": "با گسترش کلاس‌ها، آزمایشگاه‌ها و امکانات فناوری، تجربه یادگیری دانش‌آموزان حرفه‌ای‌تر و کاربردی‌تر شد.", "image": "/assets/images/homepage-final/tech-education.png", "features": ["کلاس‌های مجهز", "آموزش فناوری"]}, {"year": "۱۴۰۰", "title": "حرکت به سمت مدرسه هوشمند", "tag": "هوشمندسازی", "description": "فرایندهای آموزشی و مدیریتی مدرسه با ابزارهای دیجیتال و سامانه‌های یکپارچه هوشمندتر شدند.", "image": "/assets/images/homepage-final/news-robotics-feature.png", "features": ["سامانه‌های آنلاین", "مدیریت یکپارچه"]}, {"year": "۱۴۰۴", "title": "تمرکز بر استعدادهای آینده‌ساز", "tag": "آینده", "description": "مدرسه با تاکید بر مهارت‌های فردی، مسابقات علمی، پژوهش و خلاقیت، مسیر رشد دانش‌آموزان را گسترده‌تر کرد.", "image": "/assets/images/homepage-final/special-classes.png", "features": ["پژوهش و نوآوری", "پرورش استعدادها"]}], "cta": {"title": "آینده مدرسه را با هم می‌سازیم", "subtitle": "هر سال، فصل تازه‌ای از رشد، یادگیری و افتخارآفرینی در مدیریت هوشمند آغاز می‌شود.", "button_text": "ثبت‌نام آنلاین", "button_link": "/register"}};
+    const hero = page.hero || {};
+    const stats = Array.isArray(page.stats) ? page.stats : [];
+    const events = Array.isArray(page.events) ? page.events : [];
+    const cta = page.cta || {};
+%>
+<%- include('../partials/header', { title: hero.title || 'تاریخچه مدرسه', activePage: 'timeline' }) %>
+<link rel="stylesheet" href="/public/assets/css/home page/homepage.css?v=shared-home-layout-39">
+<style>
+.timeline-page{background:#f8fafc;overflow:hidden}
+.timeline-hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#172554 0%,#2563eb 48%,#06b6d4 100%);color:#fff;padding:5.4rem 0 5rem;text-align:center}
+.timeline-hero:before{content:'';position:absolute;inset:auto -90px -150px auto;width:360px;height:360px;border-radius:50%;background:rgba(255,255,255,.1)}
+.timeline-hero:after{content:'';position:absolute;inset:-160px auto auto -110px;width:330px;height:330px;border-radius:50%;background:rgba(255,255,255,.09)}
+.timeline-hero .container{position:relative;z-index:1}
+.timeline-badge{display:inline-flex;align-items:center;gap:.55rem;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:.55rem 1rem;font-weight:950;margin-bottom:1.1rem}
+.timeline-hero h1{font-size:3.05rem;margin:0 0 1rem;font-weight:950;letter-spacing:-.03em}
+.timeline-hero p{max-width:760px;margin:0 auto;color:#eaf2ff;font-weight:850;line-height:2;font-size:1.05rem}
+.timeline-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-top:-42px;position:relative;z-index:3}
+.timeline-stat{background:#fff;border:1px solid #dbeafe;border-radius:26px;padding:1.2rem;text-align:center;box-shadow:0 22px 55px rgba(15,23,42,.08)}
+.timeline-stat i{width:54px;height:54px;border-radius:18px;background:#eff6ff;color:#2563eb;display:grid;place-items:center;margin:0 auto .75rem;font-size:1.25rem}
+.timeline-stat strong{display:block;color:#0f172a;font-size:1.8rem;font-weight:950;line-height:1}
+.timeline-stat span{display:block;color:#64748b;font-weight:850;margin-top:.45rem}
+.timeline-section{padding:4.6rem 0;background:#f8fafc}
+.timeline-title{text-align:center;margin-bottom:3rem}
+.timeline-title h2{font-size:2.35rem;color:#0f172a;margin:0;font-weight:950}
+.timeline-title span{display:block;width:92px;height:4px;border-radius:999px;background:linear-gradient(90deg,#f59e0b,#2563eb);margin:1rem auto 1.1rem}
+.timeline-title p{color:#64748b;margin:0;font-weight:850}
+.timeline-track{position:relative;max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:2rem}
+.timeline-track:before{content:'';position:absolute;top:0;bottom:0;right:50%;width:4px;border-radius:999px;background:linear-gradient(180deg,#2563eb,#22c55e,#f59e0b);opacity:.22;transform:translateX(50%)}
+.timeline-item{position:relative;display:grid;grid-template-columns:1fr 92px 1fr;align-items:center;gap:1rem}
+.timeline-dot{width:78px;height:78px;border-radius:24px;background:#fff;border:1px solid #bfdbfe;box-shadow:0 18px 38px rgba(37,99,235,.14);display:grid;place-items:center;color:#2563eb;font-weight:950;font-size:1.05rem;z-index:2}
+.timeline-card{background:#fff;border:1px solid #dbeafe;border-radius:30px;box-shadow:0 20px 50px rgba(15,23,42,.07);padding:1.2rem;overflow:hidden;transition:.2s}
+.timeline-card:hover{transform:translateY(-5px);box-shadow:0 26px 62px rgba(37,99,235,.12)}
+.timeline-item:nth-child(odd) .timeline-card{grid-column:1}
+.timeline-item:nth-child(even) .timeline-card{grid-column:3}
+.timeline-item:nth-child(odd) .timeline-dot,.timeline-item:nth-child(even) .timeline-dot{grid-column:2;grid-row:1}
+.timeline-image{width:100%;height:190px;border-radius:22px;object-fit:cover;display:block;margin-bottom:1rem;box-shadow:0 15px 35px rgba(15,23,42,.08)}
+.timeline-card-top{display:flex;align-items:center;justify-content:space-between;gap:.8rem;margin-bottom:.75rem}
+.timeline-year-pill{display:inline-flex;align-items:center;gap:.45rem;background:#eff6ff;color:#2563eb;border:1px solid #dbeafe;border-radius:999px;padding:.42rem .8rem;font-weight:950}
+.timeline-tag{display:inline-flex;align-items:center;gap:.35rem;background:#f8fafc;color:#64748b;border:1px solid #e2e8f0;border-radius:999px;padding:.38rem .7rem;font-weight:850;font-size:.82rem}
+.timeline-card h3{margin:0 0 .65rem;color:#0f172a;font-size:1.4rem;font-weight:950}
+.timeline-card p{margin:0;color:#64748b;line-height:2;font-weight:820}
+.timeline-features{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1rem}
+.timeline-features span{display:inline-flex;align-items:center;gap:.4rem;background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:.48rem .7rem;color:#334155;font-weight:850;font-size:.84rem}
+.timeline-features i{color:#10b981}
+.timeline-cta{background:#f8fafc;padding:1rem 0 5rem}
+.timeline-cta-box{background:linear-gradient(135deg,#2563eb,#1d4ed8);border-radius:34px;padding:3.3rem 2rem;color:#fff;text-align:center;box-shadow:0 25px 60px rgba(37,99,235,.18);position:relative;overflow:hidden}
+.timeline-cta-box:after{content:'';position:absolute;top:-90px;right:-80px;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,.12)}
+.timeline-cta-box h2{font-size:2rem;margin:0 0 .8rem;font-weight:950}
+.timeline-cta-box p{color:#eaf2ff;margin:0 0 1.4rem;font-weight:850}
+.timeline-cta-box a{display:inline-flex;align-items:center;gap:.55rem;background:#f59e0b;color:#fff;text-decoration:none;border-radius:18px;padding:.9rem 1.35rem;font-weight:950;box-shadow:0 14px 30px rgba(245,158,11,.24)}
+@media(max-width:900px){.timeline-hero h1{font-size:2.2rem}.timeline-stats{grid-template-columns:1fr;margin-top:1rem}.timeline-track:before{right:39px;transform:none}.timeline-item{grid-template-columns:78px 1fr;align-items:start}.timeline-dot{grid-column:1!important;grid-row:1}.timeline-item .timeline-card{grid-column:2!important}.timeline-card-top{flex-wrap:wrap}}
+@media(max-width:560px){.timeline-item{grid-template-columns:1fr}.timeline-track:before{display:none}.timeline-dot{margin:auto;grid-column:1!important}.timeline-item .timeline-card{grid-column:1!important}.timeline-stats{margin-top:1rem}}
+
+.timeline-hero:before,.timeline-hero:after{display:none!important;content:none!important}
+.timeline-hero{background:linear-gradient(135deg,#172554 0%,#2563eb 52%,#0ea5e9 100%)!important}
+.timeline-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.25rem;margin-top:-58px;position:relative;z-index:3}
+.timeline-stat{position:relative;overflow:hidden;background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border:1px solid #dbeafe;border-radius:30px;padding:1.35rem 1.2rem 1.45rem;text-align:center;box-shadow:0 22px 52px rgba(15,23,42,.075);transition:.22s}
+.timeline-stat:before{content:'';position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(90deg,#2563eb,#22c55e,#f59e0b)}
+.timeline-stat:hover{transform:translateY(-5px);box-shadow:0 28px 64px rgba(37,99,235,.13);border-color:#bfdbfe}
+.timeline-stat i{width:62px;height:62px;border-radius:20px;background:linear-gradient(135deg,#eff6ff,#dbeafe);color:#2563eb;display:grid;place-items:center;margin:0 auto .9rem;font-size:1.35rem;border:1px solid #bfdbfe;box-shadow:0 12px 28px rgba(37,99,235,.09)}
+.timeline-stat strong{display:block;color:#0f172a;font-size:2rem;font-weight:950;line-height:1;letter-spacing:-.03em}
+.timeline-stat span{display:block;color:#64748b;font-weight:950;margin-top:.6rem;font-size:.95rem}
+@media(max-width:900px){.timeline-stats{grid-template-columns:1fr;margin-top:1rem}}
+
+
+/* professional event cards override */
+.timeline-track{gap:2.35rem}
+.timeline-dot{width:86px;height:86px;border-radius:28px;background:linear-gradient(180deg,#ffffff 0%,#eff6ff 100%);border:1px solid #bfdbfe;box-shadow:0 22px 44px rgba(37,99,235,.14), inset 0 1px 0 rgba(255,255,255,.9);color:#2563eb;font-size:1.05rem}
+.timeline-card{position:relative;overflow:hidden;background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);border:1px solid #dbeafe;border-radius:34px;padding:1rem;box-shadow:0 24px 60px rgba(15,23,42,.08), inset 0 1px 0 rgba(255,255,255,.85)}
+.timeline-card:before{content:'';position:absolute;inset:0 0 auto 0;height:6px;background:linear-gradient(90deg,#2563eb 0%,#06b6d4 55%,#22c55e 100%)}
+.timeline-card:hover{transform:translateY(-6px);box-shadow:0 30px 76px rgba(37,99,235,.14), inset 0 1px 0 rgba(255,255,255,.95);border-color:#bfdbfe}
+.timeline-image{height:235px;border-radius:28px;margin-bottom:1rem;box-shadow:0 18px 42px rgba(15,23,42,.12);object-position:center}
+.timeline-card-top{background:linear-gradient(180deg,#f8fbff 0%,#ffffff 100%);border:1px solid #e2e8f0;border-radius:20px;padding:.7rem .85rem;margin-bottom:1rem;box-shadow:inset 0 1px 0 rgba(255,255,255,.92)}
+.timeline-year-pill{background:linear-gradient(135deg,#eaf2ff,#eff6ff);color:#2563eb;border:1px solid #bfdbfe;border-radius:999px;padding:.52rem .95rem;font-weight:950;box-shadow:0 8px 20px rgba(37,99,235,.08)}
+.timeline-tag{background:linear-gradient(135deg,#fff7ed,#ffffff);color:#b45309;border:1px solid #fed7aa;border-radius:999px;padding:.5rem .85rem;font-weight:900;font-size:.84rem}
+.timeline-card h3{margin:0 0 .8rem;color:#0f172a;font-size:1.55rem;font-weight:950;line-height:1.45;letter-spacing:-.02em}
+.timeline-card p{margin:0;color:#475569;line-height:2.05;font-weight:840;font-size:1rem}
+.timeline-features{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.72rem;margin-top:1.1rem}
+.timeline-features span{display:flex;align-items:center;justify-content:center;gap:.45rem;background:linear-gradient(180deg,#f8fbff 0%,#ffffff 100%);border:1px solid #dbeafe;border-radius:18px;padding:.68rem .82rem;color:#334155;font-weight:900;font-size:.86rem;box-shadow:0 8px 18px rgba(148,163,184,.08)}
+.timeline-features i{color:#10b981;font-size:.95rem}
+@media(max-width:900px){.timeline-image{height:215px}.timeline-card h3{font-size:1.38rem}}
+@media(max-width:560px){.timeline-card{padding:.9rem;border-radius:28px}.timeline-image{height:190px;border-radius:22px}.timeline-card-top{padding:.6rem .7rem;border-radius:16px}.timeline-features{grid-template-columns:1fr}.timeline-dot{width:74px;height:74px;border-radius:22px;font-size:1rem}}
+
+
+
+/* polished timeline feature tags */
+.timeline-features{
+    display:flex!important;
+    flex-wrap:wrap!important;
+    gap:.65rem!important;
+    justify-content:flex-start!important;
+    align-items:center!important;
+    margin-top:1.15rem!important;
+    padding-top:1rem!important;
+    border-top:1px dashed #e2e8f0!important;
+}
+.timeline-features span{
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    width:auto!important;
+    min-height:0!important;
+    gap:.45rem!important;
+    background:linear-gradient(135deg,#f0fdf4 0%,#ffffff 100%)!important;
+    border:1px solid #bbf7d0!important;
+    border-radius:999px!important;
+    padding:.55rem .85rem!important;
+    color:#166534!important;
+    font-weight:900!important;
+    font-size:.82rem!important;
+    line-height:1.7!important;
+    box-shadow:0 8px 18px rgba(16,185,129,.08)!important;
+}
+.timeline-features span i{
+    color:#10b981!important;
+    background:#dcfce7!important;
+    border-radius:50%!important;
+    width:20px!important;
+    height:20px!important;
+    display:inline-grid!important;
+    place-items:center!important;
+    font-size:.72rem!important;
+    flex:0 0 auto!important;
+}
+.timeline-image{
+    background:#f8fafc!important;
+}
+@media(max-width:560px){
+    .timeline-features{justify-content:center!important}
+    .timeline-features span{font-size:.78rem!important;padding:.5rem .7rem!important}
+}
+
+</style>
+<main class="timeline-page">
+<section class="timeline-hero"><div class="container"><div class="timeline-badge"><i class="fas fa-timeline"></i> مسیر رشد مدرسه</div><h1><%= hero.title || 'تاریخچه مدرسه' %></h1><p><%= hero.subtitle || '' %></p></div></section>
+<section class="container"><div class="timeline-stats"><% stats.forEach(function(stat){ %><article class="timeline-stat"><i class="fas <%= stat.icon || 'fa-chart-simple' %>"></i><strong><%= stat.value %></strong><span><%= stat.label %></span></article><% }) %></div></section>
+<section class="timeline-section"><div class="container"><div class="timeline-title"><h2>مسیر افتخار و رشد</h2><span></span><p>مهم‌ترین اتفاقات و نقاط عطف مدرسه</p></div><div class="timeline-track"><% events.forEach(function(item){ %><div class="timeline-item"><div class="timeline-card"><% if(item.image){ %><img class="timeline-image" src="<%= item.image %>" alt="<%= item.title %>"><% } %><div class="timeline-card-top"><span class="timeline-year-pill"><i class="fas fa-calendar"></i><%= item.year %></span><span class="timeline-tag"><i class="fas fa-bookmark"></i><%= item.tag || 'رویداد' %></span></div><h3><%= item.title %></h3><p><%= item.description %></p><% if(Array.isArray(item.features)&&item.features.length){ %><div class="timeline-features"><% item.features.forEach(function(feature){ %><span><i class="fas fa-check-circle"></i><%= feature %></span><% }) %></div><% } %></div><div class="timeline-dot"><%= item.year %></div></div><% }) %></div></div></section>
+<section class="timeline-cta"><div class="container"><div class="timeline-cta-box"><h2><%= cta.title || 'آینده مدرسه را با هم می‌سازیم' %></h2><p><%= cta.subtitle || '' %></p><a href="<%= cta.button_link || '/register' %>"><i class="fas fa-pen-fancy"></i><%= cta.button_text || 'ثبت‌نام آنلاین' %></a></div></div></section>
+</main>
+<%- include('../partials/footer') %>
+<script src="/public/assets/js/shared-home-layout.js?v=shared-layout-39"></script>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مشاهده موارد انضباطی | پنل مشاور</title>
+  <link rel="stylesheet" href="/public/assets/css/all.min.css">
+  <link rel="stylesheet" href="/public/assets/css/panel/role-panel.css?v=admin-like-v2">
+</head>
+<body data-panel="counselor" data-page="discipline-cases">
+<button class="mobile-menu" onclick="toggleRoleSidebar()" aria-label="باز کردن منو"><i class="fas fa-bars"></i></button>
+<div class="overlay" id="overlay" onclick="toggleRoleSidebar()"></div>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-icon"><i class="fas fa-school"></i></div>
+      <div><h1 id="panelTitle">پنل مشاور</h1><p>سامانه مدرسه هوشمند</p></div>
+    </div>
+    <div class="user-card"><strong id="userName">کاربر</strong><span id="userRole">role</span></div>
+    <nav class="nav-section" aria-label="منوی پنل">
+      <div class="nav-section">
+          <div class="nav-section-title">داشبورد</div>
+          <a class="nav-item" data-tab="dashboard" href="/dashboard/counselor/dashboard">
+              <i class="fas fa-chart-line"></i> 
+              <span>داشبورد مشاور</span>
+          </a>
+      </div>
+      <div class="nav-section">
+          <div class="nav-section-title">دانش‌آموز و پرونده</div>
+          <a class="nav-item" data-tab="students" href="/dashboard/counselor/students">
+              <i class="fas fa-user-graduate"></i> 
+              <span>لیست دانش‌آموزان</span>
+          </a>
+          <a class="nav-item" data-tab="student-case-file" href="/dashboard/counselor/student-case-file">
+              <i class="fas fa-folder-open"></i> 
+              <span>پرونده مشاوره دانش‌آموز</span>
+          </a>
+          <a class="nav-item" data-tab="session-report-create" href="/dashboard/counselor/session-report-create">
+              <i class="fas fa-file-pen"></i> 
+              <span>ثبت گزارش جلسات مشاوره</span>
+          </a>
+          <a class="nav-item" data-tab="requests" href="/dashboard/counselor/requests">
+              <i class="fas fa-inbox"></i> 
+              <span>درخواست‌های مشاوره</span>
+          </a>
+          <a class="nav-item" data-tab="appointments" href="/dashboard/counselor/appointments">
+              <i class="fas fa-calendar-check"></i> 
+              <span>مدیریت نوبت‌دهی</span>
+          </a>
+          <a class="nav-item" data-tab="session-reservation" href="/dashboard/counselor/session-reservation">
+              <i class="fas fa-calendar-plus"></i> 
+              <span>رزرو جلسات</span>
+          </a>
+      </div>
+      <div class="nav-section">
+          <div class="nav-section-title">وضعیت تحصیلی و رفتاری</div>
+          <a class="nav-item" data-tab="academic-status" href="/dashboard/counselor/academic-status">
+              <i class="fas fa-chart-line"></i> 
+              <span>مشاهده وضعیت تحصیلی دانش‌آموز</span>
+          </a>
+          <a class="nav-item" data-tab="grades" href="/dashboard/counselor/grades">
+              <i class="fas fa-star"></i> 
+              <span>مشاهده نمرات</span>
+          </a>
+          <a class="nav-item" data-tab="report-card" href="/dashboard/counselor/report-card">
+              <i class="fas fa-award"></i> 
+              <span>مشاهده کارنامه</span>
+          </a>
+          <a class="nav-item" data-tab="attendance" href="/dashboard/counselor/attendance">
+              <i class="fas fa-clipboard-check"></i> 
+              <span>مشاهده حضور و غیاب</span>
+          </a>
+          <a class="nav-item active" data-tab="discipline-cases" href="/dashboard/counselor/discipline-cases">
+              <i class="fas fa-scale-balanced"></i> 
+              <span>مشاهده موارد انضباطی</span>
+          </a>
+      </div>
+      <div class="nav-section">
+          <div class="nav-section-title">ارتباطات و برنامه</div>
+          <a class="nav-item" data-tab="parent-communication" href="/dashboard/counselor/parent-communication">
+              <i class="fas fa-users"></i> 
+              <span>ارتباط با والدین</span>
+          </a>
+          <a class="nav-item" data-tab="student-communication" href="/dashboard/counselor/student-communication">
+              <i class="fas fa-comments"></i> 
+              <span>ارتباط با دانش‌آموزان</span>
+          </a>
+          <a class="nav-item" data-tab="admin-communication" href="/dashboard/counselor/admin-communication">
+              <i class="fas fa-user-shield"></i> 
+              <span>ارتباط با مدیر مدرسه</span>
+          </a>
+          <a class="nav-item" data-tab="study-plan-create" href="/dashboard/counselor/study-plan-create">
+              <i class="fas fa-calendar-check"></i> 
+              <span>ثبت برنامه مطالعاتی</span>
+          </a>
+          <a class="nav-item" data-tab="counseling-recommendations" href="/dashboard/counselor/counseling-recommendations">
+              <i class="fas fa-lightbulb"></i> 
+              <span>ثبت توصیه‌های مشاوره‌ای</span>
+          </a>
+          <a class="nav-item" data-tab="psychological-assessment" href="/dashboard/counselor/psychological-assessment">
+              <i class="fas fa-brain"></i> 
+              <span>ثبت ارزیابی روانشناسی</span>
+          </a>
+          <a class="nav-item" data-tab="personality-test" href="/dashboard/counselor/personality-test">
+              <i class="fas fa-clipboard-question"></i> 
+              <span>تست شخصیت</span>
+          </a>
+          <a class="nav-item" data-tab="interest-test" href="/dashboard/counselor/interest-test">
+              <i class="fas fa-heart"></i> 
+              <span>تست رغبت‌سنجی</span>
+          </a>
+      </div>
+      <div class="nav-section">
+          <div class="nav-section-title">گزارش و AI</div>
+          <a class="nav-item" data-tab="sessions" href="/dashboard/counselor/sessions">
+              <i class="fas fa-comments"></i> 
+              <span>جلسات مشاوره</span>
+          </a>
+          <a class="nav-item" data-tab="followups" href="/dashboard/counselor/followups">
+              <i class="fas fa-list-check"></i> 
+              <span>پیگیری‌ها</span>
+          </a>
+          <a class="nav-item" data-tab="reports" href="/dashboard/counselor/reports">
+              <i class="fas fa-file-lines"></i> 
+              <span>گزارش عملکرد مشاور</span>
+          </a>
+          <a class="nav-item" data-tab="profile" href="/dashboard/counselor/profile">
+              <i class="fas fa-user-circle"></i> 
+              <span>پروفایل</span>
+          </a>
+          <a class="nav-item" data-tab="ai-drop-detection" href="/dashboard/counselor/ai-drop-detection">
+              <i class="fas fa-triangle-exclamation"></i> 
+              <span>تشخیص افت تحصیلی</span>
+          </a>
+          <a class="nav-item" data-tab="ai-behavior-analysis" href="/dashboard/counselor/ai-behavior-analysis">
+              <i class="fas fa-brain"></i> 
+              <span>تحلیل رفتار دانش‌آموز</span>
+          </a>
+          <a class="nav-item" data-tab="ai-education-path" href="/dashboard/counselor/ai-education-path">
+              <i class="fas fa-route"></i> 
+              <span>پیشنهاد مسیر تحصیلی</span>
+          </a>
+          <a class="nav-item" data-tab="ai-dropout-risk" href="/dashboard/counselor/ai-dropout-risk">
+              <i class="fas fa-user-slash"></i> 
+              <span>تحلیل ریسک ترک تحصیل</span>
+          </a>
+          <a class="nav-item" data-tab="ai-exam-stress" href="/dashboard/counselor/ai-exam-stress">
+              <i class="fas fa-heart-pulse"></i> 
+              <span>تحلیل استرس امتحان</span>
+          </a>
+      </div>
+    </nav>
+    <div class="nav-section"><a class="nav-item" href="/" target="_blank"><i class="fas fa-home"></i><span>صفحه اصلی</span></a><button class="btn danger" onclick="logout()" style="width:100%;margin-top:12px"><i class="fas fa-sign-out-alt"></i> خروج</button></div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <div><h2 id="pageTitle">داشبورد مشاور</h2><p>داده‌ها از API امن نقش و پایگاه داده MySQL خوانده می‌شود.</p></div>
+      <div class="actions"><button class="btn secondary" onclick="location.reload()"><i class="fas fa-rotate"></i> بروزرسانی</button></div>
+    </header>
+    <section id="content"><div class="state">در حال بارگذاری...</div></section>
+  </main>
+</div>
+<script src="/public/assets/js/role-panel.js?v=admin-like-v2"></script>
+</body>
+</html>

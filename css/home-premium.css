@@ -1,0 +1,2819 @@
+/* ============================================
+   MOLAFIND - HOME PREMIUM STYLE (نسخه نهایی کامل)
+   ============================================ */
+
+/* ===== Variables ===== */
+:root {
+  --brand: #147f76;
+  --brand-dark: #0a3d3a;
+  --brand-light: #1a9e94;
+  --brand-soft: #e8f4f2;
+  --gold: #d4aa2d;
+  --gold-light: #f5d76e;
+  --text-dark: #0a1a20;
+  --text-body: #2d3e4a;
+  --text-muted: #6b7a87;
+  --bg-soft: #f6f9f9;
+  --bg-white: #ffffff;
+  --border-light: #e4ebea;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-md: 0 8px 30px rgba(0,0,0,0.06);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,0.08);
+  --shadow-xl: 0 30px 80px rgba(0,0,0,0.12);
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== Reset & Base ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Vazir', 'Shabnam', Tahoma, Arial, sans-serif;
+  background: var(--bg-white);
+  color: var(--text-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { text-decoration: none; color: inherit; }
+img { display: block; max-width: 100%; height: auto; }
+.container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+/* ============================================
+   HEADER
+   ============================================ */
+
+.header-premium {
+  background: var(--bg-white);
+  border-bottom: 1px solid var(--border-light);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.95);
+}
+
+.header-premium__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 96px;
+  gap: 20px;
+  padding: 0 24px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ===== LOGO - بزرگ ===== */
+.header-premium__logo {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.header-premium__logo img {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+  display: block;
+}
+
+.header-premium__logo:hover img {
+  transform: scale(1.05);
+}
+
+.header-premium__logo .brand-text {
+  display: none;
+}
+
+/* ===== NAVIGATION ===== */
+.header-premium__nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  justify-content: center;
+}
+
+.header-premium__nav a {
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-muted);
+  transition: var(--transition);
+  position: relative;
+}
+
+.header-premium__nav a:hover {
+  color: var(--brand);
+  background: var(--brand-soft);
+}
+
+.header-premium__nav a.is-active {
+  color: var(--brand);
+}
+
+.header-premium__nav a.is-active::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2.5px;
+  background: var(--brand);
+  border-radius: 999px;
+}
+
+/* ===== ACTIONS ===== */
+.header-premium__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.header-premium__actions .btn {
+  padding: 9px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 800;
+  transition: var(--transition);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.header-premium__actions .btn--outline {
+  background: transparent;
+  color: var(--brand);
+  border: 1.5px solid var(--brand);
+}
+
+.header-premium__actions .btn--outline:hover {
+  background: var(--brand-soft);
+  transform: translateY(-2px);
+}
+
+.header-premium__actions .btn--solid {
+  background: var(--brand);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(20,127,118,0.20);
+}
+
+.header-premium__actions .btn--solid:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(20,127,118,0.30);
+}
+
+/* ===== TOGGLE ===== */
+.header-premium__toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+}
+
+.header-premium__toggle span {
+  display: block;
+  width: 26px;
+  height: 2.5px;
+  background: var(--text-dark);
+  border-radius: 999px;
+  transition: var(--transition);
+}
+
+.header-premium__toggle.is-active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.header-premium__toggle.is-active span:nth-child(2) {
+  opacity: 0;
+}
+
+.header-premium__toggle.is-active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* ===== MOBILE MENU ===== */
+.header-premium__mobile {
+  display: none;
+  flex-direction: column;
+  padding: 16px 24px 24px;
+  gap: 4px;
+  border-top: 1px solid var(--border-light);
+  background: var(--bg-white);
+}
+
+.header-premium__mobile.is-open {
+  display: flex;
+}
+
+.header-premium__mobile a {
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-body);
+  transition: var(--transition);
+  text-align: center;
+}
+
+.header-premium__mobile a:hover {
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+
+.header-premium__mobile a.is-active {
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+
+.header-premium__mobile .mobile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-light);
+}
+
+.header-premium__mobile .mobile-actions .btn {
+  justify-content: center;
+  width: 100%;
+  padding: 12px;
+}
+
+/* ============================================
+   HERO - وسط‌چین
+   ============================================ */
+
+.hero-premium {
+  position: relative;
+  min-height: 580px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: #0a3d3a;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero-premium::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(135deg, 
+    rgba(10, 61, 58, 0.60) 0%, 
+    rgba(20, 127, 118, 0.40) 50%, 
+    rgba(26, 158, 148, 0.20) 100%
+  );
+  pointer-events: none;
+}
+
+.hero-premium__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: url('../images/hero-building.png') center/cover no-repeat;
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hero-premium__content {
+  position: relative;
+  z-index: 2;
+  max-width: 780px;
+  width: 100%;
+  padding: 60px 0 50px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* ===== Badge ===== */
+.hero-premium__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.10);
+  padding: 5px 20px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.80);
+  margin: 0 auto 20px;
+  letter-spacing: 0.3px;
+}
+
+.hero-premium__badge .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #5cd4c9;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.7); }
+}
+
+/* ===== Title ===== */
+.hero-premium__title {
+  font-size: clamp(38px, 5vw, 62px);
+  font-weight: 900;
+  line-height: 1.1;
+  color: #fff;
+  margin: 0 0 4px;
+  letter-spacing: -1px;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.12);
+  text-align: center;
+}
+
+.hero-premium__title .highlight {
+  background: linear-gradient(135deg, #f5d76e, #d4aa2d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ===== Subtitle ===== */
+.hero-premium__subtitle {
+  font-size: clamp(15px, 1.1vw, 19px);
+  color: rgba(255,255,255,0.85);
+  line-height: 1.8;
+  max-width: 580px;
+  margin: 8px auto 30px;
+  text-shadow: 0 1px 10px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+/* ===== Actions ===== */
+.hero-premium__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 0 auto;
+}
+
+.hero-premium__actions .btn-hero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 32px;
+  border-radius: var(--radius-sm);
+  font-weight: 800;
+  font-size: 14px;
+  transition: var(--transition);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.hero-premium__actions .btn-hero--primary {
+  background: var(--gold);
+  color: #0a2d2a;
+  box-shadow: 0 6px 24px rgba(212,170,45,0.30);
+}
+
+.hero-premium__actions .btn-hero--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(212,170,45,0.40);
+}
+
+.hero-premium__actions .btn-hero--secondary {
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  color: #fff;
+}
+
+.hero-premium__actions .btn-hero--secondary:hover {
+  background: rgba(255,255,255,0.12);
+  transform: translateY(-2px);
+}
+
+/* ===== Stats ===== */
+.hero-premium__stats {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.hero-premium__stats .stat {
+  text-align: center;
+}
+
+.hero-premium__stats .stat .number {
+  display: block;
+  font-size: 28px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.2;
+  text-shadow: 0 1px 10px rgba(0,0,0,0.08);
+}
+
+.hero-premium__stats .stat .number .gold {
+  color: var(--gold-light);
+}
+
+.hero-premium__stats .stat .label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.55);
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* ============================================
+   SEARCH BAR - حرفه‌ای
+   ============================================ */
+
+.search-premium {
+  margin-top: -32px;
+  position: relative;
+  z-index: 5;
+  padding: 0 0 40px;
+}
+
+.search-premium__box {
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  padding: 28px 32px 32px;
+  border: 1px solid rgba(0,0,0,0.03);
+  transition: var(--transition);
+}
+
+.search-premium__box:hover {
+  box-shadow: 0 32px 80px rgba(0,0,0,0.10);
+}
+
+.search-premium__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.search-premium__header h3 {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--brand-dark);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-premium__header h3 .icon-search {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--brand-soft);
+  border-radius: 50%;
+  color: var(--brand);
+}
+
+.search-premium__header .trending {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+}
+
+.search-premium__header .trending span {
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.search-premium__header .trending a {
+  color: var(--brand);
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: var(--brand-soft);
+  transition: var(--transition);
+  font-size: 12px;
+}
+
+.search-premium__header .trending a:hover {
+  background: #d4ece9;
+  transform: translateY(-1px);
+}
+
+/* ===== اصلاح Select - لیست بازشو ===== */
+
+/* ===== فرم جستجو ===== */
+.search-premium__fields {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 0.9fr 0.9fr auto;
+  gap: 12px;
+  align-items: end;
+  position: relative;
+  z-index: 10;
+}
+
+.search-premium__fields .field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  position: relative;
+  z-index: 10;
+}
+
+.search-premium__fields .field label {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.search-premium__fields .field label .required {
+  color: #e74c3c;
+  font-size: 14px;
+}
+
+/* ===== استایل Select ===== */
+.search-premium__fields .field select {
+  height: 48px;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 0 14px;
+  padding-left: 32px;
+  background: #fafcfc;
+  font-size: 14px;
+  color: var(--text-dark);
+  transition: var(--transition);
+  outline: none;
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7a87' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: left 12px center;
+  cursor: pointer;
+  position: relative;
+  z-index: 10;
+}
+
+/* ===== گزینه‌های Select ===== */
+.search-premium__fields .field select option {
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-dark);
+  background: #ffffff;
+  border: none;
+  outline: none;
+}
+
+.search-premium__fields .field select option:hover {
+  background: var(--brand-soft);
+}
+
+.search-premium__fields .field select:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 4px rgba(20,127,118,0.10);
+  background: #fff;
+}
+
+/* ===== دکمه جستجو ===== */
+.search-premium__fields .btn-search {
+  height: 48px;
+  padding: 0 32px;
+  background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(20,127,118,0.25);
+  position: relative;
+  z-index: 10;
+}
+
+.search-premium__fields .btn-search:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(20,127,118,0.35);
+  background: linear-gradient(135deg, var(--brand-dark), var(--brand));
+}
+
+/* ============================================
+   FIX - مشکل لیست بازشو
+   ============================================ */
+
+/* ===== باکس جستجو ===== */
+.search-premium__box {
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  padding: 28px 32px 32px;
+  border: 1px solid rgba(0,0,0,0.03);
+  transition: var(--transition);
+  position: relative;
+  z-index: 5;
+  overflow: visible !important;
+}
+
+/* ===== اطمینان از باز شدن لیست ===== */
+.search-premium {
+  margin-top: -32px;
+  position: relative;
+  z-index: 5;
+  padding: 0 0 40px;
+  overflow: visible !important;
+}
+
+.search-premium__fields .field {
+  overflow: visible !important;
+}
+
+.search-premium__fields .field select {
+  overflow: visible !important;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 1024px) {
+  .search-premium__fields {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .search-premium__fields .btn-search {
+    grid-column: span 2;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-premium__box {
+    padding: 18px 16px 22px;
+    border-radius: var(--radius-md);
+    overflow: visible !important;
+  }
+  
+  .search-premium__fields {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .search-premium__fields .btn-search {
+    grid-column: span 1;
+    padding: 0 20px;
+    height: 44px;
+    font-size: 13px;
+  }
+  
+  .search-premium__fields .field select {
+    height: 44px;
+    font-size: 13px;
+  }
+}
+/* ===== دکمه جستجو ===== */
+.search-premium__fields .btn-search {
+  height: 48px;
+  padding: 0 32px;
+  background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(20,127,118,0.25);
+}
+
+.search-premium__fields .btn-search:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(20,127,118,0.35);
+  background: linear-gradient(135deg, var(--brand-dark), var(--brand));
+}
+
+.search-premium__fields .btn-search:active {
+  transform: translateY(0px);
+  box-shadow: 0 2px 8px rgba(20,127,118,0.20);
+}
+
+/* ============================================
+   CATEGORIES - با افکت نئون
+   ============================================ */
+
+.categories-premium {
+  padding: 60px 0 70px;
+  background: var(--bg-soft);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===== افکت پس‌زمینه ===== */
+.categories-premium::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(20,127,118,0.03) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.categories-premium::after {
+  content: '';
+  position: absolute;
+  bottom: -40%;
+  left: -15%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(20,127,118,0.03) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.categories-premium .section-header {
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 2;
+}
+
+.categories-premium .section-header .label {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--brand);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  background: var(--brand-soft);
+  padding: 4px 16px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+}
+
+.categories-premium .section-header h2 {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--brand-dark);
+  margin: 0;
+}
+
+.categories-premium .section-header h2 .highlight {
+  color: var(--brand);
+}
+
+/* ===== گرید کارت‌ها ===== */
+.categories-premium__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 8px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ===== کارت با افکت نئون ===== */
+.categories-premium__item {
+  background: var(--bg-white);
+  padding: 32px 24px 28px;
+  border-radius: var(--radius-md);
+  text-align: center;
+  border: 1px solid var(--border-light);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===== افکت نور نئون ===== */
+.categories-premium__item::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, 
+    rgba(20, 127, 118, 0.3),
+    rgba(26, 158, 148, 0.1),
+    rgba(20, 127, 118, 0.3)
+  );
+  border-radius: var(--radius-md);
+  opacity: 0;
+  transition: all 0.5s ease;
+  z-index: -1;
+}
+
+/* ===== حاشیه نئون ===== */
+.categories-premium__item::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: var(--radius-md);
+  padding: 2px;
+  background: linear-gradient(135deg, 
+    rgba(20, 127, 118, 0.6),
+    rgba(26, 158, 148, 0.2),
+    rgba(20, 127, 118, 0.6)
+  );
+  -webkitmask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: all 0.5s ease;
+}
+
+/* ===== هور کارت ===== */
+.categories-premium__item:hover {
+  transform: translateY(-8px);
+  box-shadow: 
+    0 20px 60px rgba(20, 127, 118, 0.12),
+    0 0 40px rgba(20, 127, 118, 0.06);
+  border-color: transparent;
+}
+
+.categories-premium__item:hover::before {
+  opacity: 1;
+}
+
+.categories-premium__item:hover::after {
+  opacity: 1;
+}
+
+/* ===== آیکون ===== */
+.categories-premium__item .icon-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--brand-soft);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  transition: all 0.4s ease;
+  position: relative;
+}
+
+/* ===== افکت نور روی آیکون ===== */
+.categories-premium__item:hover .icon-wrap {
+  background: linear-gradient(135deg, var(--brand), var(--brand-light));
+  box-shadow: 0 0 30px rgba(20, 127, 118, 0.30);
+}
+
+.categories-premium__item:hover .icon-wrap svg {
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.categories-premium__item .icon-wrap svg {
+  width: 30px;
+  height: 30px;
+  color: var(--brand);
+  transition: all 0.4s ease;
+}
+
+/* ===== عنوان ===== */
+.categories-premium__item h4 {
+  font-size: 17px;
+  font-weight: 900;
+  color: var(--brand-dark);
+  margin: 0 0 6px;
+  transition: color 0.3s ease;
+}
+
+.categories-premium__item:hover h4 {
+  color: var(--brand);
+}
+
+/* ===== توضیحات ===== */
+.categories-premium__item p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.7;
+  transition: color 0.3s ease;
+}
+
+.categories-premium__item:hover p {
+  color: var(--text-body);
+}
+
+/* ============================================
+   RESPONSIVE - CATEGORIES
+   ============================================ */
+
+@media (max-width: 1024px) {
+  .categories-premium__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .categories-premium {
+    padding: 40px 0 50px;
+  }
+  
+  .categories-premium .section-header h2 {
+    font-size: 24px;
+  }
+  
+  .categories-premium__item {
+    padding: 24px 18px 22px;
+  }
+  
+  .categories-premium__item .icon-wrap {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .categories-premium__item .icon-wrap svg {
+    width: 26px;
+    height: 26px;
+  }
+  
+  .categories-premium__item h4 {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .categories-premium__grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .categories-premium .section-header h2 {
+    font-size: 20px;
+  }
+  
+  .categories-premium__item {
+    padding: 20px 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-align: right;
+  }
+  
+  .categories-premium__item .icon-wrap {
+    width: 52px;
+    height: 52px;
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+  
+  .categories-premium__item .icon-wrap svg {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .categories-premium__item .content {
+    text-align: right;
+  }
+  
+  .categories-premium__item h4 {
+    font-size: 14px;
+  }
+  
+  .categories-premium__item p {
+    font-size: 12px;
+  }
+}
+
+/* ============================================
+   PROPERTIES
+   ============================================ */
+
+/* ============================================
+   PROPERTIES - با آیکون
+   ============================================ */
+
+.properties-premium {
+  padding: 60px 0 70px;
+  background: var(--bg-white);
+}
+
+.properties-premium__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.properties-premium__header h2 {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--brand-dark);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.properties-premium__header .view-all {
+  color: var(--brand);
+  font-weight: 800;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition);
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  background: var(--brand-soft);
+}
+
+.properties-premium__header .view-all:hover {
+  background: var(--brand);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(20,127,118,0.25);
+}
+
+.properties-premium__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+/* ===== Property Card ===== */
+.property-card {
+  background: var(--bg-white);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.property-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-xl);
+  border-color: rgba(20,127,118,0.15);
+}
+
+.property-card__image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  background: #d9e9e8;
+}
+
+.property-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.property-card:hover .property-card__image img {
+  transform: scale(1.05);
+}
+
+.property-card__image .badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 14px;
+  border-radius: 999px;
+  letter-spacing: 0.3px;
+}
+
+/* ===== دکمه علاقه‌مندی ===== */
+.property-card__image .fav {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(255,255,255,0.90);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  backdrop-filter: blur(4px);
+}
+
+.property-card__image .fav:hover {
+  background: #fff;
+  transform: scale(1.1);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+}
+
+.property-card__image .fav svg {
+  color: #c0c8d0;
+  transition: color 0.3s;
+}
+
+.property-card__image .fav:hover svg {
+  color: #e74c3c;
+  fill: #e74c3c;
+}
+
+/* ===== بدنه کارت ===== */
+.property-card__body {
+  padding: 18px 20px 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.property-card__body .meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.property-card__body .meta span {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--bg-soft);
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+.property-card__body h3 {
+  font-size: 17px;
+  font-weight: 900;
+  color: var(--brand-dark);
+  margin: 0 0 6px;
+  line-height: 1.4;
+}
+
+.property-card__body .address {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0 0 12px;
+}
+
+/* ===== فوتر کارت ===== */
+.property-card__body .footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-light);
+  margin-top: auto;
+}
+
+.property-card__body .footer .progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.property-card__body .footer .progress .bar {
+  width: 60px;
+  height: 4px;
+  background: var(--border-light);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.property-card__body .footer .progress .bar i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--brand), var(--brand-light));
+  border-radius: 999px;
+  transition: width 1s ease;
+}
+
+.property-card__body .footer .link {
+  color: var(--brand);
+  font-weight: 800;
+  font-size: 13px;
+  transition: var(--transition);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.property-card__body .footer .link:hover {
+  color: var(--brand-dark);
+  transform: translateX(-4px);
+}
+
+/* ============================================
+   RESPONSIVE - PROPERTIES
+   ============================================ */
+
+@media (max-width: 1024px) {
+  .properties-premium__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .properties-premium {
+    padding: 40px 0 50px;
+  }
+  
+  .properties-premium__header h2 {
+    font-size: 22px;
+  }
+  
+  .properties-premium__grid {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  
+  .property-card__image {
+    height: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .properties-premium__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .properties-premium__header h2 {
+    font-size: 20px;
+  }
+  
+  .property-card__image {
+    height: 160px;
+  }
+  
+  .property-card__body h3 {
+    font-size: 15px;
+  }
+}
+
+/* ============================================
+   STATS - با تصویر پس‌زمینه و افکت شیشه‌ای
+   ============================================ */
+
+.stats-premium {
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  background: var(--brand-dark);
+}
+
+/* ===== تصویر پس‌زمینه ===== */
+.stats-premium__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: 
+    linear-gradient(135deg, 
+      rgba(10, 61, 58, 0.75) 0%, 
+      rgba(20, 127, 118, 0.60) 50%, 
+      rgba(10, 61, 58, 0.75) 100%
+    ),
+    url('../images/hero-building.png') center/cover no-repeat;
+  background-attachment: fixed;
+  transform: scale(1);
+}
+
+/* ===== افکت نور ===== */
+.stats-premium::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: 
+    radial-gradient(ellipse at 20% 50%, rgba(212, 170, 45, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 50%, rgba(20, 127, 118, 0.10) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* ===== محتوا ===== */
+.stats-premium .container {
+  position: relative;
+  z-index: 1;
+}
+
+.stats-premium__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  text-align: center;
+}
+
+/* ===== کارت آمار با افکت شیشه‌ای ===== */
+.stats-premium__item {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 32px 20px 28px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===== افکت نور روی کارت ===== */
+.stats-premium__item::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.03) 0%, transparent 60%);
+  pointer-events: none;
+  transition: all 0.6s ease;
+}
+
+.stats-premium__item:hover::before {
+  transform: translate(20%, 20%);
+}
+
+/* ===== هور کارت ===== */
+.stats-premium__item:hover {
+  transform: translateY(-6px);
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.20),
+    0 0 40px rgba(20, 127, 118, 0.05);
+}
+
+/* ===== آیکون ===== */
+.stats-premium__item .stat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 14px;
+  transition: all 0.4s ease;
+}
+
+.stats-premium__item:hover .stat-icon {
+  background: rgba(212, 170, 45, 0.15);
+  border-color: rgba(212, 170, 45, 0.20);
+  transform: scale(1.05);
+}
+
+.stats-premium__item .stat-icon svg {
+  width: 26px;
+  height: 26px;
+  color: rgba(255, 255, 255, 0.70);
+  transition: color 0.4s ease;
+}
+
+.stats-premium__item:hover .stat-icon svg {
+  color: #fff;
+}
+
+/* ===== عدد ===== */
+.stats-premium__item .number {
+  display: block;
+  font-size: 42px;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 2px;
+  background: linear-gradient(135deg, #ffffff, rgba(255,255,255,0.70));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stats-premium__item .number .gold {
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ===== برچسب ===== */
+.stats-premium__item .label {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* ============================================
+   STATS - با تصویر پس‌زمینه و افکت شیشه‌ای
+   ============================================ */
+
+.stats-premium {
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  min-height: 300px;
+}
+
+/* ===== تصویر پس‌زمینه ===== */
+.stats-premium__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: 
+    linear-gradient(135deg, 
+      rgba(10, 61, 58, 0.75) 0%, 
+      rgba(20, 127, 118, 0.60) 50%, 
+      rgba(10, 61, 58, 0.75) 100%
+    ),
+    url('../images/hero-building.png') center/cover no-repeat;
+  background-attachment: fixed;
+  transform: scale(1.02);
+  filter: brightness(0.9);
+}
+
+/* ===== افکت نور ===== */
+.stats-premium::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: 
+    radial-gradient(ellipse at 20% 50%, rgba(212, 170, 45, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 50%, rgba(20, 127, 118, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(255,255,255,0.03) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+/* ===== محتوا ===== */
+.stats-premium .container {
+  position: relative;
+  z-index: 2;
+}
+
+.stats-premium__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  text-align: center;
+}
+
+/* ===== کارت آمار با افکت شیشه‌ای ===== */
+.stats-premium__item {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-md);
+  padding: 32px 20px 28px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===== حاشیه نئون کارت ===== */
+.stats-premium__item::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--radius-md);
+  padding: 1px;
+  background: linear-gradient(135deg, 
+    rgba(255,255,255,0.05),
+    rgba(255,255,255,0.01)
+  );
+  -webkitmask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ===== هور کارت ===== */
+.stats-premium__item:hover {
+  transform: translateY(-6px);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.10);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.20),
+    0 0 40px rgba(20, 127, 118, 0.05);
+}
+
+/* ===== آیکون ===== */
+.stats-premium__item .stat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  margin-bottom: 14px;
+  transition: all 0.4s ease;
+}
+
+.stats-premium__item:hover .stat-icon {
+  background: rgba(212, 170, 45, 0.12);
+  border-color: rgba(212, 170, 45, 0.15);
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(212, 170, 45, 0.04);
+}
+
+.stats-premium__item .stat-icon svg {
+  width: 26px;
+  height: 26px;
+  color: rgba(255, 255, 255, 0.60);
+  transition: color 0.4s ease;
+}
+
+.stats-premium__item:hover .stat-icon svg {
+  color: #fff;
+}
+
+/* ===== عدد ===== */
+.stats-premium__item .number {
+  display: block;
+  font-size: 42px;
+  font-weight: 900;
+  line-height: 1.15;
+  margin-bottom: 2px;
+  background: linear-gradient(135deg, #ffffff, rgba(255,255,255,0.65));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stats-premium__item .number .gold {
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ===== برچسب ===== */
+.stats-premium__item .label {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.50);
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* ============================================
+   RESPONSIVE - STATS
+   ============================================ */
+
+@media (max-width: 1024px) {
+  .stats-premium__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .stats-premium__item .number {
+    font-size: 34px;
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-premium {
+    padding: 50px 0;
+    min-height: 250px;
+  }
+  
+  .stats-premium__grid {
+    gap: 14px;
+  }
+  
+  .stats-premium__item {
+    padding: 22px 14px 18px;
+  }
+  
+  .stats-premium__item .stat-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 10px;
+  }
+  
+  .stats-premium__item .stat-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .stats-premium__item .number {
+    font-size: 28px;
+  }
+  
+  .stats-premium__item .label {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-premium {
+    padding: 30px 0;
+    min-height: 200px;
+  }
+  
+  .stats-premium__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  
+  .stats-premium__item {
+    padding: 16px 10px 14px;
+    border-radius: var(--radius-sm);
+  }
+  
+  .stats-premium__item .stat-icon {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 8px;
+  }
+  
+  .stats-premium__item .stat-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .stats-premium__item .number {
+    font-size: 22px;
+  }
+  
+  .stats-premium__item .label {
+    font-size: 10px;
+    letter-spacing: 0;
+  }
+}
+
+/* ============================================
+   TESTIMONIALS
+   ============================================ */
+
+.testimonials-premium {
+  padding: 60px 0;
+  background: var(--bg-soft);
+}
+
+.testimonials-premium__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.testimonials-premium__item {
+  background: var(--bg-white);
+  padding: 28px 24px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+}
+
+.testimonials-premium__item .stars {
+  color: var(--gold);
+  font-size: 16px;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.testimonials-premium__item blockquote {
+  font-size: 15px;
+  color: var(--text-body);
+  line-height: 1.8;
+  margin: 0 0 14px;
+}
+
+.testimonials-premium__item .author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.testimonials-premium__item .author .avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--brand-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  color: var(--brand);
+  font-size: 18px;
+}
+
+.testimonials-premium__item .author .name {
+  font-weight: 800;
+  color: var(--brand-dark);
+}
+
+.testimonials-premium__item .author .role {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ============================================
+   CTA
+   ============================================ */
+
+.cta-premium {
+  padding: 60px 0;
+  background: var(--bg-white);
+  text-align: center;
+  border-top: 1px solid var(--border-light);
+}
+
+.cta-premium h2 {
+  font-size: 30px;
+  font-weight: 900;
+  color: var(--brand-dark);
+  margin: 0 0 12px;
+}
+
+.cta-premium p {
+  font-size: 17px;
+  color: var(--text-muted);
+  max-width: 520px;
+  margin: 0 auto 28px;
+}
+
+.cta-premium .btn-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 44px;
+  background: var(--gold);
+  color: #0a2d2a;
+  border-radius: var(--radius-sm);
+  font-weight: 900;
+  font-size: 16px;
+  transition: var(--transition);
+  box-shadow: 0 8px 30px rgba(212,170,45,0.30);
+}
+
+.cta-premium .btn-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 44px rgba(212,170,45,0.40);
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+
+.footer-premium {
+  background: var(--brand-dark);
+  color: rgba(255,255,255,0.80);
+  padding: 48px 0 0;
+}
+
+.footer-premium__grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 40px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.footer-premium h3 {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 900;
+  margin-bottom: 16px;
+}
+
+.footer-premium p {
+  font-size: 14px;
+  line-height: 1.8;
+  margin: 0 0 8px;
+}
+
+.footer-premium a {
+  display: block;
+  font-size: 14px;
+  color: rgba(255,255,255,0.60);
+  margin: 6px 0;
+  transition: var(--transition);
+}
+
+.footer-premium a:hover {
+  color: #fff;
+}
+
+.footer-premium__bottom {
+  padding: 20px 0;
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255,255,255,0.40);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+/* ===== 1024px ===== */
+@media (max-width: 1024px) {
+  .search-premium__fields {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .search-premium__fields .btn-search {
+    grid-column: span 2;
+    min-width: 0;
+  }
+  
+  .properties-premium__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .testimonials-premium__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ===== 820px ===== */
+@media (max-width: 820px) {
+  .header-premium__inner {
+    height: 76px;
+    padding: 0 16px;
+  }
+  
+  .header-premium__logo img {
+    height: 56px;
+  }
+  
+  .header-premium__nav {
+    display: none;
+  }
+  
+  .header-premium__actions .btn span {
+    display: none;
+  }
+  
+  .header-premium__actions .btn {
+    padding: 9px 14px;
+  }
+  
+  .header-premium__toggle {
+    display: flex;
+  }
+  
+  .header-premium__mobile.is-open {
+    display: flex;
+  }
+}
+
+/* ===== 768px ===== */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+  
+  .hero-premium {
+    min-height: 480px;
+  }
+  
+  .hero-premium__content {
+    padding: 30px 0 20px;
+  }
+  
+  .hero-premium__stats {
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+    padding-top: 18px;
+  }
+  
+  .hero-premium__stats .stat .number {
+    font-size: 22px;
+  }
+  
+  .hero-premium__actions .btn-hero {
+    padding: 10px 24px;
+    font-size: 13px;
+  }
+  
+  .search-premium__box {
+    padding: 18px 16px 22px;
+    border-radius: var(--radius-md);
+  }
+  
+  .search-premium__fields {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .search-premium__fields .btn-search {
+    grid-column: span 1;
+    padding: 0 20px;
+    height: 44px;
+    font-size: 13px;
+  }
+  
+  .search-premium__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .search-premium__header h3 {
+    font-size: 16px;
+  }
+  
+  .search-premium__fields .field input,
+  .search-premium__fields .field select {
+    height: 44px;
+    font-size: 13px;
+  }
+  
+  .categories-premium__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .properties-premium__grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .stats-premium__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .testimonials-premium__grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .footer-premium__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+}
+
+/* ===== 480px ===== */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 12px;
+  }
+  
+  .header-premium__inner {
+    height: 64px;
+    padding: 0 12px;
+  }
+  
+  .header-premium__logo img {
+    height: 44px;
+  }
+  
+  .hero-premium {
+    min-height: 420px;
+  }
+  
+  .hero-premium__stats {
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    margin-top: 18px;
+    padding-top: 14px;
+    justify-content: center;
+  }
+  
+  .hero-premium__stats .stat {
+    flex: 0 0 auto;
+    min-width: 80px;
+  }
+  
+  .hero-premium__stats .stat .number {
+    font-size: 20px;
+  }
+  
+  .hero-premium__stats .stat .label {
+    font-size: 11px;
+  }
+  
+  .hero-premium__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .hero-premium__actions .btn-hero {
+    justify-content: center;
+  }
+  
+  .search-premium__box {
+    padding: 14px 12px 18px;
+  }
+  
+  .search-premium__fields .field input,
+  .search-premium__fields .field select {
+    height: 40px;
+    font-size: 12px;
+  }
+  
+  .search-premium__fields .btn-search {
+    height: 40px;
+    font-size: 12px;
+  }
+  
+  .categories-premium__grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .stats-premium__grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .footer-premium__grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .cta-premium h2 {
+    font-size: 22px;
+  }
+}
+/* ============================================
+   NEON EFFECT - افکت نئون برای کارت‌ها
+   ============================================ */
+
+/* ===== افکت نئون برای کارت‌ها ===== */
+.categories-premium__item {
+  position: relative;
+  background: var(--bg-white);
+  padding: 32px 24px 28px;
+  border-radius: var(--radius-md);
+  text-align: center;
+  border: 1px solid var(--border-light);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* ===== حاشیه نئون ===== */
+.categories-premium__item::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: var(--radius-md);
+  padding: 2px;
+  background: linear-gradient(135deg, 
+    rgba(20, 127, 118, 0.5),
+    rgba(26, 158, 148, 0.2),
+    rgba(20, 127, 118, 0.5),
+    rgba(26, 158, 148, 0.2)
+  );
+  -webkitmask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: all 0.5s ease;
+  z-index: 1;
+}
+
+/* ===== درخشش نئون ===== */
+.categories-premium__item::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, 
+    rgba(20, 127, 118, 0.15),
+    rgba(26, 158, 148, 0.05)
+  );
+  opacity: 0;
+  transition: all 0.5s ease;
+  z-index: 0;
+  filter: blur(8px);
+}
+
+/* ===== هور ===== */
+.categories-premium__item:hover {
+  transform: translateY(-8px) scale(1.01);
+  border-color: transparent;
+  box-shadow: 
+    0 20px 60px rgba(20, 127, 118, 0.12),
+    0 0 40px rgba(20, 127, 118, 0.08);
+}
+
+.categories-premium__item:hover::before {
+  opacity: 1;
+}
+
+.categories-premium__item:hover::after {
+  opacity: 1;
+}
+
+/* ===== محتوای کارت ===== */
+.categories-premium__item .content {
+  position: relative;
+  z-index: 2;
+}
+
+/* ===== آیکون ===== */
+.categories-premium__item .icon-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--brand-soft);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  transition: all 0.4s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.categories-premium__item:hover .icon-wrap {
+  background: linear-gradient(135deg, var(--brand), var(--brand-light));
+  box-shadow: 
+    0 0 30px rgba(20, 127, 118, 0.30),
+    0 0 60px rgba(20, 127, 118, 0.15);
+  transform: scale(1.05);
+}
+
+.categories-premium__item .icon-wrap svg {
+  width: 30px;
+  height: 30px;
+  color: var(--brand);
+  transition: all 0.4s ease;
+}
+
+.categories-premium__item:hover .icon-wrap svg {
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+/* ===== عنوان ===== */
+.categories-premium__item h4 {
+  font-size: 17px;
+  font-weight: 900;
+  color: var(--brand-dark);
+  margin: 0 0 6px;
+  transition: color 0.3s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.categories-premium__item:hover h4 {
+  color: var(--brand);
+}
+
+/* ===== توضیحات ===== */
+.categories-premium__item p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.7;
+  transition: color 0.3s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.categories-premium__item:hover p {
+  color: var(--text-body);
+}
+
+/* ============================================
+   RESPONSIVE - CATEGORIES (با افکت نئون)
+   ============================================ */
+
+@media (max-width: 1024px) {
+  .categories-premium__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .categories-premium__item .icon-wrap {
+    width: 64px;
+    height: 64px;
+  }
+  
+  .categories-premium__item .icon-wrap svg {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+@media (max-width: 768px) {
+  .categories-premium {
+    padding: 40px 0 50px;
+  }
+  
+  .categories-premium .section-header h2 {
+    font-size: 24px;
+  }
+  
+  .categories-premium__item {
+    padding: 24px 18px 22px;
+  }
+  
+  .categories-premium__item .icon-wrap {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 12px;
+  }
+  
+  .categories-premium__item .icon-wrap svg {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .categories-premium__item h4 {
+    font-size: 15px;
+  }
+  
+  .categories-premium__item p {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .categories-premium__grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  
+  .categories-premium .section-header h2 {
+    font-size: 20px;
+  }
+  
+  .categories-premium__item {
+    padding: 18px 16px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-align: right;
+  }
+  
+  .categories-premium__item .icon-wrap {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+  
+  .categories-premium__item .icon-wrap svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .categories-premium__item .content {
+    text-align: right;
+  }
+  
+  .categories-premium__item h4 {
+    font-size: 14px;
+    margin-bottom: 2px;
+  }
+  
+  .categories-premium__item p {
+    font-size: 12px;
+  }
+}
+/* ============================================
+   PROFESSIONAL PROPERTY SECTION OVERRIDE
+   مرتب‌سازی حرفه‌ای بخش تعاونی‌های منطقه
+   ============================================ */
+.properties-premium {
+  position: relative;
+  padding: 78px 0 88px;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(20,127,118,0.11), transparent 34%),
+    radial-gradient(circle at 88% 10%, rgba(212,170,45,0.13), transparent 32%),
+    linear-gradient(180deg, #f7fbfa 0%, #ffffff 54%, #f7fbfa 100%);
+  overflow: hidden;
+}
+
+.properties-premium::before,
+.properties-premium::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  border-radius: 999px;
+  filter: blur(4px);
+  opacity: 0.75;
+}
+
+.properties-premium::before {
+  width: 260px;
+  height: 260px;
+  right: -110px;
+  top: 45px;
+  background: rgba(20,127,118,0.08);
+}
+
+.properties-premium::after {
+  width: 210px;
+  height: 210px;
+  left: -85px;
+  bottom: 70px;
+  background: rgba(212,170,45,0.09);
+}
+
+.properties-premium .container {
+  position: relative;
+  z-index: 1;
+}
+
+.properties-premium__header {
+  align-items: flex-end;
+  margin-bottom: 30px;
+  padding: 0 2px;
+}
+
+.properties-premium__title {
+  max-width: 720px;
+}
+
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 11px;
+  padding: 7px 13px;
+  border: 1px solid rgba(20,127,118,0.13);
+  border-radius: 999px;
+  color: var(--brand);
+  background: rgba(232,244,242,0.85);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.section-eyebrow svg {
+  color: var(--gold);
+  fill: rgba(212,170,45,0.12);
+}
+
+.properties-premium__header h2 {
+  margin: 0;
+  color: #073b38;
+  font-size: clamp(24px, 2.4vw, 34px);
+  letter-spacing: -0.03em;
+  line-height: 1.35;
+}
+
+.properties-premium__title p {
+  margin: 8px 0 0;
+  max-width: 650px;
+  color: #60717d;
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+.properties-premium__header .view-all {
+  min-height: 46px;
+  padding: 0 18px;
+  border: 1px solid rgba(20,127,118,0.14);
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 12px 32px rgba(8, 62, 58, 0.07);
+}
+
+.properties-premium__header .view-all svg {
+  transition: transform 0.25s ease;
+}
+
+.properties-premium__header .view-all:hover svg {
+  transform: translateX(-3px);
+}
+
+.properties-premium__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 26px;
+  align-items: stretch;
+}
+
+.property-card {
+  position: relative;
+  border: 1px solid rgba(20,127,118,0.10);
+  border-radius: 24px;
+  background: rgba(255,255,255,0.94);
+  box-shadow: 0 16px 45px rgba(5, 42, 40, 0.075);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.property-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(145deg, rgba(20,127,118,0.28), rgba(255,255,255,0.2), rgba(212,170,45,0.22));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.property-card:hover {
+  transform: translateY(-9px);
+  border-color: rgba(20,127,118,0.22);
+  box-shadow: 0 28px 70px rgba(5, 42, 40, 0.14);
+}
+
+.property-card:hover::before {
+  opacity: 1;
+}
+
+.property-card__image {
+  height: 224px;
+  background: linear-gradient(135deg, #dcefed, #f0f7f6);
+  border-radius: 0 0 22px 22px;
+  overflow: hidden;
+}
+
+.property-card__image a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+}
+
+.property-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.01);
+  transition: transform 0.65s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.65s ease;
+}
+
+.property-card:hover .property-card__image img {
+  transform: scale(1.08);
+  filter: saturate(1.08) contrast(1.03);
+}
+
+.property-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.04) 35%, rgba(3,43,40,0.58) 100%);
+  opacity: 0.88;
+  transition: opacity 0.35s ease;
+}
+
+.property-card:hover .property-card__overlay {
+  opacity: 1;
+}
+
+.property-card__image .badge {
+  top: 16px;
+  right: 16px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 13px;
+  border: 1px solid rgba(255,255,255,0.38);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(12px);
+  color: #0d5a54;
+  font-size: 11px;
+  font-weight: 900;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.11);
+}
+
+.property-card__image .fav {
+  top: 16px;
+  left: 16px;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255,255,255,0.45);
+  background: rgba(255,255,255,0.88);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.11);
+}
+
+.property-card__progress-float {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 1px solid rgba(255,255,255,0.30);
+  border-radius: 16px;
+  color: #fff;
+  background: rgba(8, 61, 58, 0.62);
+  backdrop-filter: blur(13px);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.18);
+}
+
+.property-card__progress-float strong {
+  font-size: 18px;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.property-card__progress-float span {
+  font-size: 11px;
+  font-weight: 800;
+  opacity: 0.86;
+}
+
+.property-card__body {
+  padding: 21px 21px 20px;
+  gap: 0;
+}
+
+.property-card__body .meta {
+  gap: 7px;
+  margin-bottom: 12px;
+}
+
+.property-card__body .meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 28px;
+  padding: 4px 10px;
+  border: 1px solid rgba(20,127,118,0.09);
+  border-radius: 999px;
+  color: #55707b;
+  background: #f4faf9;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.property-card__body .meta span:first-child {
+  color: var(--brand);
+  background: rgba(232,244,242,0.90);
+}
+
+.property-card__body h3 {
+  margin: 0 0 9px;
+  color: #082f2d;
+  font-size: 18px;
+  font-weight: 950;
+  line-height: 1.55;
+  letter-spacing: -0.02em;
+}
+
+.property-card__body h3 a {
+  transition: color 0.25s ease;
+}
+
+.property-card__body h3 a:hover {
+  color: var(--brand);
+}
+
+.property-card__description {
+  margin: 0 0 14px;
+  color: #61707a;
+  font-size: 13px;
+  line-height: 1.9;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 49px;
+}
+
+.property-card__features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 16px;
+}
+
+.property-card__features span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 30px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  color: #0f6f68;
+  background: rgba(232,244,242,0.82);
+  border: 1px solid rgba(20,127,118,0.10);
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.property-card__features i {
+  font-style: normal;
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(20,127,118,0.13);
+  color: var(--brand);
+  font-size: 10px;
+  flex: 0 0 auto;
+}
+
+.property-card__progress {
+  margin: auto 0 15px;
+  padding: 13px;
+  border: 1px solid rgba(20,127,118,0.08);
+  border-radius: 18px;
+  background: linear-gradient(180deg, #fbfdfd, #f3faf9);
+}
+
+.property-card__progress-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 9px;
+  color: #536974;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.property-card__progress-head strong {
+  color: var(--brand-dark);
+  font-size: 14px;
+  font-weight: 950;
+}
+
+.property-card__progress .bar {
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: #e5eeee;
+  overflow: hidden;
+}
+
+.property-card__progress .bar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--brand), var(--brand-light) 62%, var(--gold));
+  box-shadow: 0 0 18px rgba(20,127,118,0.28);
+}
+
+.property-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(20,127,118,0.09);
+}
+
+.property-card__location {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #647680;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.property-card__location svg {
+  flex: 0 0 auto;
+  color: var(--gold);
+}
+
+.property-card__location span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.property-card__footer .link {
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--brand-dark), var(--brand));
+  box-shadow: 0 12px 26px rgba(20,127,118,0.20);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.property-card__footer .link:hover {
+  color: #fff;
+  transform: translateX(-4px);
+  box-shadow: 0 16px 34px rgba(20,127,118,0.30);
+}
+
+@media (max-width: 1100px) {
+  .properties-premium__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .properties-premium {
+    padding: 52px 0 62px;
+  }
+
+  .properties-premium__header {
+    align-items: stretch;
+    margin-bottom: 22px;
+  }
+
+  .properties-premium__title p {
+    font-size: 13px;
+  }
+
+  .properties-premium__header .view-all {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .properties-premium__grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .property-card__image {
+    height: 210px;
+  }
+}
+
+@media (max-width: 480px) {
+  .properties-premium__header h2 {
+    font-size: 22px;
+  }
+
+  .property-card {
+    border-radius: 20px;
+  }
+
+  .property-card__image {
+    height: 185px;
+  }
+
+  .property-card__body {
+    padding: 17px 16px 16px;
+  }
+
+  .property-card__body h3 {
+    font-size: 16px;
+  }
+
+  .property-card__footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .property-card__footer .link {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+.property-card__footer .link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  text-decoration: none;
+  transition: var(--transition);
+}

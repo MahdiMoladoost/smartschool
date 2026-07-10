@@ -1,0 +1,2 @@
+/* Compatibility stylesheet: advanced contact page falls back to the maintained contact.css */
+@import url('./contact.css');

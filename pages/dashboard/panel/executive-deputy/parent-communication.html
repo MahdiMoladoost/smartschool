@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مدیریت ارتباط با والدین | پنل معاون اجرایی</title>
+  <link rel="stylesheet" href="/public/assets/css/all.min.css">
+  <link rel="stylesheet" href="/public/assets/css/panel/role-panel.css?v=admin-like-v2">
+</head>
+<body data-panel="executive-deputy" data-page="parent-communication">
+<button class="mobile-menu" onclick="toggleRoleSidebar()" aria-label="باز کردن منو"><i class="fas fa-bars"></i></button>
+<div class="overlay" id="overlay" onclick="toggleRoleSidebar()"></div>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-icon"><i class="fas fa-school"></i></div>
+      <div><h1 id="panelTitle">پنل معاون اجرایی</h1><p>سامانه مدرسه هوشمند</p></div>
+    </div>
+    <div class="user-card"><strong id="userName">کاربر</strong><span id="userRole">role</span></div>
+    <nav class="nav-section" aria-label="منوی پنل">
+      <div class="nav-section">
+          <div class="nav-section-title">داشبورد</div>
+          <a class="nav-item" data-tab="dashboard" href="/dashboard/executive-deputy/dashboard">
+              <i class="fas fa-chart-line"></i> 
+              <span>داشبورد اجرایی</span>
+          </a>
+      </div>
+      <div class="nav-section">
+          <div class="nav-section-title">ثبت‌نام و پرونده</div>
+          <a class="nav-item" data-tab="enrollment" href="/dashboard/executive-deputy/enrollment">
+              <i class="fas fa-user-plus"></i> 
+              <span>مدیریت ثبت‌نام دانش‌آموزان</span>
+          </a>
+          <a class="nav-item" data-tab="students" href="/dashboard/executive-deputy/students">
+              <i class="fas fa-folder-open"></i> 
+              <span>مدیریت پرونده دانش‌آموز</span>
+          </a>
+          <a class="nav-item" data-tab="documents-approval" href="/dashboard/executive-deputy/documents-approval">
+              <i class="fas fa-file-circle-check"></i> 
+              <span>تأیید مدارک ثبت‌نام</span>
+          </a>
+          <a class="nav-item" data-tab="student-transfer" href="/dashboard/executive-deputy/student-transfer">
+              <i class="fas fa-right-left"></i> 
+              <span>مدیریت جابجایی دانش‌آموزان</span>
+          </a>
+      </div>
+      <div class="nav-section">
+          <div class="nav-section-title">آموزش و کلاس</div>
+          <a class="nav-item" data-tab="classes" href="/dashboard/executive-deputy/classes">
+              <i class="fas fa-door-open"></i> 
+              <span>مدیریت کلاس‌ها</span>
+          </a>
+          <a class="nav-item" data-tab="courses" href="/dashboard/executive-deputy/courses">
+              <i class="fas fa-book"></i> 
+              <span>مدیریت دروس</span>
+          </a>
+          <a class="nav-item" data-tab="schedule" href="/dashboard/executive-deputy/schedule">
+              <i class="fas fa-calendar-week"></i> 
+              <span>مدیریت برنامه هفتگی</span>
+          </a>
+      </div>
+      <div class="nav-section">
+          <div class="nav-section-title">کارنامه و حضور</div>
+          <a class="nav-item" data-tab="report-cards" href="/dashboard/executive-deputy/report-cards">
+              <i class="fas fa-award"></i> 
+              <span>مدیریت کارنامه‌ها</span>
+          </a>
+          <a class="nav-item" data-tab="report-card-issue" href="/dashboard/executive-deputy/report-card-issue">
+              <i class="fas fa-file-circle-plus"></i> 
+              <span>صدور کارنامه</span>
+          </a>
+          <a class="nav-item" data-tab="report-card-print" href="/dashboard/executive-deputy/report-card-print">
+              <i class="fas fa-print"></i> 
+              <span>چاپ کارنامه</span>
+          </a>
+          <a class="nav-item" data-tab="report-card-pdf" href="/dashboard/executive-deputy/report-card-pdf">
+              <i class="fas fa-file-pdf"></i> 
+              <span>خروجی PDF کارنامه</span>
+          </a>
+          <a class="nav-item" data-tab="attendance" href="/dashboard/executive-deputy/attendance">
+              <i class="fas fa-clipboard-check"></i> 
+              <span>مدیریت حضور و غیاب</span>
+          </a>
+      </div>
+      <div class="nav-section">
+          <div class="nav-section-title">پیامک و ارتباطات</div>
+          <a class="nav-item" data-tab="sms" href="/dashboard/executive-deputy/sms">
+              <i class="fas fa-comment-sms"></i> 
+              <span>مدیریت پیامک مدرسه</span>
+          </a>
+          <a class="nav-item" data-tab="bulk-sms" href="/dashboard/executive-deputy/bulk-sms">
+              <i class="fas fa-paper-plane"></i> 
+              <span>ارسال پیامک گروهی</span>
+          </a>
+          <a class="nav-item active" data-tab="parent-communication" href="/dashboard/executive-deputy/parent-communication">
+              <i class="fas fa-users"></i> 
+              <span>مدیریت ارتباط با والدین</span>
+          </a>
+          <a class="nav-item" data-tab="tickets" href="/dashboard/executive-deputy/tickets">
+              <i class="fas fa-ticket-alt"></i> 
+              <span>مدیریت تیکت‌ها</span>
+          </a>
+      </div>
+      <div class="nav-section">
+          <div class="nav-section-title">گزارش و سیستم</div>
+          <a class="nav-item" data-tab="reports" href="/dashboard/executive-deputy/reports">
+              <i class="fas fa-file-lines"></i> 
+              <span>مدیریت گزارش‌ها</span>
+          </a>
+          <a class="nav-item" data-tab="student-statistics" href="/dashboard/executive-deputy/student-statistics">
+              <i class="fas fa-chart-column"></i> 
+              <span>گزارش آماری دانش‌آموزان</span>
+          </a>
+          <a class="nav-item" data-tab="forms" href="/dashboard/executive-deputy/forms">
+              <i class="fas fa-file-pen"></i> 
+              <span>مدیریت فرم‌های مدرسه</span>
+          </a>
+          <a class="nav-item" data-tab="announcements" href="/dashboard/executive-deputy/announcements">
+              <i class="fas fa-bullhorn"></i> 
+              <span>مدیریت اطلاعیه‌ها</span>
+          </a>
+          <a class="nav-item" data-tab="staff-activity-reports" href="/dashboard/executive-deputy/staff-activity-reports">
+              <i class="fas fa-user-clock"></i> 
+              <span>گزارش فعالیت پرسنل</span>
+          </a>
+          <a class="nav-item" data-tab="backup" href="/dashboard/executive-deputy/backup">
+              <i class="fas fa-database"></i> 
+              <span>پشتیبان‌گیری اطلاعات</span>
+          </a>
+          <a class="nav-item" data-tab="profile" href="/dashboard/executive-deputy/profile">
+              <i class="fas fa-user-circle"></i> 
+              <span>پروفایل معاون اجرایی</span>
+          </a>
+      </div>
+    </nav>
+    <div class="nav-section"><a class="nav-item" href="/" target="_blank"><i class="fas fa-home"></i><span>صفحه اصلی</span></a><button class="btn danger" onclick="logout()" style="width:100%;margin-top:12px"><i class="fas fa-sign-out-alt"></i> خروج</button></div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <div><h2 id="pageTitle">داشبورد معاون اجرایی</h2><p>داده‌ها از API امن نقش و پایگاه داده MySQL خوانده می‌شود.</p></div>
+      <div class="actions"><button class="btn secondary" onclick="location.reload()"><i class="fas fa-rotate"></i> بروزرسانی</button></div>
+    </header>
+    <section id="content"><div class="state">در حال بارگذاری...</div></section>
+  </main>
+</div>
+<script src="/public/assets/js/role-panel.js?v=admin-like-v2"></script>
+</body>
+</html>

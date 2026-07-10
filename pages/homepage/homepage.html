@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="مدیریت هوشمند - سیستم مدیریت یکپارچه آموزشی">
+    <meta name="theme-color" content="#2563eb">
+    <title>مدیریت هوشمند | سیستم مدیریت یکپارچه آموزشی</title>
+    
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="/public/assets/css/all.min.css">
+    
+    <!-- Remix Icon -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <!-- Main Styles -->
+    <link rel="stylesheet" href="/public/assets/css/home page/homepage.css?v=fix-22-news-specificity">
+    <link rel="stylesheet" href="/public/assets/css/home page/responsive.css">
+    
+    <!-- AOS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        body {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        /* Chatbot Styles */
+        .chatbot-button-farz {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(37,99,235,0.4);
+            transition: all 0.3s;
+            z-index: 100;
+            color: white;
+            font-size: 1.5rem;
+        }
+        .chatbot-button-farz:hover {
+            transform: scale(1.08);
+        }
+        .chatbot-panel-farz {
+            position: fixed;
+            bottom: 95px;
+            right: 25px;
+            width: 360px;
+            height: 500px;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 101;
+            direction: rtl;
+        }
+        .chatbot-panel-farz.active {
+            display: flex;
+            animation: fadeInUp 0.25s ease;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .chatbot-header-farz {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 14px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chatbot-header-farz h3 {
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
+        }
+        .chatbot-status {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulseDot 1.5s infinite;
+        }
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .chatbot-close-farz {
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .chatbot-close-farz:hover {
+            background: rgba(255,255,255,0.25);
+        }
+        .chatbot-messages-farz {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: #f9fafb;
+        }
+        .message-bot-farz {
+            display: flex;
+            gap: 8px;
+            max-width: 85%;
+            align-self: flex-start;
+        }
+        .bot-avatar-farz {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .bot-avatar-farz i {
+            color: white;
+            font-size: 12px;
+        }
+        .bot-text-farz {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 16px;
+            border-top-right-radius: 4px;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: #1f2937;
+        }
+        .message-user-farz {
+            display: flex;
+            gap: 8px;
+            max-width: 85%;
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+        .user-avatar-farz {
+            width: 30px;
+            height: 30px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .user-avatar-farz i {
+            color: white;
+            font-size: 12px;
+        }
+        .user-text-farz {
+            background: #2563eb;
+            padding: 8px 12px;
+            border-radius: 16px;
+            border-top-left-radius: 4px;
+            font-size: 0.8rem;
+            color: white;
+        }
+        .typing-farz {
+            display: flex;
+            gap: 4px;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 16px;
+            border-top-right-radius: 4px;
+        }
+        .typing-farz span {
+            width: 6px;
+            height: 6px;
+            background: #9ca3af;
+            border-radius: 50%;
+            animation: typingAnim 1.2s infinite;
+        }
+        .typing-farz span:nth-child(1) { animation-delay: 0s; }
+        .typing-farz span:nth-child(2) { animation-delay: 0.15s; }
+        .typing-farz span:nth-child(3) { animation-delay: 0.3s; }
+        @keyframes typingAnim {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-6px); opacity: 1; }
+        }
+        .quick-suggestions-farz {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 8px 12px;
+            background: #f9fafb;
+            border-top: 1px solid #eef2f6;
+        }
+        .suggestion-btn-farz {
+            background: #f3f4f6;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 16px;
+            font-size: 0.7rem;
+            color: #4b5563;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .suggestion-btn-farz:hover {
+            background: #e5e7eb;
+            color: #2563eb;
+        }
+        .chatbot-input-farz {
+            padding: 10px 14px;
+            background: white;
+            border-top: 1px solid #eef2f6;
+            display: flex;
+            gap: 10px;
+        }
+        .chatbot-input-farz input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 24px;
+            font-family: inherit;
+            font-size: 0.8rem;
+            background: #f9fafb;
+        }
+        .chatbot-input-farz input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+        .chatbot-input-farz button {
+            background: #2563eb;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+        }
+        .chatbot-input-farz button:hover {
+            background: #1d4ed8;
+        }
+        @media (max-width: 480px) {
+            .chatbot-panel-farz {
+                width: calc(100vw - 30px);
+                right: 15px;
+                height: 460px;
+                bottom: 80px;
+            }
+            .chatbot-button-farz {
+                width: 50px;
+                height: 50px;
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-info">
+                <span><i class="fas fa-phone-alt"></i> <a href="tel:02144706644" id="schoolPhone">۰۲۱-۴۴۷۰۶۶۴۴</a></span>
+                <span class="hidden-mobile"><i class="fas fa-map-marker-alt"></i> <span id="schoolAddress">تهران، خیابان اصلی، مدیریت هوشمند</span></span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <span class="hidden-mobile">پشتیبان: <a href="tel:09106661386" id="supportPhone">۰۹۱۰۶۶۶۱۳۸۶</a></span>
+                <a href="/pages/homepage/auth/login.html" class="top-bar-btn"><i class="fas fa-user"></i> ورود</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="main-header" id="header">
+        <div class="container nav-container">
+            <a href="/" class="logo">
+                <div class="logo-icon logo-image-wrap"><img src="/public/assets/images/logo.png" alt="لوگوی مدرسه هوشمند فرزانگان" loading="eager" onerror="this.onerror=null;this.src='/assets/images/logo.png';"></div>
+                <div class="logo-text">
+                    <h1 id="schoolName">مدیریت هوشمند</h1>
+                    <p>سیستم یکپارچه آموزشی</p>
+                </div>
+            </a>
+            <nav class="desktop-nav">
+                <a href="/" class="nav-link active">صفحه اصلی</a>
+                <div class="has-dropdown">
+                    <a href="/pages/homepage/services.html" class="nav-link">خدمات <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown">
+                        <a href="#"><i class="fas fa-laptop-code"></i> آموزش تکنولوژی</a>
+                        <a href="#"><i class="fas fa-hand-holding-heart"></i> مشاوره و راهنمایی</a>
+                        <a href="#"><i class="fas fa-star"></i> کلاس‌های تخصصی</a>
+                    </div>
+                </div>
+                <a href="/pages/homepage/about.html" class="nav-link">درباره ما</a>
+                <a href="/pages/homepage/timeline.html" class="nav-link">تاریخچه</a>
+                <a href="/pages/homepage/faq.html" class="nav-link">سوالات متداول</a>
+                <a href="/pages/homepage/contact.html" class="nav-link">ارتباط با ما</a>
+            </nav>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <div class="header-actions">
+                    <a href="/pages/homepage/auth/register.html" class="btn btn-primary" style="text-decoration: none; padding: 0.6rem 1.2rem;">
+                        <i class="fas fa-user-plus"></i> ثبت‌نام
+                    </a>
+                </div>
+                <button class="mobile-toggle" onclick="openMobileMenu()"><i class="fas fa-bars"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-overlay" id="mobile-overlay" onclick="closeMobileMenu()"></div>
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="mobile-menu-header">
+            <div class="logo">
+                <div class="logo-icon logo-image-wrap mobile-logo-image-wrap"><img src="/public/assets/images/logo.png" alt="لوگوی مدرسه هوشمند فرزانگان" loading="eager" onerror="this.onerror=null;this.src='/assets/images/logo.png';"></div>
+                <div class="logo-text"><h1 style="color: white; font-size: 1rem;">مدیریت هوشمند</h1></div>
+            </div>
+            <button class="mobile-menu-close" onclick="closeMobileMenu()"><i class="fas fa-times"></i></button>
+        </div>
+        <nav class="mobile-nav">
+            <a href="/" onclick="closeMobileMenu()"><i class="fas fa-home"></i> صفحه اصلی</a>
+            <div class="mobile-accordion">
+                <div class="mobile-accordion-header" onclick="toggleAccordion(this)"><span><i class="fas fa-concierge-bell"></i> خدمات</span><i class="fas fa-chevron-down"></i></div>
+                <div class="mobile-accordion-content">
+                    <a href="#" onclick="closeMobileMenu()">آموزش تکنولوژی</a>
+                    <a href="#" onclick="closeMobileMenu()">مشاوره و راهنمایی</a>
+                    <a href="#" onclick="closeMobileMenu()">کلاس‌های تخصصی</a>
+                </div>
+            </div>
+            <a href="/pages/homepage/about.html" onclick="closeMobileMenu()"><i class="fas fa-building"></i> درباره ما</a>
+            <a href="/pages/homepage/timeline.html" onclick="closeMobileMenu()"><i class="fas fa-history"></i> تاریخچه</a>
+            <a href="/pages/homepage/faq.html" onclick="closeMobileMenu()"><i class="fas fa-question-circle"></i> سوالات متداول</a>
+            <a href="/pages/homepage/contact.html" onclick="closeMobileMenu()"><i class="fas fa-phone"></i> ارتباط با ما</a>
+            <div class="mobile-cta">
+                <a href="/login" class="btn btn-primary btn-full" onclick="closeMobileMenu()"><i class="fas fa-sign-in-alt"></i> ورود به سامانه</a>
+            </div>
+        </nav>
+    </div>
+
+<!-- Hero Section -->
+<section class="hero hero-school-elegant" id="home">
+    <div class="hero-bg-glow hero-bg-glow-left"></div>
+    <div class="hero-bg-glow hero-bg-glow-right"></div>
+    <div class="hero-dots hero-dots-left" aria-hidden="true"></div>
+    <div class="hero-dots hero-dots-right" aria-hidden="true"></div>
+
+    <div class="container">
+        <div class="hero-grid">
+            <div class="hero-media" data-aos="fade-left">
+                <div class="hero-frame">
+                    <div class="hero-photo-card">
+                        <img src="/assets/images/hero/hero.webp" alt="دانش‌آموزان در محوطه مدرسه" loading="lazy" onerror="this.src='https://placehold.co/800x620/f8fafc/1d4ed8?text=مدرسه+هوشمند'">
+                    </div>
+
+                    <div class="hero-stat-card hero-stat-top">
+                        <div class="hero-stat-text">
+                            <strong id="statTeachersFloat">۱۵+</strong>
+                            <span>دبیر همراه</span>
+                        </div>
+                        <div class="hero-stat-icon">
+                            <i class="fas fa-chalkboard-user"></i>
+                        </div>
+                    </div>
+
+                    <div class="hero-stat-card hero-stat-bottom">
+                        <div class="hero-stat-text">
+                            <strong id="statStudentsFloat">۲۲۰+</strong>
+                            <span>دانش‌آموز فعال</span>
+                        </div>
+                        <div class="hero-stat-icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-content" data-aos="fade-right">
+
+                <div class="hero-title-wrap">
+                    <div class="typewriter" id="typewriter"></div>
+                    <span class="hero-title-accent" aria-hidden="true">
+                        <i class="fas fa-leaf"></i>
+                    </span>
+                </div>
+
+                <div class="hero-divider" aria-hidden="true">
+                    <span></span><i class="fas fa-circle"></i><span></span>
+                </div>
+
+                <p class="hero-text">
+                    محیطی پویا و امن برای رشد علمی، اخلاقی و مهارتی دانش‌آموزان؛
+                    همراه با ارتباطی نزدیک و مؤثر با خانواده و برنامه‌های متنوع مدرسه
+                    برای ساختن آینده‌ای روشن.
+                </p>
+
+                <div class="hero-highlights">
+                    <span><i class="fas fa-star"></i> پرورش استعدادها</span>
+                    <span><i class="fas fa-user-group"></i> ارتباط با اولیا</span>
+                    <span><i class="fas fa-book-open"></i> کلاس‌های پویا</span>
+                </div>
+
+                <div class="hero-buttons">
+                    <a href="/login" class="btn btn-primary">
+                        <span class="btn-icon"><i class="fas fa-angle-left"></i></span>
+                        ورود به سامانه
+                    </a>
+                    <button class="btn btn-outline" onclick="document.getElementById('why-smart').scrollIntoView({behavior:'smooth'})">
+                        <span class="btn-icon"><i class="fas fa-angle-left"></i></span>
+                        معرفی مدرسه
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+    <!-- Statistics Section -->
+    <section class="stats-section" id="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card" data-aos="fade-up"><div class="stat-icon"><i class="fas fa-user-graduate"></i></div><div class="stat-number" id="statStudents" data-target="220">۰</div><div class="stat-label">دانش‌آموز فعال</div><div class="stat-desc">مقاطع مختلف</div></div>
+                <div class="stat-card" data-aos="fade-up" data-aos-delay="100"><div class="stat-icon"><i class="fas fa-smile"></i></div><div class="stat-number" id="statSatisfaction" data-target="92" data-suffix="%">۰</div><div class="stat-label">رضایت کاربران</div><div class="stat-desc">نظرسنجی سالانه</div></div>
+                <div class="stat-card" data-aos="fade-up" data-aos-delay="200"><div class="stat-icon"><i class="fas fa-trophy"></i></div><div class="stat-number" id="statCourses" data-target="45">۰</div><div class="stat-label">پروژه فعال</div><div class="stat-desc">در سیستم</div></div>
+                <div class="stat-card" data-aos="fade-up" data-aos-delay="300"><div class="stat-icon"><i class="fas fa-history"></i></div><div class="stat-number" id="statYears" data-target="10" data-suffix="+">۰</div><div class="stat-label">سال تجربه</div><div class="stat-desc">در مدیریت هوشمند</div></div>
+            </div>
+        </div>
+    </section>
+    <!-- Quran Section -->
+    <section class="quran-section quran-operational" aria-labelledby="quranTitle">
+        <div class="quran-op-glow quran-op-glow-top" aria-hidden="true"></div>
+        <div class="quran-op-glow quran-op-glow-bottom" aria-hidden="true"></div>
+        <div class="container">
+            <div class="quran-op-frame" data-aos="fade-up">
+                <span class="quran-op-emblem" aria-hidden="true"><i class="fas fa-book-open"></i></span>
+                <span class="quran-op-side-star right" aria-hidden="true">✦</span>
+                <span class="quran-op-side-star left" aria-hidden="true">✦</span>
+                <span class="quran-op-inner-border" aria-hidden="true"></span>
+                <div class="quran-op-title-row">
+                    <span></span>
+                    <i class="fas fa-sparkles" aria-hidden="true"></i>
+                    <h2 id="quranTitle">آیه‌ای از قرآن کریم</h2>
+                    <i class="fas fa-sparkles" aria-hidden="true"></i>
+                    <span></span>
+                </div>
+                <p class="quran-op-text" id="quranText">يَرْفَعِ اللَّهُ الَّذِينَ آمَنُوا مِنكُمْ وَالَّذِينَ أُوتُوا الْعِلْمَ دَرَجَاتٍ</p>
+                <div class="quran-op-divider" aria-hidden="true"><span></span><i class="fas fa-sun"></i><span></span></div>
+                <p class="quran-op-translation" id="quranTranslation">خداوند کسانی را که ایمان آورده و کسانی را که علم داده شده، درجات بالایی می‌بخشد.</p>
+                <p class="quran-op-reference" id="quranReference">سوره مجادله (۵۸) - آیه ۱۱</p>
+            </div>
+        </div>
+    </section>
+
+<!-- Services Section -->
+    <section class="services">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>خدمات ما</h2>
+                <div class="line"></div>
+                <p>ارائه بهترین خدمات مدیریت آموزشی</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card" data-aos="fade-up"><div class="service-icon blue"><i class="fas fa-chart-line"></i></div><h3>مدیریت نمرات</h3><p>ثبت و پیگیری نمرات دانش‌آموزان به صورت هوشمند</p></div>
+                <div class="service-card" data-aos="fade-up" data-aos-delay="100"><div class="service-icon orange"><i class="fas fa-calendar-check"></i></div><h3>حضور و غیاب</h3><p>ثبت خودکار و گزارش‌گیری پیشرفته</p></div>
+                <div class="service-card" data-aos="fade-up" data-aos-delay="200"><div class="service-icon purple"><i class="fas fa-credit-card"></i></div><h3>مدیریت مالی</h3><p>پرداخت آنلاین شهریه و صورت‌حساب</p></div>
+                <div class="service-card" data-aos="fade-up" data-aos-delay="300"><div class="service-icon green"><i class="fas fa-robot"></i></div><h3>دستیار هوشمند</h3><p>پشتیبانی ۲۴ ساعته با هوش مصنوعی</p></div>
+            </div>
+        </div>
+    </section>
+        <!-- News & Events Section -->
+    <section class="news-events-section news-events-operational news-events-compact-v3" id="news-events" aria-labelledby="newsEventsTitle">
+        <div class="container news-events-compact-container">
+            <div class="op-section-heading op-section-heading-light" data-aos="fade-up">
+                <div class="op-heading-line"><span></span><i class="fas fa-diamond"></i><span></span></div>
+                <h2 id="newsEventsTitle">اخبار و رویدادها</h2>
+                <p>جدیدترین خبرها و برنامه‌های مدرسه هوشمند</p>
+            </div>
+            <div class="news-filter-tabs" data-aos="fade-up" data-aos-delay="80" aria-label="فیلتر اخبار و رویدادها">
+                <button class="news-filter active" type="button" data-news-filter="all">همه <i class="fas fa-border-all"></i></button>
+                <button class="news-filter" type="button" data-news-filter="news">اخبار <i class="far fa-newspaper"></i></button>
+                <button class="news-filter" type="button" data-news-filter="event">رویدادها <i class="far fa-calendar-alt"></i></button>
+                <button class="news-filter" type="button" data-news-filter="notice">اطلاعیه‌ها <i class="far fa-bell"></i></button>
+                <button class="news-filter" type="button" data-news-filter="success">موفقیت‌ها <i class="fas fa-trophy"></i></button>
+            </div>
+            <div class="news-events-layout news-operational-layout news-dynamic-layout news-count-0" id="homepageNewsEvents" data-aos="fade-up" data-aos-delay="140">
+                <div class="news-empty-state">
+                    <i class="far fa-newspaper"></i>
+                    <h3>هنوز خبری برای صفحه اصلی ثبت نشده است</h3>
+                    <p>این بخش فقط خبرهای ثبت‌شده در صفحه «اخبار صفحه اصلی» را نمایش می‌دهد.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Honorees Section -->
+    <section class="honorees-section honorees-premium honorees-reference" aria-labelledby="honoreesTitle">
+        <div class="container honorees-reference-container">
+            <div class="honorees-reference-heading" data-aos="fade-up">
+                <div class="honorees-title-wrap">
+                    <span class="honorees-title-ornament" aria-hidden="true"></span>
+                    <h2 id="honoreesTitle">افتخارآفرینان</h2>
+                    <span class="honorees-medal" aria-hidden="true"><i class="fas fa-medal"></i></span>
+                    <span class="honorees-title-ornament" aria-hidden="true"></span>
+                </div>
+                <p>دانش‌آموزان درخشان در مسیر مدیریت هوشمند</p>
+                <div class="honorees-under-jewel" aria-hidden="true"><span></span><i class="fas fa-diamond"></i><span></span></div>
+            </div>
+
+            <div class="honorees-reference-grid" data-aos="fade-up" data-aos-delay="120">
+                <a href="/pages/homepage/Honorable/olampiad.html?page=international_hub" class="honoree-image-card" aria-label="مشاهده صفحه مدال‌آوران رقابت‌های بین‌المللی">
+                    <img src="/public/assets/images/honorees/medal-international.png" alt="مدال‌آوران رقابت‌های بین‌المللی" loading="lazy">
+                </a>
+                <a href="/pages/homepage/Honorable/tizhoshan.html?page=sampad" class="honoree-image-card" aria-label="مشاهده صفحه پذیرفته‌شدگان مدارس تیزهوشان">
+                    <img src="/public/assets/images/honorees/sampad-accepted.png" alt="پذیرفته‌شدگان مدارس تیزهوشان" loading="lazy">
+                </a>
+                <a href="/pages/homepage/Honorable/art.html?page=art_honors" class="honoree-image-card" aria-label="مشاهده صفحه افتخارات هنری">
+                    <img src="/public/assets/images/honorees/art-achievements.png" alt="افتخارات هنری" loading="lazy">
+                </a>
+                <a href="/pages/homepage/Honorable/programming-robotics.html?page=programming_robotics" class="honoree-image-card" aria-label="مشاهده صفحه برنامه‌نویسی و رباتیک">
+                    <img src="/public/assets/images/honorees/programming-robotics.png" alt="برنامه‌نویسی و رباتیک" loading="lazy">
+                </a>
+                <a href="/pages/homepage/Honorable/martial-arts.html?page=martial_arts" class="honoree-image-card" aria-label="مشاهده صفحه افتخارات رزمی">
+                    <img src="/public/assets/images/honorees/sports-achievements.png" alt="افتخارات رزمی" loading="lazy">
+                </a>
+                <a href="/pages/homepage/Honorable/research-innovation.html?page=research_innovation" class="honoree-image-card" aria-label="مشاهده صفحه پژوهش و نوآوری">
+                    <img src="/public/assets/images/honorees/research-innovation.png" alt="پژوهش و نوآوری" loading="lazy">
+                </a>
+            </div>
+        </div>
+    </section>
+    <!-- Gallery Section -->
+    <section class="gallery gallery-operational" id="gallery" aria-labelledby="galleryTitle">
+        <div class="container">
+            <div class="op-section-heading op-section-heading-light" data-aos="fade-up">
+                <h2 id="galleryTitle">گالری</h2>
+                <p>لحظاتی از سیستم مدیریت هوشمند</p>
+                <div class="op-heading-line"><span></span><i class="fas fa-diamond"></i><span></span></div>
+            </div>
+            <div class="gallery-filter-tabs" data-aos="fade-up" data-aos-delay="80" aria-label="فیلتر گالری تصاویر">
+                <button class="gallery-filter active" type="button" data-gallery-filter="all">همه <i class="fas fa-border-all"></i></button>
+                <button class="gallery-filter" type="button" data-gallery-filter="educational">آموزشی <span class="hero-badge-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" focusable="false">
+                                <path d="M12 2.75 19.25 5.6v5.3c0 4.55-2.95 8.55-7.25 10.35C7.7 19.45 4.75 15.45 4.75 10.9V5.6L12 2.75Z"/>
+                                <path d="M8.3 8.45c1.35-.7 2.75-.7 3.7.05.95-.75 2.35-.75 3.7-.05v6.25c-1.35-.7-2.75-.7-3.7.05-.95-.75-2.35-.75-3.7-.05V8.45Z"/>
+                            </svg>
+                        </span></button>
+                <button class="gallery-filter" type="button" data-gallery-filter="technology">فناوری <i class="fas fa-laptop"></i></button>
+                <button class="gallery-filter" type="button" data-gallery-filter="quran">قرآنی <i class="fas fa-book-open"></i></button>
+                <button class="gallery-filter" type="button" data-gallery-filter="art">هنری <i class="fas fa-palette"></i></button>
+                <button class="gallery-filter" type="button" data-gallery-filter="sports">ورزشی <i class="far fa-futbol"></i></button>
+            </div>
+            <div class="gallery-grid gallery-operational-grid" id="homepageGalleryGrid" data-aos="fade-up" data-aos-delay="140">
+                <article class="gallery-item" data-gallery-category="educational">
+                    <img src="/assets/images/homepage-final/gallery-smart-class.png" alt="کلاس هوشمند" loading="lazy">
+                    <div class="gallery-overlay"><p>کلاس هوشمند</p><span><i class="fas fa-users"></i> محیط آموزشی پویا</span></div>
+                </article>
+                <article class="gallery-item" data-gallery-category="technology">
+                    <img src="/assets/images/homepage-final/gallery-programming.png" alt="برنامه‌نویسی" loading="lazy">
+                    <div class="gallery-overlay"><p>برنامه‌نویسی</p><span><i class="fas fa-code"></i> آموزش فناوری</span></div>
+                </article>
+                <article class="gallery-item" data-gallery-category="technology">
+                    <img src="/assets/images/homepage-final/gallery-robotics.png" alt="رباتیک" loading="lazy">
+                    <div class="gallery-overlay"><p>رباتیک</p><span><i class="fas fa-robot"></i> پروژه‌های هوشمند</span></div>
+                </article>
+                <article class="gallery-item" data-gallery-category="quran">
+                    <img src="/assets/images/homepage-final/gallery-quran.png" alt="قرآنی" loading="lazy">
+                    <div class="gallery-overlay"><p>قرآنی</p><span><i class="fas fa-book-open"></i> آموزش قرآن</span></div>
+                </article>
+                <article class="gallery-item" data-gallery-category="art">
+                    <img src="/assets/images/homepage-final/gallery-art.png" alt="هنری" loading="lazy">
+                    <div class="gallery-overlay"><p>هنری</p><span><i class="fas fa-palette"></i> خلاقیت دانش‌آموزان</span></div>
+                </article>
+                <article class="gallery-item" data-gallery-category="sports">
+                    <img src="/assets/images/homepage-final/gallery-sports.png" alt="ورزشی" loading="lazy">
+                    <div class="gallery-overlay"><p>ورزشی</p><span><i class="far fa-futbol"></i> نشاط و مهارت</span></div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why School Section -->
+    <section class="why-us why-smart-final" id="why-smart" aria-labelledby="whyTitle">
+        <div class="container">
+            <div class="premium-section-heading dark why-final-heading" data-aos="fade-up">
+                <h2 id="whyTitle">چرا این مدرسه؟</h2>
+                <p>محیطی امن، پویا و رشددهنده برای آینده دانش‌آموزان</p>
+                <div class="heading-jewel"><span class="gold"></span><i class="fas fa-diamond"></i><span></span></div>
+            </div>
+            <div class="why-final-grid" data-aos="fade-up" data-aos-delay="120">
+                <article class="why-final-card why-blue">
+                    <div class="why-final-icon"><i class="fas fa-chalkboard-user"></i></div>
+                    <span class="why-final-line"></span>
+                    <h4>آموزش هوشمند</h4>
+                    <p>یادگیری فعال با ابزارهای نوین آموزشی</p>
+                </article>
+                <article class="why-final-card why-gold">
+                    <div class="why-final-icon"><i class="fas fa-user-tie"></i></div>
+                    <span class="why-final-line"></span>
+                    <h4>معلمان باتجربه</h4>
+                    <p>همراهی دبیران متخصص و دلسوز</p>
+                </article>
+                <article class="why-final-card why-green">
+                    <div class="why-final-icon"><i class="fas fa-shield-alt"></i></div>
+                    <span class="why-final-line"></span>
+                    <h4>محیط امن تربیتی</h4>
+                    <p>فضایی آرام، منظم و دانش‌آموزمحور</p>
+                </article>
+                <article class="why-final-card why-purple">
+                    <div class="why-final-icon"><i class="fas fa-comments"></i></div>
+                    <span class="why-final-line"></span>
+                    <h4>ارتباط با خانواده</h4>
+                    <p>همراهی منظم مدرسه، اولیا و مربیان</p>
+                </article>
+                <article class="why-final-card why-red">
+                    <div class="why-final-icon"><i class="fas fa-star"></i></div>
+                    <span class="why-final-line"></span>
+                    <h4>کشف استعدادها</h4>
+                    <p>رشد علمی، هنری، قرآنی و ورزشی</p>
+                </article>
+                <article class="why-final-card why-pink">
+                    <div class="why-final-icon"><i class="fas fa-seedling"></i></div>
+                    <span class="why-final-line"></span>
+                    <h4>مهارت برای آینده</h4>
+                    <p>پرورش خلاقیت و مسئولیت‌پذیری</p>
+                </article>
+            </div>
+        </div>
+    </section>
+<!-- Testimonials Section -->
+    <section class="testimonials testimonials-final" id="testimonials" aria-labelledby="testimonialsTitle">
+        <div class="container">
+            <div class="testimonials-final-heading" data-aos="fade-up">
+                <h2 id="testimonialsTitle">نظرات کاربران</h2>
+                <p>آنچه مشتریان درباره ما می‌گویند</p>
+            </div>
+            <div class="testimonials-final-carousel" id="testimonialsCarousel" data-aos="fade-up" data-aos-delay="120">
+                <article class="testimonial-card testimonial-side prev" data-testimonial-card="prev">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">محتوای آموزشی بسیار باکیفیت و کاربردی ارائه می‌دهد. پشتیبانی عالی و مسیرهای یادگیری شخصی‌سازی شده باعث شده همیشه انگیزه داشته باشیم.</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-info"><h4>علی رضایی</h4><p>توسعه‌دهنده فرانت‌اند</p></div>
+                        <img src="/assets/images/homepage-final/avatar-ali.png" alt="علی رضایی" loading="lazy">
+                    </div>
+                </article>
+                <article class="testimonial-card testimonial-main active" data-testimonial-card="active">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">هوش‌یار تجربه یادگیری من را کاملاً متحول کرد. توضیحات مفهومی، تمرین‌های هوشمند و بازخوردهای دقیق باعث شد در کمترین زمان بیشترین پیشرفت را داشته باشم.</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-info"><h4>محمد حسینی</h4><p>دانشجوی مهندسی کامپیوتر</p></div>
+                        <img src="/assets/images/homepage-final/avatar-mohammad.png" alt="محمد حسینی" loading="lazy">
+                    </div>
+                </article>
+                <article class="testimonial-card testimonial-side next" data-testimonial-card="next">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">من با کمک‌های هوشمند این پلتفرم از پایه شروع کردم و الان به سطح خیلی خوبی رسیدم. پیشنهاد می‌کنم هر کسی که می‌خواهد حرفه‌ای یاد بگیرد امتحانش کند.</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-info"><h4>سارا احمدی</h4><p>طراح UI/UX</p></div>
+                        <img src="/assets/images/homepage-final/avatar-sara.png" alt="سارا احمدی" loading="lazy">
+                    </div>
+                </article>
+            </div>
+            <div class="testimonial-final-dots" aria-label="کنترل نظرات کاربران">
+                <button type="button" class="active" data-testimonial-dot="0" aria-label="نظر اول"></button>
+                <button type="button" data-testimonial-dot="1" aria-label="نظر دوم"></button>
+                <button type="button" data-testimonial-dot="2" aria-label="نظر سوم"></button>
+                <button type="button" data-testimonial-dot="3" aria-label="نظر چهارم"></button>
+                <button type="button" data-testimonial-dot="4" aria-label="نظر پنجم"></button>
+            </div>
+        </div>
+    </section>
+
+<!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-container" data-aos="zoom-in">
+                <div class="cta-content">
+                    <h2>آماده شروع هستید؟</h2>
+                    <p>همین امروز ثبت‌نام کنید و از مدیریت هوشمند بهره‌مند شوید</p>
+                    <a href="/pages/homepage/auth/register.html" class="btn btn-secondary"><i class="fas fa-pen-fancy"></i> شروع ثبت‌نام</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+        <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <div class="logo-icon logo-image-wrap footer-logo-image-wrap"><img src="/public/assets/images/logo.png" alt="لوگوی مدرسه هوشمند فرزانگان" loading="lazy" onerror="this.onerror=null;this.src='/public/assets/img/honors/school-logo.png';"></div>
+                        <div class="logo-text"><h3>مدرسه هوشمند فرزانگان</h3><p>سیستم یکپارچه آموزشی</p></div>
+                    </div>
+                    <p>مدیریت هوشمند، پلتفرم جامع مدیریت مدارس با امکانات پیشرفته و پشتیبانی ۲۴ ساعته.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>دسترسی سریع</h4>
+                    <ul>
+                        <li><a href="/">صفحه اصلی</a></li>
+                        <li><a href="/pages/homepage/services.html">خدمات</a></li>
+                        <li><a href="/pages/homepage/about.html">درباره ما</a></li>
+                        <li><a href="/pages/homepage/contact.html">تماس با ما</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links footer-systems">
+                    <h4>سامانه‌ها</h4>
+                    <ul class="systems-links-list">
+                        <li><a href="/pages/homepage/auth/login.html">ورود به سامانه</a></li>
+                        <li><a href="/register">ثبت‌نام</a></li>
+                        <li><a href="https://my.medu.ir" target="_blank" rel="noopener">مای مدیو</a></li>
+                        <li><a href="https://shad.ir" target="_blank" rel="noopener">شاد</a></li>
+                        <li><a href="https://www.roshd.ir" target="_blank" rel="noopener">رشد</a></li>
+                        <li><a href="https://www.irtextbook.ir" target="_blank" rel="noopener">کتاب‌های درسی</a></li>
+                        <li><a href="https://hamgam.medu.ir" target="_blank" rel="noopener">همگام</a></li>
+                        <li><a href="https://noorino.medu.ir" target="_blank" rel="noopener">نورینو</a></li>
+                        <li><a href="https://snd.medu.ir" target="_blank" rel="noopener">سناد</a></li>
+                        <li><a href="https://sida.medu.ir" target="_blank" rel="noopener">سیدا</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links footer-contact">
+                    <h4>تماس با ما</h4>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i><span id="footerAddress">تهران</span></li>
+                        <li><i class="fas fa-phone"></i><span dir="ltr" id="footerPhone">۰۲۱-۴۴۷۰۶۶۴۴</span></li>
+                        <li><i class="fas fa-mobile-alt"></i><span dir="ltr" id="footerSupport">۰۹۱۰۶۶۶۱۳۸۶</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom"><p>تمامی حقوق متعلق به مدیریت هوشمند می‌باشد.</p><div class="social-links social-links-apps"><a href="#" class="social-app-link" aria-label="شاد"><img src="/public/assets/img/honors/shad-icon.png" alt="شاد" loading="lazy"></a><a href="#" class="social-app-link" aria-label="بله"><img src="/public/assets/img/honors/bale-icon.png" alt="بله" loading="lazy"></a><a href="#" class="social-app-link" aria-label="ایتا"><img src="/public/assets/img/honors/eitaa-clean-icon.png" alt="ایتا" loading="lazy"></a></div></div>
+        </div>
+    </footer>
+
+    <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0, behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+
+    <!-- Chatbot -->
+    <button class="chatbot-button-farz" id="chatbotButtonFarz" aria-label="باز کردن چت هوشمند" title="پشتیبان هوشمند">
+        <img src="/assets/images/chatbot/chatbot-exact-icon.png" alt="پشتیبان هوشمند" class="chatbot-exact-icon">
+    </button>
+
+    <section class="chatbot-panel-farz smart-chat-shell" id="chatbotPanelFarz" aria-label="پشتیبان هوشمند مدرسه">
+        <header class="smart-chat-header">
+            <div class="smart-chat-bg-dot dot-a"></div>
+            <div class="smart-chat-bg-dot dot-b"></div>
+
+            <button class="smart-chat-close" id="chatbotCloseFarz" aria-label="بستن">
+                <i class="ri-close-line"></i>
+            </button>
+
+            <div class="smart-chat-brand">
+                <span class="smart-chat-avatar">
+                    <i class="ri-robot-2-line"></i>
+                </span>
+                <div class="smart-chat-title">
+                    <strong>پشتیبان هوشمند</strong>
+                    <span><i></i> آنلاین و آماده پاسخ‌گویی</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="smart-chat-body">
+            <div class="smart-chat-note">
+                <span><i class="ri-shield-check-line"></i></span>
+                <p>سؤال خود را درباره ثبت‌نام، برنامه‌ها، اخبار یا ارتباط با مدرسه بپرسید.</p>
+            </div>
+
+            <div class="smart-chat-messages" id="chatbotMessagesFarz">
+                <div class="smart-message-row bot">
+                    <div class="smart-mini-avatar">
+                        <i class="ri-robot-2-line"></i>
+                    </div>
+                    <div class="smart-message-content">
+                        <div class="smart-bubble bot-bubble">
+                            سلام، من دستیار هوشمند مدرسه هستم. چطور می‌توانم راهنمایی‌تان کنم؟
+                        </div>
+                        <span class="smart-time">اکنون</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="smart-quick-actions" aria-label="دسترسی سریع">
+                <button type="button" class="smart-quick-btn" onclick="sendQuickMessage('اطلاعات ثبت‌نام را می‌خواهم.')">
+                    <span class="blue"><i class="ri-file-list-3-line"></i></span>
+                    ثبت‌نام
+                </button>
+                <button type="button" class="smart-quick-btn" onclick="sendQuickMessage('امکانات مدرسه چیست؟')">
+                    <span class="green"><i class="ri-puzzle-line"></i></span>
+                    امکانات
+                </button>
+                <button type="button" class="smart-quick-btn" onclick="sendQuickMessage('چطور با مدرسه ارتباط بگیرم؟')">
+                    <span class="purple"><i class="ri-phone-line"></i></span>
+                    ارتباط
+                </button>
+            </div>
+
+            <form class="smart-chat-input" id="chatForm" onsubmit="event.preventDefault(); sendChatMessage();">
+                <button type="button" class="smart-attach-btn" aria-label="پیوست فایل">
+                    <i class="ri-attachment-2"></i>
+                </button>
+                <input id="chatbotInputFarz" type="text" placeholder="پیام خود را بنویسید..." autocomplete="off" onkeypress="handleChatKeyPress(event)">
+                <button type="submit" class="smart-send-btn" aria-label="ارسال پیام">
+                    <i class="ri-send-plane-fill"></i>
+                </button>
+            </form>
+        </main>
+    </section>
+
+    <!-- Scripts -->
+
+    <script src="/public/assets/js/aos.js"></script>
+    <script src="/public/assets/js/homepage.js?v=fix-24-news-modal"></script>
+
+<script id="SMART_CHAT_CLEAN_SCRIPT">
+(function () {
+    function escapeHTML(text) {
+        return String(text).replace(/[&<>"']/g, function (ch) {
+            return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]);
+        });
+    }
+
+    function timeNow() {
+        try {
+            return new Intl.DateTimeFormat('fa-IR', { hour: '2-digit', minute: '2-digit' }).format(new Date());
+        } catch (e) {
+            return 'اکنون';
+        }
+    }
+
+    window.handleChatKeyPress = function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            window.sendChatMessage();
+        }
+    };
+
+    window.sendQuickMessage = function(message) {
+        const input = document.getElementById('chatbotInputFarz');
+        if (!input) return;
+        input.value = message;
+        window.sendChatMessage();
+    };
+
+    window.getBotResponse = function(message) {
+        const text = String(message || '').trim();
+        if (text.includes('ثبت') || text.includes('نام')) {
+            return 'برای ثبت‌نام، اطلاعات دانش‌آموز را وارد کنید؛ سپس مدارک لازم، زمان مراجعه و مراحل تکمیل پرونده نمایش داده می‌شود.';
+        }
+        if (text.includes('امکانات')) {
+            return 'امکانات مدرسه شامل کلاس‌های هوشمند، ارتباط با اولیا، گزارش‌گیری آموزشی، برنامه هفتگی و اطلاع‌رسانی آنلاین است.';
+        }
+        if (text.includes('ارتباط') || text.includes('تماس')) {
+            return 'برای ارتباط با مدرسه می‌توانید از شماره تماس، فرم پیام یا بخش ارتباط با ما استفاده کنید.';
+        }
+        if (text.includes('اخبار') || text.includes('رویداد')) {
+            return 'آخرین اخبار، اطلاعیه‌ها و رویدادهای مدرسه در بخش اخبار و رویدادها قابل مشاهده است.';
+        }
+        return 'پیام شما دریافت شد. لطفاً درباره ثبت‌نام، امکانات، اخبار یا ارتباط با مدرسه سؤال خود را بپرسید.';
+    };
+
+    window.sendChatMessage = function() {
+        const input = document.getElementById('chatbotInputFarz');
+        const messages = document.getElementById('chatbotMessagesFarz');
+        if (!input || !messages) return;
+
+        const raw = input.value.trim();
+        if (!raw) return;
+
+        messages.insertAdjacentHTML('beforeend', `
+            <div class="smart-message-row user">
+                <div class="smart-message-content">
+                    <div class="smart-bubble user-bubble">${escapeHTML(raw)}</div>
+                    <span class="smart-time user-time">${timeNow()} <i class="ri-check-double-line"></i></span>
+                </div>
+            </div>
+        `);
+
+        input.value = '';
+        messages.scrollTop = messages.scrollHeight;
+
+        setTimeout(function () {
+            messages.insertAdjacentHTML('beforeend', `
+                <div class="smart-message-row bot">
+                    <div class="smart-mini-avatar">
+                        <i class="ri-robot-2-line"></i>
+                    </div>
+                    <div class="smart-message-content">
+                        <div class="smart-bubble bot-bubble">${escapeHTML(window.getBotResponse(raw))}</div>
+                        <span class="smart-time">${timeNow()}</span>
+                    </div>
+                </div>
+            `);
+            messages.scrollTop = messages.scrollHeight;
+        }, 420);
+    };
+})();
+</script>
+
+</body>
+</html>

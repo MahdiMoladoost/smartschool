@@ -1,0 +1,164 @@
+<%
+// تابع تبدیل اعداد انگلیسی به فارسی
+function toPersianNumber(str) {
+    if (!str) return '';
+    const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    return str.toString().replace(/\d/g, function(x) {
+        return persianDigits[parseInt(x)];
+    });
+}
+%>
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> | <%= settings.school_name %></title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/public/assets/css/all.min.css">
+    
+    <!-- Main Styles -->
+    <link rel="stylesheet" href="/public/assets/css/home page/style.css">
+    <link rel="stylesheet" href="/public/assets/css/home page/homepage.css">
+    <link rel="stylesheet" href="/public/assets/css/home page/responsive.css">
+    
+    <!-- AOS -->
+    <link href="/public/assets/css/aos.css" rel="stylesheet">
+    
+    <style>
+        body { user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; }
+        .page-header { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; padding: 4rem 0; text-align: center; }
+        .page-header h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+        
+        /* دکمه ورود در هدر */
+        .btn-login {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+        .btn-login:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .btn-register {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 15px rgba(37,99,235,0.35);
+        }
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37,99,235,0.45);
+        }
+        .header-buttons {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        @media (max-width: 640px) {
+            .header-buttons .btn-login span,
+            .header-buttons .btn-register span {
+                display: none;
+            }
+            .header-buttons .btn-login,
+            .header-buttons .btn-register {
+                padding: 0.6rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="top-bar">
+    <div class="container">
+        <div class="top-bar-info">
+            <span><i class="fas fa-phone-alt"></i> <a href="tel:<%= settings.school_phone.replace(/[^0-9]/g, '') %>"><%= toPersianNumber(settings.school_phone) %></a></span>
+            <span class="hidden-mobile"><i class="fas fa-map-marker-alt"></i> <%= settings.school_address %></span>
+        </div>
+        <div class="top-bar-actions">
+            <span class="hidden-mobile">پشتیبان: <a href="tel:<%= settings.support_phone.replace(/[^0-9]/g, '') %>"><%= toPersianNumber(settings.support_phone) %></a></span>
+        </div>
+    </div>
+</div>
+
+<!-- Header -->
+<header class="main-header" id="header">
+    <div class="container nav-container">
+        <a href="/" class="logo">
+            <div class="logo-icon logo-image-wrap"><img src="/public/assets/images/logo.png" alt="لوگوی <%= settings.school_name %>" loading="eager" onerror="this.onerror=null;this.src='/assets/images/logo.png';"></div>
+            <div class="logo-text">
+                <h1><%= settings.school_name %></h1>
+                <p><%= settings.school_slogan %></p>
+            </div>
+        </a>
+        
+        <nav class="desktop-nav">
+            <a href="/" class="nav-link <%= activePage === 'home' ? 'active' : '' %>">صفحه اصلی</a>
+            <div class="has-dropdown">
+                <a href="/services" class="nav-link <%= activePage === 'services' ? 'active' : '' %>">خدمات <i class="fas fa-chevron-down"></i></a>
+                <div class="dropdown">
+                    <a href="/services#technology"><i class="fas fa-laptop-code"></i> آموزش تکنولوژی</a>
+                    <a href="/services#counseling"><i class="fas fa-hand-holding-heart"></i> مشاوره و راهنمایی</a>
+                    <a href="/services#specialized"><i class="fas fa-star"></i> کلاس‌های تخصصی</a>
+                </div>
+            </div>
+            <a href="/about" class="nav-link <%= activePage === 'about' ? 'active' : '' %>">درباره ما</a>
+            <a href="/timeline" class="nav-link <%= activePage === 'timeline' ? 'active' : '' %>">تاریخچه</a>
+            <a href="/faq" class="nav-link <%= activePage === 'faq' ? 'active' : '' %>">سوالات متداول</a>
+            <a href="/contact" class="nav-link <%= activePage === 'contact' ? 'active' : '' %>">ارتباط با ما</a>
+        </nav>
+        
+        <div class="header-buttons">
+            <div class="header-actions">
+                <a href="/pages/homepage/auth/login.html" class="btn btn-login" style="text-decoration: none; padding: 0.6rem 1.2rem; border-radius: 9999px; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-sign-in-alt"></i> <span>ورود</span>
+                </a>
+                <a href="/pages/homepage/auth/register.html" class="btn btn-register" style="text-decoration: none; padding: 0.6rem 1.2rem; border-radius: 9999px; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-user-plus"></i> <span>ثبت‌نام</span>
+                </a>
+            </div>
+            <button class="mobile-toggle" onclick="openMobileMenu()"><i class="fas fa-bars"></i></button>
+        </div>
+    </div>
+</header>
+
+<!-- Mobile Menu -->
+<div class="mobile-overlay" id="mobile-overlay" onclick="closeMobileMenu()"></div>
+<div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu-header">
+        <div class="logo">
+            <div class="logo-icon logo-image-wrap mobile-logo-image-wrap"><img src="/public/assets/images/logo.png" alt="لوگوی <%= settings.school_name %>" loading="eager" onerror="this.onerror=null;this.src='/assets/images/logo.png';"></div>
+            <div class="logo-text"><h1 style="color: white; font-size: 1rem;"><%= settings.school_name %></h1></div>
+        </div>
+        <button class="mobile-menu-close" onclick="closeMobileMenu()"><i class="fas fa-times"></i></button>
+    </div>
+    <nav class="mobile-nav">
+        <a href="/" onclick="closeMobileMenu()"><i class="fas fa-home"></i> صفحه اصلی</a>
+        <div class="mobile-accordion">
+            <div class="mobile-accordion-header" onclick="toggleAccordion(this)">
+                <span><i class="fas fa-concierge-bell"></i> خدمات</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="mobile-accordion-content">
+                <a href="/services#technology" onclick="closeMobileMenu()">آموزش تکنولوژی</a>
+                <a href="/services#counseling" onclick="closeMobileMenu()">مشاوره و راهنمایی</a>
+                <a href="/services#specialized" onclick="closeMobileMenu()">کلاس‌های تخصصی</a>
+            </div>
+        </div>
+        <a href="/about" onclick="closeMobileMenu()"><i class="fas fa-building"></i> درباره ما</a>
+        <a href="/timeline" onclick="closeMobileMenu()"><i class="fas fa-history"></i> تاریخچه</a>
+        <a href="/faq" onclick="closeMobileMenu()"><i class="fas fa-question-circle"></i> سوالات متداول</a>
+        <a href="/contact" onclick="closeMobileMenu()"><i class="fas fa-phone"></i> ارتباط با ما</a>
+        <div class="mobile-cta" style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem;">
+            <a href="/pages/homepage/auth/login.html" class="btn btn-outline btn-full" onclick="closeMobileMenu()" style="display: block; text-align: center;">
+                <i class="fas fa-sign-in-alt"></i> ورود به سامانه
+            </a>
+            <a href="/pages/homepage/auth/register.html" class="btn btn-primary btn-full" onclick="closeMobileMenu()" style="display: block; text-align: center;">
+                <i class="fas fa-user-plus"></i> ثبت‌نام
+            </a>
+        </div>
+    </nav>
+</div>

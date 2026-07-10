@@ -1,0 +1,75 @@
+<%
+    const page = (typeof faqPage !== 'undefined' && faqPage) ? faqPage : {"hero": {"kicker": "راهنمای سریع خانواده‌ها", "title": "سوالات متداول", "subtitle": "پاسخ پرسش‌های پرتکرار درباره ثبت‌نام، خدمات آموزشی، پنل مدرسه و ارتباط با مدیریت هوشمند"}, "categories": [{"id": "general", "title": "عمومی", "icon": "fa-circle-question"}, {"id": "registration", "title": "ثبت‌نام", "icon": "fa-user-plus"}, {"id": "education", "title": "آموزش", "icon": "fa-graduation-cap"}, {"id": "panel", "title": "پنل و سامانه", "icon": "fa-laptop-code"}], "items": [{"id": "faq-1", "category": "registration", "question": "چگونه می‌توانم برای ثبت‌نام اقدام کنم؟", "answer": "برای شروع ثبت‌نام، روی دکمه ثبت‌نام آنلاین در سایت کلیک کنید، اطلاعات اولیه دانش‌آموز و والدین را وارد نمایید و منتظر بررسی توسط واحد پذیرش مدرسه بمانید.", "sort": 1, "featured": true, "active": true}, {"id": "faq-2", "category": "education", "question": "خدمات آموزشی مدرسه شامل چه مواردی است؟", "answer": "خدمات آموزشی شامل آموزش فناوری، مشاوره و راهنمایی، کلاس‌های تخصصی، برنامه‌های مهارتی و پشتیبانی تحصیلی دانش‌آموزان در طول سال است.", "sort": 2, "featured": true, "active": true}, {"id": "faq-3", "category": "panel", "question": "آیا والدین به پنل اختصاصی دسترسی دارند؟", "answer": "بله، والدین می‌توانند از طریق پنل خود وضعیت تحصیلی، اطلاعیه‌ها، پیام‌ها و بخش‌های مرتبط با فرزندشان را مشاهده و پیگیری کنند.", "sort": 3, "featured": false, "active": true}, {"id": "faq-4", "category": "general", "question": "چطور می‌توانم با مدرسه ارتباط بگیرم؟", "answer": "برای ارتباط با مدرسه می‌توانید از صفحه تماس با ما، شماره‌های درج‌شده در سایت یا بخش پیام‌رسانی سامانه استفاده کنید.", "sort": 4, "featured": false, "active": true}], "cta": {"title": "پاسخ سوال خود را پیدا نکردید؟", "subtitle": "تیم پشتیبانی مدرسه آماده پاسخ‌گویی و راهنمایی شماست.", "button_text": "ارتباط با ما", "button_link": "/contact"}};
+    const stats = (typeof faqStats !== 'undefined' && faqStats) ? faqStats : { total: String((page.items || []).filter(i => i.active !== false).length).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]), categories: String((page.categories || []).length).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]), featured: String((page.items || []).filter(i => i.featured && i.active !== false).length).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]) };
+    const categories = Array.isArray(page.categories) ? page.categories : [];
+    const items = Array.isArray(page.items) ? page.items.filter(item => item.active !== false) : [];
+    const categoryTitle = function(id) { const found = categories.find(c => c.id === id); return found ? found.title : 'عمومی'; };
+%>
+<%- include('../partials/header', { title: page.hero?.title || 'سوالات متداول', activePage: 'faq' }) %>
+<link rel="stylesheet" href="/public/assets/css/home page/homepage.css?v=shared-home-layout-39">
+<style>
+.faq-page{background:#f8fafc;overflow:hidden}.faq-hero{background:linear-gradient(135deg,#172554 0%,#2563eb 52%,#0ea5e9 100%);color:#fff;padding:5.2rem 0 4.7rem;text-align:center}.faq-badge{display:inline-flex;align-items:center;gap:.55rem;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:.55rem 1rem;font-weight:950;margin-bottom:1.1rem}.faq-hero h1{font-size:3.05rem;margin:0 0 1rem;font-weight:950;letter-spacing:-.03em}.faq-hero p{max-width:780px;margin:0 auto;color:#eaf2ff;font-weight:850;line-height:2;font-size:1.04rem}.faq-shell{padding:0 0 5rem}.faq-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.1rem;margin-top:-48px;position:relative;z-index:2}.faq-summary-card{position:relative;overflow:hidden;background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid #dbeafe;border-radius:30px;padding:1.35rem 1.2rem;text-align:center;box-shadow:0 22px 52px rgba(15,23,42,.075)}.faq-summary-card:before{content:'';position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(90deg,#2563eb,#06b6d4,#22c55e)}.faq-summary-card i{width:62px;height:62px;border-radius:20px;background:linear-gradient(135deg,#eff6ff,#dbeafe);color:#2563eb;display:grid;place-items:center;margin:0 auto .85rem;font-size:1.3rem;border:1px solid #bfdbfe}.faq-summary-card strong{display:block;color:#0f172a;font-size:2rem;font-weight:950;line-height:1}.faq-summary-card span{display:block;color:#64748b;font-weight:950;margin-top:.6rem}.faq-search-panel{background:#fff;border:1px solid #dbeafe;border-radius:34px;margin-top:2rem;padding:1.15rem;box-shadow:0 20px 50px rgba(15,23,42,.06);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1rem;align-items:center}.faq-search{height:64px;border:0;background:#f8fafc;border-radius:22px;padding:0 1.25rem;font-family:inherit;font-weight:900;color:#0f172a;outline:none;box-shadow:inset 0 0 0 1px #edf2f7}.faq-search:focus{background:#fff;box-shadow:inset 0 0 0 2px #bfdbfe}.faq-cats{display:flex;gap:.65rem;flex-wrap:wrap;justify-content:flex-end}.faq-cat-btn{border:1px solid #dbeafe;background:#eff6ff;color:#2563eb;border-radius:18px;padding:.78rem 1rem;font-family:inherit;font-weight:950;cursor:pointer;display:inline-flex;align-items:center;gap:.45rem}.faq-cat-btn.active{background:#2563eb;color:#fff;box-shadow:0 12px 28px rgba(37,99,235,.18)}.faq-layout{display:grid;grid-template-columns:330px minmax(0,1fr);gap:1.35rem;margin-top:1.35rem}.faq-side{background:#fff;border:1px solid #dbeafe;border-radius:30px;padding:1.15rem;box-shadow:0 20px 50px rgba(15,23,42,.055);align-self:start;position:sticky;top:100px}.faq-side h3{margin:0 0 .75rem;color:#0f172a;font-weight:950}.faq-side p{margin:0 0 1rem;color:#64748b;line-height:1.9;font-weight:850}.faq-side a{display:flex;align-items:center;justify-content:space-between;gap:.6rem;text-decoration:none;color:#0f172a;border:1px solid #e2e8f0;background:#f8fafc;border-radius:18px;padding:.85rem .95rem;font-weight:900;margin:.6rem 0}.faq-list{display:flex;flex-direction:column;gap:1rem}.faq-item{background:#fff;border:1px solid #dbeafe;border-radius:28px;box-shadow:0 16px 42px rgba(15,23,42,.055);overflow:hidden;transition:.2s}.faq-item:hover{border-color:#bfdbfe;box-shadow:0 22px 54px rgba(37,99,235,.1)}.faq-question{width:100%;border:0;background:transparent;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.2rem 1.25rem;cursor:pointer;font-family:inherit;color:#0f172a;text-align:right}.faq-question strong{font-size:1.05rem;font-weight:950;line-height:1.8}.faq-question small{display:inline-flex;align-items:center;gap:.35rem;background:#eff6ff;border:1px solid #dbeafe;color:#2563eb;border-radius:999px;padding:.35rem .65rem;font-weight:900;margin-bottom:.45rem}.faq-toggle{width:42px;height:42px;border-radius:16px;background:#f8fafc;border:1px solid #e2e8f0;color:#2563eb;display:grid;place-items:center;flex:0 0 auto;transition:.2s}.faq-answer{max-height:0;overflow:hidden;transition:max-height .25s ease}.faq-answer-inner{padding:0 1.25rem 1.25rem;color:#475569;line-height:2.1;font-weight:840}.faq-item.open .faq-answer{max-height:500px}.faq-item.open .faq-toggle{transform:rotate(180deg);background:#2563eb;color:#fff}.faq-empty{background:#fff;border:1px dashed #cbd5e1;border-radius:26px;padding:2.5rem;text-align:center;color:#64748b;font-weight:900}.faq-cta{padding:0 0 5rem;background:#f8fafc}.faq-cta-box{background:linear-gradient(135deg,#2563eb,#1d4ed8);border-radius:34px;padding:3.2rem 2rem;color:#fff;text-align:center;box-shadow:0 25px 60px rgba(37,99,235,.18)}.faq-cta-box h2{margin:0 0 .8rem;font-weight:950;font-size:2rem}.faq-cta-box p{margin:0 0 1.35rem;color:#eaf2ff;font-weight:850}.faq-cta-box a{display:inline-flex;align-items:center;gap:.55rem;background:#f59e0b;color:#fff;text-decoration:none;border-radius:18px;padding:.9rem 1.35rem;font-weight:950;box-shadow:0 14px 30px rgba(245,158,11,.24)}@media(max-width:980px){.faq-summary{grid-template-columns:1fr;margin-top:1rem}.faq-search-panel{grid-template-columns:1fr}.faq-cats{justify-content:flex-start}.faq-layout{grid-template-columns:1fr}.faq-side{position:static}.faq-hero h1{font-size:2.2rem}}@media(max-width:560px){.faq-hero{padding:4rem 0 3.5rem}.faq-question{align-items:flex-start}.faq-cat-btn{flex:1;justify-content:center}.faq-cats{display:grid;grid-template-columns:1fr 1fr}.faq-summary-card strong{font-size:1.7rem}}
+
+
+
+/* faq responsive revert patch */
+.faq-question small{display:none!important;}
+@media(max-width:1200px){
+  .faq-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;}
+}
+@media(max-width:760px){
+  .faq-summary{grid-template-columns:1fr;margin-top:1rem;}
+  .faq-summary-card{padding:1.15rem 1rem;}
+  .faq-summary-card i{width:58px;height:58px;font-size:1.2rem;margin-bottom:.7rem;}
+  .faq-summary-card strong{font-size:1.8rem;}
+  .faq-summary-card span{font-size:.95rem;}
+}
+
+
+
+/* faq stats hover interaction */
+.faq-summary-card{
+    transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease, background .22s ease!important;
+    will-change:transform;
+}
+.faq-summary-card i{
+    transition:transform .22s ease, box-shadow .22s ease, background .22s ease!important;
+}
+.faq-summary-card strong,
+.faq-summary-card span{
+    transition:color .22s ease, transform .22s ease!important;
+}
+.faq-summary-card:hover{
+    transform:translateY(-8px)!important;
+    border-color:#bfdbfe!important;
+    box-shadow:0 30px 68px rgba(37,99,235,.16), inset 0 1px 0 rgba(255,255,255,.95)!important;
+    background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%)!important;
+}
+.faq-summary-card:hover i{
+    transform:translateY(-3px) scale(1.06)!important;
+    box-shadow:0 16px 34px rgba(37,99,235,.16)!important;
+    background:linear-gradient(135deg,#eaf2ff,#ffffff)!important;
+}
+.faq-summary-card:hover strong{
+    transform:translateY(-1px)!important;
+    color:#1d4ed8!important;
+}
+.faq-summary-card:hover span{
+    color:#334155!important;
+}
+
+</style>
+<main class="faq-page">
+<section class="faq-hero"><div class="container"><div class="faq-badge"><i class="fas fa-circle-question"></i><%= page.hero?.kicker || 'راهنمای سریع' %></div><h1><%= page.hero?.title || 'سوالات متداول' %></h1><p><%= page.hero?.subtitle || '' %></p></div></section>
+<section class="faq-shell"><div class="container">
+    <div class="faq-summary"><article class="faq-summary-card"><i class="fas fa-question"></i><strong><%= stats.total %></strong><span>پرسش فعال</span></article><article class="faq-summary-card"><i class="fas fa-layer-group"></i><strong><%= stats.categories %></strong><span>دسته‌بندی</span></article><article class="faq-summary-card"><i class="fas fa-star"></i><strong><%= stats.featured %></strong><span>پرسش ویژه</span></article></div>
+    <div class="faq-search-panel"><input class="faq-search" id="faqSearchInput" placeholder="جستجوی سوال یا پاسخ..."><div class="faq-cats"><button class="faq-cat-btn active" data-category="all"><i class="fas fa-border-all"></i> همه</button><% categories.forEach(function(cat){ %><button class="faq-cat-btn" data-category="<%= cat.id %>"><i class="fas <%= cat.icon || 'fa-circle-question' %>"></i> <%= cat.title %></button><% }) %></div></div>
+    <div class="faq-layout"><aside class="faq-side"><h3>دسترسی سریع</h3><p>سوال موردنظر را جستجو کنید یا از دسته‌بندی‌ها کمک بگیرید.</p><a href="/contact"><span>ارتباط با مدرسه</span><i class="fas fa-arrow-left"></i></a><a href="/register"><span>شروع ثبت‌نام</span><i class="fas fa-arrow-left"></i></a></aside><div class="faq-list" id="faqList"><% items.forEach(function(item, index){ %><article class="faq-item" data-category="<%= item.category %>" data-search="<%= (item.question + ' ' + item.answer).replace(/"/g, '&quot;') %>"><button class="faq-question" type="button"><div><small><i class="fas fa-bookmark"></i><%= categoryTitle(item.category) %></small><strong><%= item.question %></strong></div><span class="faq-toggle"><i class="fas fa-chevron-down"></i></span></button><div class="faq-answer"><div class="faq-answer-inner"><%= item.answer %></div></div></article><% }) %><div class="faq-empty" id="faqEmpty" style="display:none">سوالی با این جستجو پیدا نشد.</div></div></div>
+</div></section>
+<section class="faq-cta"><div class="container"><div class="faq-cta-box"><h2><%= page.cta?.title || 'پاسخ سوال خود را پیدا نکردید؟' %></h2><p><%= page.cta?.subtitle || '' %></p><a href="<%= page.cta?.button_link || '/contact' %>"><i class="fas fa-headset"></i><%= page.cta?.button_text || 'ارتباط با ما' %></a></div></div></section>
+</main>
+<%- include('../partials/footer') %>
+<script src="/public/assets/js/shared-home-layout.js?v=shared-layout-39"></script>
+<script>
+(function(){const items=[...document.querySelectorAll('.faq-item')];const empty=document.getElementById('faqEmpty');let active='all';let query='';function filter(){let shown=0;items.forEach(item=>{const matchCat=active==='all'||item.dataset.category===active;const matchText=!query||String(item.dataset.search||'').toLowerCase().includes(query);const ok=matchCat&&matchText;item.style.display=ok?'block':'none';if(ok)shown++;});if(empty)empty.style.display=shown?'none':'block';}document.querySelectorAll('.faq-question').forEach(btn=>btn.addEventListener('click',()=>btn.closest('.faq-item').classList.toggle('open')));document.querySelectorAll('.faq-cat-btn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.faq-cat-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');active=btn.dataset.category||'all';filter();}));document.getElementById('faqSearchInput')?.addEventListener('input',e=>{query=String(e.target.value||'').trim().toLowerCase();filter();});items[0]?.classList.add('open');})();
+</script>

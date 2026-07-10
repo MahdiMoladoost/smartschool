@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="دایرکتوری کامل تعاونی‌های مسکن ایران - جستجو و مقایسه تعاونی‌ها">
+  <title>MOLAFIND | دایرکتوری تعاونی‌های مسکن ایران</title>
+  
+  <!-- فونت‌های محلی -->
+  <link rel="stylesheet" href="css/fonts-local.css">
+  
+  <!-- استایل اصلی -->
+  <link rel="stylesheet" href="css/home-premium.css">
+  <link rel="stylesheet" href="css/home-advanced-search.css">
+</head>
+<body data-page="home">
+
+  <!-- ===== HEADER ===== -->
+  <header class="header-premium">
+    <div class="header-premium__inner">
+      
+      <!-- لوگو -->
+      <a class="header-premium__logo" href="index.html">
+        <img src="molafind.jpg" alt="MOLAFIND">
+      </a>
+
+      <!-- منوی اصلی -->
+      <nav class="header-premium__nav">
+        <a href="index.html" class="is-active">خانه</a>
+        <a href="cooperatives.html">پروژه‌ها</a>
+        <a href="#">دعوت به همکاری</a>
+        <a href="#">اطلاعیه‌ها</a>
+        <a href="#about">درباره ما</a>
+        <a href="#contact">تماس با ما</a>
+      </nav>
+
+      <!-- دکمه‌های ورود -->
+      <div class="header-premium__actions">
+        <a href="#" class="btn btn--outline">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+          <span>پرتال مشتریان</span>
+        </a>
+        <a href="#" class="btn btn--solid">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>ورود</span>
+        </a>
+      </div>
+
+      <!-- دکمه همبرگر -->
+      <button class="header-premium__toggle" id="menuToggle">
+        <span></span><span></span><span></span>
+      </button>
+
+    </div>
+
+    <!-- منوی موبایل -->
+    <div class="header-premium__mobile" id="mobileMenu">
+      <a href="index.html" class="is-active">خانه</a>
+      <a href="cooperatives.html">پروژه‌ها</a>
+      <a href="#">دعوت به همکاری</a>
+      <a href="#">اطلاعیه‌ها</a>
+      <a href="#about">درباره ما</a>
+      <a href="#contact">تماس با ما</a>
+      <div class="mobile-actions">
+        <a href="#" class="btn btn--outline">پرتال مشتریان</a>
+        <a href="#" class="btn btn--solid">ورود</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <main>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero-premium">
+      <div class="hero-premium__bg"></div>
+      <div class="container hero-premium__content">
+        
+        <!-- برچسب -->
+        <div class="hero-premium__badge">
+          <span class="dot"></span>
+          دایرکتوری رسمی تعاونی‌های مسکن ایران
+        </div>
+
+        <!-- عنوان -->
+        <h1 class="hero-premium__title">
+          <span class="highlight">MOLAFIND</span><br>
+          همسایتو پیدا کن
+        </h1>
+
+        <!-- زیرعنوان -->
+        <p class="hero-premium__subtitle">
+          جستجو، مقایسه و بررسی اطلاعات تعاونی‌های مسکن در سراسر ایران.<br>
+          قبل از خرید امتیاز یا عضویت، همه چیز را شفاف ببینید.
+        </p>
+
+        <!-- دکمه‌ها -->
+        <div class="hero-premium__actions">
+          <a href="#about" class="btn-hero btn-hero--secondary">درباره ما</a>
+          <a href="cooperatives.html" class="btn-hero btn-hero--primary">
+            شروع جستجو
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+
+        <!-- آمار -->
+        <div class="hero-premium__stats">
+          <div class="stat">
+            <span class="number" data-count="coops">۰</span>
+            <span class="label">تعاونی ثبت‌شده</span>
+          </div>
+          <div class="stat">
+            <span class="number" data-count="provinces">۰</span>
+            <span class="label">استان فعال</span>
+          </div>
+          <div class="stat">
+            <span class="number" data-count="cities">۰</span>
+            <span class="label">شهر تحت پوشش</span>
+          </div>
+          <div class="stat">
+            <span class="number"><span class="gold">۱۰۰٪</span></span>
+            <span class="label">شفافیت اطلاعات</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+        <!-- ===== SEARCH ===== -->
+        <section class="search-premium" style="position:relative;z-index:100;overflow:visible;">
+          <div class="container">
+            <div class="search-premium__box" style="position:relative;z-index:100;overflow:visible;">
+              <div class="search-premium__header">
+                <h3>
+                  <span class="icon-search">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  </span>
+                  جستجوی پیشرفته
+                </h3>
+                <div class="trending">
+                  <span>پرسرچ‌ترین:</span>
+                  <a href="cooperatives.html?province=تهران">تهران</a>
+                  <a href="cooperatives.html?province=البرز">البرز</a>
+                  <a href="cooperatives.html?type=فرهنگیان">فرهنگیان</a>
+                  <a href="cooperatives.html?district=چیتگر">چیتگر</a>
+                  <a href="cooperatives.html?type=مسکن">مسکن</a>
+                </div>
+              </div>
+              
+              <form class="search-premium__fields" id="homeSearchForm" autocomplete="off" style="position:relative;z-index:100;overflow:visible;">
+                
+                <div class="field" style="position:relative;z-index:100;overflow:visible;">
+                  <label for="homeSearchInput">نام تعاونی</label>
+                  <input id="homeSearchInput" type="search" placeholder="مثال: انصار سپاشهر..." style="position:relative;z-index:100;" />
+                </div>
+                
+                <div class="field" style="position:relative;z-index:100;overflow:visible;">
+                  <label for="homeProvince">استان</label>
+                  <select id="homeProvince" data-filter="province" style="position:relative;z-index:100;display:block;width:100%;">
+                    <option value="">همه استان‌ها</option>
+                  </select>
+                </div>
+                
+                <div class="field" style="position:relative;z-index:100;overflow:visible;">
+                  <label for="homeCity">شهر</label>
+                  <select id="homeCity" data-filter="city" style="position:relative;z-index:100;display:block;width:100%;">
+                    <option value="">همه شهرها</option>
+                  </select>
+                </div>
+                
+                <div class="field" style="position:relative;z-index:100;overflow:visible;">
+                  <label for="homeDistrict">منطقه</label>
+                  <select id="homeDistrict" data-filter="district" style="position:relative;z-index:100;display:block;width:100%;">
+                    <option value="">همه مناطق</option>
+                  </select>
+                </div>
+                
+                <div class="field" style="position:relative;z-index:100;overflow:visible;">
+                  <label for="homeType">نوع تعاونی</label>
+                  <select id="homeType" data-filter="type" style="position:relative;z-index:100;display:block;width:100%;">
+                    <option value="">همه نوع‌ها</option>
+                  </select>
+                </div>
+                
+                <button class="btn-search" type="submit" style="position:relative;z-index:100;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  جستجو
+                </button>
+                
+              </form>
+            </div>
+          </div>
+        </section>
+
+    <!-- ===== CATEGORIES ===== -->
+<!-- ===== CATEGORIES ===== -->
+<section class="categories-premium" id="about">
+  <div class="container">
+    
+    <div class="section-header">
+      <span class="label">دسته‌بندی‌ها</span>
+      <h2>چرا <span class="highlight">MOLAFIND</span>؟</h2>
+    </div>
+    
+    <div class="categories-premium__grid">
+      
+      <!-- کارت 1 - اطلاعات شفاف -->
+      <div class="categories-premium__item">
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+        </div>
+        <div class="content">
+          <h4>اطلاعات شفاف</h4>
+          <p>مشخصات کامل هر تعاونی شامل آدرس، تلفن، نوع فعالیت و توضیحات</p>
+        </div>
+      </div>
+      
+      <!-- کارت 2 - جستجوی هوشمند -->
+      <div class="categories-premium__item">
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </div>
+        <div class="content">
+          <h4>جستجوی هوشمند</h4>
+          <p>فیلتر بر اساس استان، شهر، منطقه، نام و نوع تعاونی</p>
+        </div>
+      </div>
+      
+      <!-- کارت 3 - مقایسه آسان -->
+      <div class="categories-premium__item">
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"/>
+            <rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/>
+            <rect x="3" y="14" width="7" height="7"/>
+          </svg>
+        </div>
+        <div class="content">
+          <h4>مقایسه آسان</h4>
+          <p>مشاهده و مقایسه تعاونی‌ها در یک صفحه منظم و کاربرپسند</p>
+        </div>
+      </div>
+      
+      <!-- کارت 4 - تصمیم بهتر -->
+      <div class="categories-premium__item">
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <polyline points="9 12 11 14 15 10"/>
+          </svg>
+        </div>
+        <div class="content">
+          <h4>تصمیم بهتر</h4>
+          <p>قبل از خرید امتیاز یا عضویت، همه داده‌ها را بررسی کنید</p>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+    <!-- ===== PROPERTIES ===== -->
+    <section class="properties-premium" id="latest">
+      <div class="container">
+        <div class="properties-premium__header">
+          <div class="properties-premium__title">
+            <span class="section-eyebrow">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              بررسی و رتبه‌بندی منطقه
+            </span>
+            <h2>تعاونی‌های بدعهد منطقه</h2>
+            <p>در این بخش، اطلاعات کلیدی هر تعاونی شامل موقعیت، وضعیت پیشرفت و جزئیات اصلی به‌صورت خلاصه و خوانا نمایش داده می‌شود.</p>
+          </div>
+          <a href="cooperatives.html" class="view-all">
+            مشاهده همه
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="properties-premium__grid" id="latestCoops"></div>
+      </div>
+    </section>
+
+<!-- ===== STATS ===== -->
+<section class="stats-premium">
+  <div class="stats-premium__bg"></div>
+  <div class="container">
+    <div class="stats-premium__grid">
+      
+      <!-- آمار 1 - تعاونی ثبت‌شده -->
+      <div class="stats-premium__item">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <span class="number"><span data-count="coops">۰</span>+</span>
+        <span class="label">تعاونی ثبت‌شده</span>
+      </div>
+      
+      <!-- آمار 2 - استان فعال -->
+      <div class="stats-premium__item">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+        </div>
+        <span class="number"><span data-count="provinces">۰</span></span>
+        <span class="label">استان فعال</span>
+      </div>
+      
+      <!-- آمار 3 - شهر تحت پوشش -->
+      <div class="stats-premium__item">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        <span class="number"><span data-count="cities">۰</span>+</span>
+        <span class="label">شهر تحت پوشش</span>
+      </div>
+      
+      <!-- آمار 4 - رضایت کاربران -->
+      <div class="stats-premium__item">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+        </div>
+        <span class="number"><span class="gold">۱۰۰٪</span></span>
+        <span class="label">رضایت کاربران</span>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+    <!-- ===== TESTIMONIALS ===== -->
+    <section class="testimonials-premium">
+      <div class="container">
+        <div style="text-align:center;margin-bottom:12px;">
+          <span style="font-size:12px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:1px;">نظرات کاربران</span>
+          <h2 style="font-size:28px;font-weight:900;color:var(--brand-dark);margin:4px 0 0;">آنها چه می‌گویند</h2>
+        </div>
+        <div class="testimonials-premium__grid">
+          <div class="testimonials-premium__item">
+            <div class="stars">★★★★★</div>
+            <blockquote>"با MOLAFIND راحت‌ترین تعاونی منطقه‌ام را پیدا کردم. اطلاعات کامل و شفاف بود."</blockquote>
+            <div class="author">
+              <div class="avatar">ع</div>
+              <div><div class="name">علی محمدی</div><div class="role">خریدار امتیاز</div></div>
+            </div>
+          </div>
+          <div class="testimonials-premium__item">
+            <div class="stars">★★★★★</div>
+            <blockquote>"قبل از عضویت در تعاونی، همه اطلاعات رو بررسی کردم و بهترین تصمیم رو گرفتم."</blockquote>
+            <div class="author">
+              <div class="avatar">س</div>
+              <div><div class="name">سارا کریمی</div><div class="role">عضو تعاونی</div></div>
+            </div>
+          </div>
+          <div class="testimonials-premium__item">
+            <div class="stars">★★★★★</div>
+            <blockquote>"دسترسی به اطلاعات تمام تعاونی‌های ایران در یک جا، واقعاً عالی است."</blockquote>
+            <div class="author">
+              <div class="avatar">ر</div>
+              <div><div class="name">رضا حسینی</div><div class="role">مشاور املاک</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="cta-premium">
+      <div class="container">
+        <h2>آماده‌اید تعاونی خود را پیدا کنید؟</h2>
+        <p>همین حالا جستجو را شروع کنید و از بین بهترین تعاونی‌های مسکن ایران انتخاب کنید.</p>
+        <a href="cooperatives.html" class="btn-cta">
+          شروع جستجو
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer-premium" id="contact">
+    <div class="container">
+      <div class="footer-premium__grid">
+        <div>
+          <h3>دایرکتوری تعاونی‌های مسکن ایران</h3>
+          <p style="color:rgba(255,255,255,0.60);">MOLAFIND یک وبسایت برای نمایش، جستجو و دسته‌بندی تعاونی‌های مسکن ایران است.</p>
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+            <span style="background:rgba(255,255,255,0.06);padding:4px 14px;border-radius:999px;font-size:11px;color:rgba(255,255,255,0.50);">وزارت تعاون</span>
+            <span style="background:rgba(255,255,255,0.06);padding:4px 14px;border-radius:999px;font-size:11px;color:rgba(255,255,255,0.50);">ساماندهی</span>
+            <span style="background:rgba(255,255,255,0.06);padding:4px 14px;border-radius:999px;font-size:11px;color:rgba(255,255,255,0.50);">اعتماد</span>
+          </div>
+        </div>
+        <div>
+          <h3>دسترسی سریع</h3>
+          <a href="index.html">خانه</a>
+          <a href="cooperatives.html">تعاونی‌ها</a>
+          <a href="#latest">پروژه‌ها</a>
+          <a href="#about">درباره ما</a>
+        </div>
+        <div>
+          <h3>ارتباط با ما</h3>
+          <p>تهران، منطقه ۲۲</p>
+          <p style="font-weight:800;color:#fff;font-size:17px;">+۹۸ ۲۱ ۴۴۹۳۴۸۴۱</p>
+          <p>info@molafind.com</p>
+        </div>
+        <div>
+          <h3>نمادها</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <span style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px;text-align:center;font-size:11px;color:rgba(255,255,255,0.40);">وزارت تعاون</span>
+            <span style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px;text-align:center;font-size:11px;color:rgba(255,255,255,0.40);">ساماندهی</span>
+            <span style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px;text-align:center;font-size:11px;color:rgba(255,255,255,0.40);">اعتماد</span>
+            <span style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px;text-align:center;font-size:11px;color:rgba(255,255,255,0.40);">اینماد</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-premium__bottom">
+        تمامی حقوق این وبسایت متعلق به MOLAFIND می‌باشد.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script src="js/app.js" defer></script>
+  <script src="js/search.js" defer></script>
+  <script src="js/home-advanced-search.js" defer></script>
+  
+  <script>
+    // Mobile Menu Toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const toggle = document.getElementById('menuToggle');
+      const mobile = document.getElementById('mobileMenu');
+      if (toggle && mobile) {
+        toggle.addEventListener('click', function() {
+          mobile.classList.toggle('is-open');
+          toggle.classList.toggle('is-active');
+        });
+      }
+    });
+  </script>
+<!-- ===== اسکریپت اطلاعات پروژه‌ها ===== -->
+<script src="js/properties-data.js" defer></script>
+</body>
+</html>

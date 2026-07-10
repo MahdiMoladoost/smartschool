@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تحلیل‌های کلان | پنل مدیر مدرسه</title>
+  <link rel="stylesheet" href="/public/assets/css/all.min.css">
+  <link rel="stylesheet" href="/public/assets/css/panel/role-panel.css">
+</head>
+<body data-panel="principal" data-page="analytics">
+<button class="mobile-menu" onclick="toggleRoleSidebar()" aria-label="باز کردن منو"><i class="fas fa-bars"></i></button>
+<div class="overlay" id="overlay" onclick="toggleRoleSidebar()"></div>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-icon"><i class="fas fa-school"></i></div>
+      <div><h1 id="panelTitle">پنل مدیر مدرسه</h1><p>سامانه مدرسه هوشمند</p></div>
+    </div>
+    <div class="user-card"><strong id="userName">کاربر</strong><span id="userRole">role</span></div>
+    <nav class="nav-section" aria-label="منوی پنل">
+      <div class="nav-section-title">بخش‌های پنل</div>
+            <a class="nav-item" data-tab="dashboard" href="/dashboard/principal/dashboard"><i class="fas fa-chart-line"></i><span>داشبورد مدیر مدرسه</span></a>
+            <a class="nav-item active" data-tab="analytics" href="/dashboard/principal/analytics"><i class="fas fa-chart-pie"></i><span>تحلیل‌های کلان</span></a>
+            <a class="nav-item" data-tab="users" href="/dashboard/principal/users"><i class="fas fa-users"></i><span>خلاصه کاربران</span></a>
+            <a class="nav-item" data-tab="reports" href="/dashboard/principal/reports"><i class="fas fa-file-lines"></i><span>گزارش‌های مدیریتی</span></a>
+            <a class="nav-item" data-tab="announcements" href="/dashboard/principal/announcements"><i class="fas fa-bullhorn"></i><span>اطلاعیه‌ها</span></a>
+            <a class="nav-item" data-tab="ai-insights" href="/dashboard/principal/ai-insights"><i class="fas fa-brain"></i><span>تحلیل هوشمند</span></a>
+            <a class="nav-item" data-tab="sms" href="/dashboard/principal/sms"><i class="fas fa-comment-sms"></i><span>پیامک‌ها</span></a>
+            <a class="nav-item" data-tab="activity" href="/dashboard/principal/activity"><i class="fas fa-clock-rotate-left"></i><span>فعالیت سیستم</span></a>
+    </nav>
+    <div class="nav-section"><a class="nav-item" href="/" target="_blank"><i class="fas fa-home"></i><span>صفحه اصلی</span></a><button class="btn danger" onclick="logout()" style="width:100%;margin-top:12px"><i class="fas fa-sign-out-alt"></i> خروج</button></div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <div><h2 id="pageTitle">داشبورد مدیر مدرسه</h2><p>داده‌ها از API امن نقش و پایگاه داده MySQL خوانده می‌شود.</p></div>
+      <div class="actions"><button class="btn secondary" onclick="location.reload()"><i class="fas fa-rotate"></i> بروزرسانی</button></div>
+    </header>
+    <section id="content"><div class="state">در حال بارگذاری...</div></section>
+  </main>
+</div>
+<script src="/public/assets/js/role-panel.js"></script>
+</body>
+</html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ثبت حضور و غیاب | پنل مدیریت</title>
+    
+    <!-- ========================================== -->
+    <!-- 1. jQuery -->
+    <!-- ========================================== -->
+    <script src="/public/assets/js/jquery-3.6.0.min.js"></script>
+
+    <!-- ========================================== -->
+    <!-- 2. Font Awesome -->
+    <!-- ========================================== -->
+    <link rel="stylesheet" href="/public/assets/css/fontawesome.min.css">
+    <link rel="stylesheet" href="/public/assets/css/all.min.css">
+
+    <!-- ========================================== -->
+    <!-- 3. CSS Admin -->
+    <!-- ========================================== -->
+    <link rel="stylesheet" href="/public/assets/css/panel/admin/admin.css?v=admin-final-enterprise-v1">
+
+    <!-- ========================================== -->
+    <!-- 4. Chart.js - فقط یک بار لود شود -->
+    <!-- ========================================== -->
+    <script src="/public/assets/js/chart.umd.min.js"></script>
+    
+    <!-- ========================================== -->
+    <!-- 5. پلاگین نمایش اعداد روی نمودار (بعد از Chart.js) -->
+    <!-- ========================================== -->
+    <script src="/public/assets/js/chartjs-plugin-datalabels.min.js"></script>
+
+    <!-- ========================================== -->
+    <!-- 6. Jalali Moment -->
+    <!-- ========================================== -->
+    <script src="/public/assets/js/jalali-moment.browser.js"></script>
+    <style>.nav-item { text-decoration: none; }</style>
+</head>
+<body data-panel="admin" data-page="attendance-create">
+
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+</div>
+
+<button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+</button>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+        <div class="sidebar-school-logo" id="adminSchoolLogo">
+            <i class="fas fa-graduation-cap"></i>
+        </div>
+        <div class="sidebar-school-text">
+            <strong id="adminSchoolName" class="school-name">مدیریت هوشمند</strong>
+            <small id="adminSchoolSubtitle">پنل مدیریت مدرسه</small>
+        </div>
+    </div>
+    
+    <div class="nav-menu" id="navMenu">
+        <div class="nav-section">
+            <div class="nav-section-title">داشبورد</div>
+            <a class="nav-item" data-tab="dashboard" href="/dashboard/admin/dashboard">
+                <i class="fas fa-chart-line"></i>
+                <span>داشبورد</span>
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">مدیریت آموزشی</div>
+            <a class="nav-item" data-tab="users" href="/dashboard/admin/users">
+                <i class="fas fa-users"></i>
+                <span>کاربران</span>
+                <span class="nav-badge" id="usersBadge"></span>
+            </a>
+            <a class="nav-item" data-tab="registrations" href="/dashboard/admin/registrations">
+                <i class="fas fa-user-plus"></i>
+                <span>ثبت نام کنندگان</span>
+                <span class="nav-badge" id="registrationsBadge">۰</span>
+            </a>
+            <a class="nav-item" data-tab="classes" href="/dashboard/admin/classes">
+                <i class="fas fa-door-open"></i>
+                <span>کلاس‌ها</span>
+            </a>
+            <a class="nav-item" data-tab="courses" href="/dashboard/admin/courses">
+                <i class="fas fa-book"></i>
+                <span>دروس</span>
+            </a>
+            <a class="nav-item" data-tab="schedule" href="/dashboard/admin/schedule">
+                <i class="fas fa-calendar-week"></i>
+                <span>برنامه هفتگی</span>
+            </a>
+            <a class="nav-item" data-tab="grades" href="/dashboard/admin/grades">
+                <i class="fas fa-graduation-cap"></i>
+                <span>مدیریت نمرات</span>
+            </a>
+            <a class="nav-item" data-tab="attendance" href="/dashboard/admin/attendance">
+                <i class="fas fa-clipboard-check"></i>
+                <span>حضور و غیاب و انضباط</span>
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">آموزش و کلاس</div>
+            <a class="nav-item" data-tab="education-class" href="/dashboard/admin/education-class">
+                <i class="fas fa-chalkboard-user"></i>
+                <span>آموزش و کلاس</span>
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">محتوای سایت</div>
+            <a class="nav-item" data-tab="announcements" href="/dashboard/admin/announcements">
+                <i class="fas fa-bullhorn"></i>
+                <span>اطلاعیه‌ها</span>
+                <span class="nav-badge" id="announcementsBadge"></span>
+            </a>
+            <a class="nav-item" data-tab="home-news" href="/dashboard/admin/home-news">
+                <i class="fas fa-newspaper"></i>
+                <span>اخبار صفحه اصلی</span>
+            </a>
+            <a class="nav-item" data-tab="gallery-manager" href="/dashboard/admin/gallery-manager">
+                <i class="fas fa-images"></i>
+                <span>مدیریت گالری</span>
+            </a>
+            <a class="nav-item" data-tab="honors" href="/dashboard/admin/honors">
+                <i class="fas fa-trophy"></i>
+                <span>مدیریت افتخارآفرینان</span>
+            </a>
+            <a class="nav-item" data-tab="services-page" href="/dashboard/admin/services-page">
+                <i class="fas fa-concierge-bell"></i>
+                <span>مدیریت صفحه خدمات</span>
+            </a>
+            <a class="nav-item" data-tab="about-page" href="/dashboard/admin/about-page">
+                <i class="fas fa-school"></i>
+                <span>مدیریت صفحه درباره ما</span>
+            </a>
+            <a class="nav-item" data-tab="timeline-page" href="/dashboard/admin/timeline-page">
+                <i class="fas fa-timeline"></i>
+                <span>مدیریت تاریخچه مدرسه</span>
+            </a>
+            <a class="nav-item" data-tab="faq-page" href="/dashboard/admin/faq-page">
+                <i class="fas fa-circle-question"></i>
+                <span>مدیریت سوالات متداول</span>
+            </a>
+            <a class="nav-item" data-tab="contact-page" href="/dashboard/admin/contact-page">
+                <i class="fas fa-headset"></i>
+                <span>مدیریت صفحه ارتباط با ما</span>
+            </a>
+            <a class="nav-item" data-tab="contact-messages" href="/dashboard/admin/contact-messages">
+                <i class="fas fa-comments"></i>
+                <span>پیام‌های ارتباط با ما</span>
+            </a>
+            <a class="nav-item" data-tab="polls" href="/dashboard/admin/polls">
+                <i class="fas fa-square-poll-vertical"></i>
+                <span>رأی‌گیری</span>
+                <span class="nav-badge" id="pollsBadge"></span>
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">کارنامه و گزارشات</div>
+            <a class="nav-item" data-tab="report-card" href="/dashboard/admin/report-card">
+                <i class="fas fa-award"></i>
+                <span>کارنامه و گزارشات</span>
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">مالی و پیامک</div>
+            <a class="nav-item" data-tab="payments" href="/dashboard/admin/payments">
+                <i class="fas fa-credit-card"></i>
+                <span>مدیریت مالی</span>
+            </a>
+            <a class="nav-item" data-tab="sms-management" href="/dashboard/admin/sms-management">
+                <i class="fas fa-sms"></i>
+                <span>مدیریت پیامک</span>
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">ارتباطات و پشتیبانی</div>
+            <a class="nav-item" data-tab="tickets" href="/dashboard/admin/tickets">
+                <i class="fas fa-ticket-alt"></i>
+                <span>تیکت‌ها</span>
+            </a>
+            <a class="nav-item" data-tab="mola-ai" href="/dashboard/admin/mola-ai">
+                <i class="fas fa-robot"></i>
+                <span>دستیار هوشمند MOLA AI</span>
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">سیستم</div>
+            <a class="nav-item" data-tab="settings" href="/dashboard/admin/settings">
+                <i class="fas fa-cog"></i>
+                <span>تنظیمات</span>
+            </a>
+            <a class="nav-item" data-tab="logs" href="/dashboard/admin/logs">
+                <i class="fas fa-history"></i>
+                <span>لاگ فعالیت‌ها</span>
+            </a>
+            <a class="nav-item" data-tab="backup" href="/dashboard/admin/backup">
+                <i class="fas fa-database"></i>
+                <span>پشتیبان‌گیری</span>
+            </a>
+        </div>
+    </div>
+    
+    <div class="sidebar-footer">
+        <div class="admin-info">
+            <div class="admin-avatar" id="adminAvatar">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <div class="admin-details">
+                <h4 id="adminName">مدیر مدرسه</h4>
+                <p id="adminRole">مدیر مدرسه</p>
+            </div>
+            <button class="admin-logout-toggle" id="adminSidebarLogout" onclick="return adminSidebarLogout(event)" title="خروج از حساب" aria-label="خروج از حساب" type="button">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content" id="mainContent">
+    <div class="page-header">
+        <div class="page-title">
+            <h1><button class="admin-header-menu-toggle" id="adminHeaderSidebarToggle" onclick="return toggleAdminSidebarCompact(event)" title="جمع کردن منو" aria-label="جمع کردن منو" aria-pressed="false" type="button"><i class="fas fa-bars"></i></button> <span id="pageTitle">داشبورد</span></h1>
+        </div>
+        <div class="header-actions">
+            <div class="search-global">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="جستجوی سریع..." id="globalSearch">
+            </div>
+            <div class="btn-icon" onclick="refreshData()" title="بروزرسانی">
+                <i class="fas fa-sync-alt" id="refreshIcon"></i>
+            </div>
+            <div class="btn-icon" id="notificationBtn" title="اعلانات">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notifBadge">0</span>
+            </div>
+            <div class="btn-icon" id="fullscreenBtn" title="تمام صفحه">
+                <i class="fas fa-expand"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="content-area" id="contentArea">
+        <div class="loading-content">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>در حال بارگذاری...</p>
+        </div>
+    </div>
+</div>
+
+<!-- Notification Panel -->
+<div class="notification-panel" id="notificationPanel">
+    <div class="notification-header">
+        <h3><i class="fas fa-bell"></i> اعلانات</h3>
+        <button class="btn-icon-sm" onclick="closeNotificationPanel()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="notification-list" id="notificationList">
+        <div class="empty-state">اعلانی وجود ندارد</div>
+    </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+<div id="modalsContainer"></div>
+
+<!-- Jalali Moment for Persian dates -->
+<script src="/public/assets/js/jalali-moment.browser.js"></script>
+<!-- JS Admin -->
+<script>
+(function(){
+    if(window.__adminSidebarToggleInlineReady)return;
+    window.__adminSidebarToggleInlineReady=true;
+    var STORAGE_KEY='adminSidebarCollapsed';
+    window.applyAdminSidebarCompactState=window.applyAdminSidebarCompactState||function(collapsed){
+        var body=document.body;
+        if(!body || body.getAttribute('data-panel')!=='admin')return false;
+        body.classList.toggle('admin-sidebar-collapsed',!!collapsed);
+        document.querySelectorAll('#adminSidebarToggle,.sidebar .admin-menu-toggle,#adminHeaderSidebarToggle,.admin-header-menu-toggle').forEach(function(btn){
+            if(!btn)return;
+            btn.setAttribute('aria-pressed',collapsed?'true':'false');
+            btn.setAttribute('title',collapsed?'باز کردن منو':'جمع کردن منو');
+            btn.setAttribute('aria-label',collapsed?'باز کردن منو':'جمع کردن منو');
+            var icon=btn.querySelector('i');
+            if(icon){
+                if(btn.classList.contains('admin-header-menu-toggle')) icon.className='fas fa-bars';
+                else icon.className='fas '+(collapsed?'fa-chevron-left':'fa-chevron-right');
+            }
+        });
+        return true;
+    };
+    window.toggleAdminSidebarCompact=window.toggleAdminSidebarCompact||function(event){
+        if(event){event.preventDefault();event.stopPropagation();}
+        var body=document.body;
+        if(!body || body.getAttribute('data-panel')!=='admin')return false;
+        var next=!body.classList.contains('admin-sidebar-collapsed');
+        try{localStorage.setItem(STORAGE_KEY,next?'1':'0');}catch(e){}
+        window.applyAdminSidebarCompactState(next);
+        return false;
+    };
+    function init(){
+        var body=document.body;
+        if(!body || body.getAttribute('data-panel')!=='admin')return;
+        var collapsed=false;
+        try{collapsed=localStorage.getItem(STORAGE_KEY)==='1';}catch(e){}
+        window.applyAdminSidebarCompactState(collapsed);
+        document.querySelectorAll('#adminSidebarToggle,.sidebar .admin-menu-toggle,#adminHeaderSidebarToggle,.admin-header-menu-toggle').forEach(function(btn){
+            if(btn && !btn.dataset.inlineCompactBound){
+                btn.dataset.inlineCompactBound='1';
+                btn.addEventListener('click',window.toggleAdminSidebarCompact);
+            }
+        });
+    }
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+<script src="/public/assets/js/admin.js?v=admin-grade-bulk-modal-v1"></script>
+<script>
+    // منتظر می‌مانیم تا admin.js کامل بارگذاری شود
+    (function() {
+        function initManual() {
+            if (typeof window.showTab === 'function') {
+                const navItems = document.querySelectorAll('.nav-item');
+                navItems.forEach(function(item) {
+                    if (item.matches('a[href]')) return;
+                    item.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const tabName = this.getAttribute('data-tab');
+                        if (tabName) {
+                            window.showTab(tabName);
+                        }
+                    });
+                });
+                console.log('منوها با موفقیت متصل شدند');
+            } else {
+                setTimeout(initManual, 200);
+            }
+        }
+        initManual();
+    })();
+
+// دریافت تاریخ امروز به شمسی با اعداد فارسی
+function getTodayJalali() {
+    const date = moment().locale('fa').format('jYYYY/jMM/jDD');
+    return toPersianNumber(date);
+}
+    
+    // تبدیل اعداد انگلیسی به فارسی
+    function toPersianNumber(str) {
+        if (!str) return '';
+        const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        return str.toString().replace(/\d/g, function(x) {
+            return persianDigits[parseInt(x)];
+        });
+    }
+    
+    // نمایش تاریخ با اعداد فارسی
+    function getTodayJalaliPersian() {
+        return toPersianNumber(getTodayJalali());
+    }
+    
+    // استفاده
+    console.log('تاریخ امروز:', getTodayJalaliPersian()); // ۱۴۰۴/۰۳/۰۶
+
+</script>
+<script src="/public/assets/js/xlsx.full.min.js"></script>
+</body>
+</html>
