@@ -74,3 +74,25 @@ body:not([data-panel="admin"]) .panel{background:#fff!important;border:1px solid
 body:not([data-panel="admin"]) .mobile-menu,
 body:not([data-panel="admin"]) .mobile-menu-btn{display:none!important;}
 @media(max-width:1024px){body:not([data-panel="admin"]) .mobile-menu,body:not([data-panel="admin"]) .mobile-menu-btn{display:grid!important;position:fixed!important;top:16px!important;right:16px!important;z-index:1200!important;width:44px!important;height:44px!important;border-radius:12px!important;background:#0b2357!important;color:#fff!important;border:0!important;place-items:center!important;}body:not([data-panel="admin"]) .sidebar{top:0!important;right:0!important;bottom:auto!important;height:100vh!important;border-radius:0!important;transform:translateX(100%)!important;}body:not([data-panel="admin"]) .sidebar.active,body:not([data-panel="admin"]) .sidebar.open{transform:translateX(0)!important;}body:not([data-panel="admin"]) .main-content,body:not([data-panel="admin"]) .main{margin-right:0!important;width:100%!important;max-width:100%!important;}body:not([data-panel="admin"]) .page-header,body:not([data-panel="admin"]) .topbar{width:calc(100% - 16px)!important;min-height:92px!important;margin:6px 8px 0!important;padding:16px 18px!important;}body:not([data-panel="admin"]) .content-area,body:not([data-panel="admin"]) #content{padding:22px 16px 30px!important;}}
+
+/* Counselor workspace: uses the same visual language as the school admin panel. */
+body[data-panel="counselor"] #content{padding:26px 28px 34px!important;}
+body[data-panel="counselor"] .counselor-kpis .card{position:relative;overflow:hidden;min-height:118px;}
+body[data-panel="counselor"] .counselor-kpis .card::after{content:"";position:absolute;left:-20px;bottom:-28px;width:92px;height:92px;border-radius:50%;background:rgba(37,99,235,.07);}
+body[data-panel="counselor"] .panel>h3{display:flex;align-items:center;gap:9px;padding-bottom:14px;margin-bottom:16px;border-bottom:1px solid #edf2f7;font-size:.96rem;color:#14213d;}
+body[data-panel="counselor"] .panel>h3::before{content:"";width:4px;height:20px;border-radius:8px;background:linear-gradient(180deg,#2f7bf4,#1f5fca);}
+body[data-panel="counselor"] .counselor-form{gap:15px;}
+body[data-panel="counselor"] .counselor-form label{font-weight:800;color:#334155;}
+body[data-panel="counselor"] .counselor-form input,
+body[data-panel="counselor"] .counselor-form select,
+body[data-panel="counselor"] .counselor-form textarea{border:1px solid #dfe8f4;background:#f8fafc;outline:0;transition:.18s;}
+body[data-panel="counselor"] .counselor-form input:focus,
+body[data-panel="counselor"] .counselor-form select:focus,
+body[data-panel="counselor"] .counselor-form textarea:focus{background:#fff;border-color:#2f7bf4;box-shadow:0 0 0 3px rgba(47,123,244,.11);}
+body[data-panel="counselor"] .panel-help{margin:-5px 0 18px;padding:12px 14px;border-radius:12px;background:#eff6ff;color:#315b91;font-size:.78rem;line-height:1.9;}
+body[data-panel="counselor"] .ai-result{margin-top:16px;background:#f8fbff!important;box-shadow:none!important;}
+body[data-panel="counselor"] .counselor-profile dl{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+body[data-panel="counselor"] .counselor-profile dl div{padding:16px;border-radius:14px;background:#f8fafc;border:1px solid #e5edf7;}
+body[data-panel="counselor"] .counselor-profile dt{font-size:.7rem;color:#64748b;margin-bottom:8px;}
+body[data-panel="counselor"] .counselor-profile dd{margin:0;font-weight:900;color:#172554;}
+@media(max-width:760px){body[data-panel="counselor"] #content{padding:20px 12px 28px!important;}body[data-panel="counselor"] .counselor-profile dl{grid-template-columns:1fr;}}

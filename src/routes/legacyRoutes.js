@@ -983,17 +983,36 @@ async function createTables() {
         CREATE TABLE IF NOT EXISTS course_teachers (
             id INT AUTO_INCREMENT PRIMARY KEY,
             course_id INT NOT NULL,
+            class_id INT NULL,
             teacher_id INT NOT NULL,
             role ENUM('main', 'assistant', 'substitute') DEFAULT 'assistant',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
+            FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE,
             FOREIGN KEY (teacher_id) REFERENCES users(id) ON DELETE CASCADE,
-            UNIQUE KEY unique_course_teacher (course_id, teacher_id)
+            INDEX idx_course_teachers_course (course_id),
+            INDEX idx_course_teachers_class (class_id),
+            INDEX idx_course_teachers_teacher (teacher_id),
+            UNIQUE KEY unique_course_class_teacher (course_id, class_id, teacher_id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_persian_ci
     `);
     console.log('✅ course_teachers table created');
     await ensureColumn('course_teachers', 'class_id', 'INT NULL').catch(error => console.warn('course_teachers.class_id migration:', error.message));
     try {
+        const ensureCourseTeacherIndex = async (name, columns) => {
+            const existing = await queryOne(`
+                SELECT INDEX_NAME FROM INFORMATION_SCHEMA.STATISTICS
+                WHERE TABLE_SCHEMA = DATABASE()
+                  AND TABLE_NAME = 'course_teachers'
+                  AND INDEX_NAME = ?
+                LIMIT 1
+            `, [name]);
+            if (!existing) await query(`ALTER TABLE \`course_teachers\` ADD INDEX \`${name}\` (${columns})`);
+        };
+        await ensureCourseTeacherIndex('idx_course_teachers_course', '`course_id`');
+        await ensureCourseTeacherIndex('idx_course_teachers_class', '`class_id`');
+        await ensureCourseTeacherIndex('idx_course_teachers_teacher', '`teacher_id`');
+
         const oldUnique = await queryOne(`
             SELECT INDEX_NAME FROM INFORMATION_SCHEMA.STATISTICS
             WHERE TABLE_SCHEMA = DATABASE()

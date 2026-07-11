@@ -476,7 +476,7 @@
         const contentArea = document.getElementById('contentArea');
         if (!contentArea) return;
         const label = info?.title || tabName;
-        contentArea.innerHTML = `<div class="empty-state"><i class="fas ${info?.icon || 'fa-layer-group'}"></i><h4>${escapeHtml(label)}</h4><p>${escapeHtml(info?.subtitle || 'این بخش جدید به پنل اضافه شده و به داده‌های مدرسه متصل است.')}</p><div style="margin-top:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px"><div class="stat-card"><h3>ماژولار</h3><p>صفحه مستقل</p></div><div class="stat-card"><h3>Role-Based</h3><p>وابسته به نقش کاربر</p></div><div class="stat-card"><h3>API Ready</h3><p>آماده اتصال کامل</p></div></div></div>`;
+        contentArea.innerHTML = `<div class="empty-state"><i class="fas ${info?.icon || 'fa-layer-group'}"></i><h4>${escapeHtml(label)}</h4><p>برای این بخش در حال حاضر داده‌ای ثبت نشده است.</p></div>`;
     }
 
     async function showTab(tabName) {
@@ -528,15 +528,32 @@
                 switch(tabName) {
                     case 'dashboard': await renderDashboard(); break;
                     case 'children': await renderChildren(); break;
-                    case 'grades': await renderGrades(); break;
-                    case 'schedule': await renderSchedule(); break;
+                    case 'grades':
+                    case 'report-card':
+                    case 'progress-chart':
+                    case 'exam-results': await renderGrades(); break;
+                    case 'schedule':
+                    case 'exam-schedule': await renderSchedule(); break;
                     case 'assignments': await renderAssignments(); break;
-                    case 'attendance': await renderAttendance(); break;
-                    case 'messages': await renderMessages(); break;
-                    case 'meetings': await renderMeetings(); break;
-                    case 'payments': await renderPayments(); break;
+                    case 'attendance':
+                    case 'daily-child-status':
+                    case 'discipline-cases':
+                    case 'encouragements': await renderAttendance(); break;
+                    case 'messages':
+                    case 'teacher-messenger':
+                    case 'admin-messenger':
+                    case 'counselor-messenger':
+                    case 'sms-messages':
+                    case 'notifications': await renderMessages(); break;
+                    case 'meetings':
+                    case 'teacher-meeting':
+                    case 'counseling-reserve': await renderMeetings(); break;
+                    case 'payments':
+                    case 'tuition-payment':
+                    case 'payment-history': await renderPayments(); break;
                     case 'profile': await renderProfile(); break;
-                    case 'announcements': await renderAnnouncements(); break;
+                    case 'announcements':
+                    case 'school-news': await renderAnnouncements(); break;
                     default: await renderParentExtraPage(tabName, info);
                 }
             } catch (error) {
