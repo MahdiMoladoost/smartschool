@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ثبت توصیه‌های مشاوره‌ای | پنل مشاور</title>
   <link rel="stylesheet" href="/public/assets/css/all.min.css">
-  <link rel="stylesheet" href="/public/assets/css/panel/role-panel.css?v=admin-like-v2">
+  <link rel="stylesheet" href="/public/assets/css/panel/role-panel.css?v=admin-like-v4">
 </head>
 <body data-panel="counselor" data-page="counseling-recommendations">
 <button class="mobile-menu" onclick="toggleRoleSidebar()" aria-label="باز کردن منو"><i class="fas fa-bars"></i></button>
@@ -13,8 +13,8 @@
 <div class="layout">
   <aside class="sidebar" id="sidebar">
     <div class="brand">
-      <div class="brand-icon"><i class="fas fa-school"></i></div>
-      <div><h1 id="panelTitle">پنل مشاور</h1><p>سامانه مدرسه هوشمند</p></div>
+      <div class="brand-icon"><i class="fas fa-user-doctor"></i></div>
+      <div><h1 id="panelTitle">پنل مشاور</h1><p>مرکز مشاوره مدرسه</p></div>
     </div>
     <div class="user-card"><strong id="userName">کاربر</strong><span id="userRole">role</span></div>
     <nav class="nav-section" aria-label="منوی پنل">
@@ -154,12 +154,12 @@
   </aside>
   <main class="main">
     <header class="topbar">
-      <div><h2 id="pageTitle">داشبورد مشاور</h2><p>داده‌ها از API امن نقش و پایگاه داده MySQL خوانده می‌شود.</p></div>
+      <div><h2 id="pageTitle">داشبورد مشاور</h2><p>مدیریت درخواست‌ها، جلسات، پیگیری‌ها و ارزیابی ریسک دانش‌آموزان</p></div>
       <div class="actions"><button class="btn secondary" onclick="location.reload()"><i class="fas fa-rotate"></i> بروزرسانی</button></div>
     </header>
     <section id="content"><div class="state">در حال بارگذاری...</div></section>
   </main>
 </div>
-<script src="/public/assets/js/role-panel.js?v=admin-like-v2"></script>
+<script src="/public/assets/js/role-panel.js?v=counselor-complete-v1"></script>
 </body>
 </html>

@@ -44,6 +44,24 @@ for (const [panel, config] of Object.entries(manifest)) {
         if (html.includes('{{PAGE_KEY}}') || html.includes('{{DOCUMENT_TITLE}}')) {
             errors.push(`Unresolved template token: ${filePath}`);
         }
+
+        if (panel !== 'admin' && !html.includes('/public/assets/css/panel/role-panel.css')) {
+            errors.push(`Missing shared admin-aligned stylesheet: ${filePath}`);
+        }
+    }
+}
+
+const placeholderPatterns = [
+    /API Ready/i,
+    /آماده اتصال کامل/,
+    /این بخش جدید به پنل اضافه شده/,
+    /زیرساخت API و RBAC این بخش آماده است/
+];
+for (const asset of ['student.js', 'parent.js', 'teacher.js', 'role-panel.js']) {
+    const assetPath = path.join(projectRoot, 'public', 'assets', 'js', asset);
+    const source = fs.readFileSync(assetPath, 'utf8');
+    for (const pattern of placeholderPatterns) {
+        if (pattern.test(source)) errors.push(`Placeholder-only panel content in ${assetPath}: ${pattern}`);
     }
 }
 

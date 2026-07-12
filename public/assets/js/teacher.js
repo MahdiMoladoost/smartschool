@@ -660,7 +660,7 @@ function getGradeName(grade) {
         const contentArea = document.getElementById('contentArea');
         if (!contentArea) return;
         const label = info?.title || tabName;
-        contentArea.innerHTML = `<div class="empty-state"><i class="fas ${info?.icon || 'fa-layer-group'}"></i><h4>${escapeHtml(label)}</h4><p>${escapeHtml(info?.subtitle || 'این بخش جدید به پنل اضافه شده و به داده‌های مدرسه متصل است.')}</p><div style="margin-top:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px"><div class="stat-card"><h3>ماژولار</h3><p>صفحه مستقل</p></div><div class="stat-card"><h3>Role-Based</h3><p>وابسته به نقش کاربر</p></div><div class="stat-card"><h3>API Ready</h3><p>آماده اتصال کامل</p></div></div></div>`;
+        contentArea.innerHTML = `<div class="empty-state"><i class="fas ${info?.icon || 'fa-layer-group'}"></i><h4>${escapeHtml(label)}</h4><p>برای این بخش در حال حاضر داده‌ای ثبت نشده است.</p></div>`;
     }
 
     async function showTab(tabName) {
@@ -713,18 +713,37 @@ function getGradeName(grade) {
                     case 'dashboard': await renderDashboard(); break;
                     case 'classes': await renderClasses(); break;
                     case 'students': await renderStudents(); break;
-                    case 'attendance': await renderAttendance(); break;
-                    case 'grades': await renderGrades(); break;
-                    case 'exams': await renderExams(); break;
+                    case 'attendance':
+                    case 'attendance-create':
+                    case 'attendance-view': await renderAttendance(); break;
+                    case 'grades':
+                    case 'grades-create':
+                    case 'grades-edit':
+                    case 'student-report-cards': await renderGrades(); break;
+                    case 'exams':
+                    case 'online-exam-create':
+                    case 'exam-results':
+                    case 'ai-exam-builder':
+                    case 'ai-book-question-generator':
+                    case 'ai-pdf-question-generator':
+                    case 'ai-answer-key-generator':
+                    case 'ai-auto-grading':
+                    case 'ai-extra-question-suggestions':
+                    case 'ai-exam-difficulty-analysis': await renderExams(); break;
                     case 'ai-exam': await renderAIExam(); break;
                     case 'grade-predict': await renderGradePredict(); break;
-                    case 'assignments': await renderAssignments(); break;
+                    case 'assignments':
+                    case 'assignment-create':
+                    case 'assignment-review':
+                    case 'student-feedback': await renderAssignments(); break;
                     case 'library': await renderLibrary(); break;
                     case 'schedule': await renderSchedule(); break;
                     case 'parent-chat': await renderParentChat(); break;
                     case 'reports': await renderReports(); break;
                     case 'assistant': await renderAssistant(); break;
-                    case 'announcements': await renderAnnouncements(); break;
+                    case 'announcements':
+                    case 'student-messenger':
+                    case 'admin-messenger': await renderAnnouncements(); break;
                     case 'profile': await renderProfile(); break;
                     default: await renderTeacherExtraPage(tabName, info);
                 }

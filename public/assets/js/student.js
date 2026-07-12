@@ -577,7 +577,7 @@
         const contentArea = document.getElementById('contentArea');
         if (!contentArea) return;
         const label = info?.title || tabName;
-        contentArea.innerHTML = `<div class="empty-state"><i class="fas ${info?.icon || 'fa-layer-group'}"></i><h4>${escapeHtml(label)}</h4><p>${escapeHtml(info?.subtitle || 'این بخش جدید به پنل اضافه شده و به داده‌های مدرسه متصل است.')}</p><div style="margin-top:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px"><div class="stat-card"><h3>ماژولار</h3><p>صفحه مستقل</p></div><div class="stat-card"><h3>Role-Based</h3><p>وابسته به نقش کاربر</p></div><div class="stat-card"><h3>API Ready</h3><p>آماده اتصال کامل</p></div></div></div>`;
+        contentArea.innerHTML = `<div class="empty-state"><i class="fas ${info?.icon || 'fa-layer-group'}"></i><h4>${escapeHtml(label)}</h4><p>برای این بخش در حال حاضر داده‌ای ثبت نشده است.</p></div>`;
     }
 
     async function showTab(tabName) {
@@ -622,15 +622,39 @@
             try {
                 switch(tabName) {
                     case 'dashboard': await renderDashboard(); break;
-                    case 'grades': await renderGrades(); break;
-                    case 'schedule': await renderSchedule(); break;
-                    case 'assignments': await renderAssignments(); break;
-                    case 'exams': await renderExams(); break;
-                    case 'attendance': await renderAttendance(); break;
-                    case 'messages': await renderMessages(); break;
-                    case 'assistant': await renderAssistant(); break;
-                    case 'profile': await renderProfile(); break;
-                    case 'announcements': await renderAnnouncements(); break;
+                    case 'grades':
+                    case 'report-card':
+                    case 'progress-chart': await renderGrades(); break;
+                    case 'schedule':
+                    case 'courses-view':
+                    case 'academic-calendar': await renderSchedule(); break;
+                    case 'assignments':
+                    case 'assignment-submit': await renderAssignments(); break;
+                    case 'exams':
+                    case 'exam-schedule':
+                    case 'online-exam':
+                    case 'exam-results': await renderExams(); break;
+                    case 'attendance':
+                    case 'absence-late-history': await renderAttendance(); break;
+                    case 'messages':
+                    case 'teacher-messenger':
+                    case 'admin-messenger':
+                    case 'counselor-messenger':
+                    case 'notifications':
+                    case 'sms-messages': await renderMessages(); break;
+                    case 'assistant':
+                    case 'ai-study-assistant':
+                    case 'ai-homework-help':
+                    case 'ai-lesson-summary':
+                    case 'ai-question-generator':
+                    case 'ai-study-plan':
+                    case 'ai-weakness-analysis':
+                    case 'ai-resource-suggestions': await renderAssistant(); break;
+                    case 'profile':
+                    case 'edit-profile':
+                    case 'change-password': await renderProfile(); break;
+                    case 'announcements':
+                    case 'school-news': await renderAnnouncements(); break;
                     default: await renderStudentExtraPage(tabName, info);
                 }
             } catch (error) {
