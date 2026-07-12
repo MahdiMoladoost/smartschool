@@ -614,6 +614,28 @@ CREATE TABLE IF NOT EXISTS counseling_sessions (
             FOREIGN KEY (counselor_id) REFERENCES users(id) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_persian_ci;
 
+CREATE TABLE IF NOT EXISTS counseling_records (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            student_id INT NOT NULL,
+            counselor_id INT NOT NULL,
+            record_type VARCHAR(60) NOT NULL,
+            title VARCHAR(200) NOT NULL,
+            content TEXT,
+            status ENUM('draft', 'active', 'completed', 'archived') DEFAULT 'active',
+            visibility ENUM('private', 'student', 'parent', 'school') DEFAULT 'private',
+            score DECIMAL(6,2) NULL,
+            result_label VARCHAR(200) NULL,
+            due_at DATETIME NULL,
+            metadata JSON NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            INDEX idx_counseling_record_student (student_id, record_type),
+            INDEX idx_counseling_record_counselor (counselor_id, created_at),
+            INDEX idx_counseling_record_due (status, due_at),
+            FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
+            FOREIGN KEY (counselor_id) REFERENCES users(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_persian_ci;
+
 CREATE TABLE IF NOT EXISTS school_events (
             id INT AUTO_INCREMENT PRIMARY KEY,
             title VARCHAR(200) NOT NULL,
