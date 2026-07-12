@@ -34,7 +34,7 @@ const requiredTables = [
     'exam_questions', 'exam_results', 'grades', 'announcements', 'announcements_read', 'messages', 'payments',
     'registrations', 'tickets', 'ticket_replies', 'leave_requests', 'meetings', 'settings', 'admin_logs', 'ai_logs',
     'ai_requests_log', 'ai_automation_logs', 'sms_logs', 'parent_children', 'digital_library', 'counseling_requests',
-    'counseling_sessions', 'school_events', 'student_activity_records', 'homepage_news', 'homepage_gallery_items', 'backups'
+    'counseling_sessions', 'counseling_records', 'school_events', 'student_activity_records', 'homepage_news', 'homepage_gallery_items', 'backups'
 ];
 
 const requiredColumns = {
@@ -45,6 +45,7 @@ const requiredColumns = {
     ai_automation_logs: ['id', 'user_id', 'automation_type', 'input_summary', 'ai_output', 'action_taken', 'status', 'created_at'],
     counseling_requests: ['id', 'student_id', 'requested_by', 'assigned_counselor_id', 'category', 'priority', 'summary', 'status', 'appointment_at'],
     counseling_sessions: ['id', 'request_id', 'student_id', 'counselor_id', 'session_at', 'public_summary', 'private_notes', 'risk_level', 'follow_up_at'],
+    counseling_records: ['id', 'student_id', 'counselor_id', 'record_type', 'title', 'content', 'status', 'visibility', 'score', 'result_label', 'due_at', 'metadata'],
     grades: ['id', 'student_id', 'course_id', 'quiz', 'midterm', 'final_exam', 'average', 'term', 'created_by'],
     attendance: ['id', 'student_id', 'class_id', 'date', 'status', 'recorded_by'],
     announcements: ['id', 'title', 'content', 'target_role', 'priority', 'is_active', 'created_by'],
@@ -64,13 +65,13 @@ for (const [table, columns] of Object.entries(requiredColumns)) {
     }
 }
 
-const fkRequired = ['parent_children', 'counseling_requests', 'counseling_sessions', 'sms_logs', 'ai_requests_log', 'school_events'];
+const fkRequired = ['parent_children', 'counseling_requests', 'counseling_sessions', 'counseling_records', 'sms_logs', 'ai_requests_log', 'school_events'];
 for (const table of fkRequired) {
     const found = tables.get(table);
     if (!found?.foreignKeys.length) failures.push(`missing foreign keys: ${table}`);
 }
 
-const indexRequired = ['idx_sms_recipient_created', 'idx_sms_message_hash', 'idx_ai_requests_user_created', 'idx_counseling_student', 'idx_session_risk'];
+const indexRequired = ['idx_sms_recipient_created', 'idx_sms_message_hash', 'idx_ai_requests_user_created', 'idx_counseling_student', 'idx_session_risk', 'idx_counseling_record_student'];
 const allIndexText = [...tables.values()].flatMap(t => t.indexes).join('\n');
 for (const indexName of indexRequired) {
     if (!allIndexText.includes(indexName)) failures.push(`missing index: ${indexName}`);

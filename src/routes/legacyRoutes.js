@@ -37,6 +37,7 @@ const MANAGEMENT_ROLES = ['super_admin', 'admin', 'principal'];
 const OPERATIONAL_ROLES = ['super_admin', 'admin', 'principal', 'executive_deputy'];
 const CULTURAL_ROLES = ['super_admin', 'admin', 'principal', 'cultural_deputy'];
 const COUNSELOR_ROLES = ['super_admin', 'admin', 'principal', 'counselor'];
+const COUNSELOR_RECORD_TYPES = ['study_plan', 'recommendation', 'psychological_assessment', 'personality_test', 'interest_test'];
 
 if (process.env.NODE_ENV === 'production' && (!process.env.JWT_SECRET || process.env.JWT_SECRET === 'change-this-to-a-long-random-secret' || process.env.JWT_SECRET === 'change-me-in-development-only')) {
     throw new Error('JWT_SECRET must be set to a strong non-default value in production.');
@@ -1683,6 +1684,31 @@ async function createTables() {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_persian_ci
     `);
     console.log('✅ counseling_sessions table created');
+
+    await query(`
+        CREATE TABLE IF NOT EXISTS counseling_records (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            student_id INT NOT NULL,
+            counselor_id INT NOT NULL,
+            record_type VARCHAR(60) NOT NULL,
+            title VARCHAR(200) NOT NULL,
+            content TEXT,
+            status ENUM('draft', 'active', 'completed', 'archived') DEFAULT 'active',
+            visibility ENUM('private', 'student', 'parent', 'school') DEFAULT 'private',
+            score DECIMAL(6,2) NULL,
+            result_label VARCHAR(200) NULL,
+            due_at DATETIME NULL,
+            metadata JSON NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            INDEX idx_counseling_record_student (student_id, record_type),
+            INDEX idx_counseling_record_counselor (counselor_id, created_at),
+            INDEX idx_counseling_record_due (status, due_at),
+            FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
+            FOREIGN KEY (counselor_id) REFERENCES users(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_persian_ci
+    `);
+    console.log('✅ counseling_records table created');
 
     // 30. Cultural/behavior/activity records
     await query(`
@@ -12776,6 +12802,293 @@ app.post('/api/v1/counselor/sessions', authenticateToken, checkRole('counselor',
     } catch (error) {
         console.error('create counseling session:', error);
         safeError(res, 500, 'خطا در ثبت جلسه مشاوره');
+    }
+});
+
+app.get('/api/v1/counselor/students', authenticateToken, checkRole(...COUNSELOR_ROLES), async (req, res) => {
+    try {
+        const search = String(req.query.search || '').trim().slice(0, 120);
+        const classId = Number(req.query.class_id || 0);
+        const { page, limit, offset } = getPagination(req.query, { defaultLimit: 30, maxLimit: 100 });
+        const where = ["u.role = 'student'", "u.status = 'active'"];
+        const params = [];
+        if (search) {
+            const term = `%${search}%`;
+            where.push('(u.name LIKE ? OR u.username LIKE ? OR u.national_id LIKE ?)');
+            params.push(term, term, term);
+        }
+        if (classId) {
+            where.push('COALESCE(active_class.class_id, u.class_id) = ?');
+            params.push(classId);
+        }
+        const students = await query(`
+            SELECT u.id, u.name, u.username, u.national_id, u.phone, u.email, u.avatar_url,
+                   COALESCE(active_class.class_id, u.class_id) AS class_id, c.name AS class_name, c.grade,
+                   (SELECT ROUND(AVG(g.average), 2) FROM grades g WHERE g.student_id = u.id) AS average_grade,
+                   (SELECT COUNT(*) FROM attendance a WHERE a.student_id = u.id AND a.status = 'absent' AND a.date >= DATE_SUB(CURDATE(), INTERVAL 60 DAY)) AS absences_60d,
+                   (SELECT COUNT(*) FROM counseling_requests cr WHERE cr.student_id = u.id AND cr.status IN ('open','scheduled','in_progress')) AS open_requests,
+                   (SELECT COUNT(*) FROM counseling_sessions cs WHERE cs.student_id = u.id) AS session_count,
+                   (SELECT cs.risk_level FROM counseling_sessions cs WHERE cs.student_id = u.id ORDER BY cs.session_at DESC LIMIT 1) AS latest_risk,
+                   (SELECT MAX(cs.follow_up_at) FROM counseling_sessions cs WHERE cs.student_id = u.id AND cs.follow_up_at >= NOW()) AS next_follow_up
+            FROM users u
+            LEFT JOIN (
+                SELECT student_id, MAX(class_id) AS class_id FROM class_students WHERE status = 'active' GROUP BY student_id
+            ) active_class ON active_class.student_id = u.id
+            LEFT JOIN classes c ON c.id = COALESCE(active_class.class_id, u.class_id)
+            WHERE ${where.join(' AND ')}
+            ORDER BY FIELD(COALESCE((SELECT cs.risk_level FROM counseling_sessions cs WHERE cs.student_id=u.id ORDER BY cs.session_at DESC LIMIT 1), 'none'), 'high','medium','low','none'), u.name
+            LIMIT ? OFFSET ?
+        `, [...params, limit, offset]);
+        const [totalRow, classes] = await Promise.all([
+            queryOne(`
+                SELECT COUNT(DISTINCT u.id) AS total
+                FROM users u
+                LEFT JOIN (SELECT student_id, MAX(class_id) AS class_id FROM class_students WHERE status='active' GROUP BY student_id) active_class ON active_class.student_id=u.id
+                WHERE ${where.join(' AND ')}
+            `, params),
+            query("SELECT id, name, grade FROM classes WHERE status='active' ORDER BY grade, name")
+        ]);
+        safeSuccess(res, { students, classes, pagination: { page, limit, total: totalRow?.total || 0 } }, 'دانش‌آموزان دریافت شدند');
+    } catch (error) {
+        console.error('counselor students:', error);
+        safeError(res, 500, 'خطا در دریافت دانش‌آموزان');
+    }
+});
+
+app.get('/api/v1/counselor/students/:id', authenticateToken, checkRole(...COUNSELOR_ROLES), async (req, res) => {
+    try {
+        const studentId = Number(req.params.id);
+        if (!studentId) return safeError(res, 400, 'شناسه دانش‌آموز معتبر نیست');
+        const student = await queryOne(`
+            SELECT u.id, u.name, u.username, u.national_id, u.phone, u.email, u.avatar_url, u.birth_date,
+                   u.father_name, u.address, COALESCE(active_class.class_id,u.class_id) AS class_id,
+                   c.name AS class_name, c.grade
+            FROM users u
+            LEFT JOIN (SELECT student_id, MAX(class_id) AS class_id FROM class_students WHERE status='active' GROUP BY student_id) active_class ON active_class.student_id=u.id
+            LEFT JOIN classes c ON c.id=COALESCE(active_class.class_id,u.class_id)
+            WHERE u.id=? AND u.role='student' LIMIT 1
+        `, [studentId]);
+        if (!student) return safeError(res, 404, 'دانش‌آموز یافت نشد');
+        const [grades, attendance, attendanceSummary, discipline, requests, sessions, records, parents] = await Promise.all([
+            query(`SELECT g.*, c.name AS course_name FROM grades g JOIN courses c ON c.id=g.course_id WHERE g.student_id=? ORDER BY g.updated_at DESC LIMIT 100`, [studentId]),
+            query(`SELECT a.*, c.name AS class_name FROM attendance a LEFT JOIN classes c ON c.id=a.class_id WHERE a.student_id=? ORDER BY a.date DESC LIMIT 120`, [studentId]),
+            query(`SELECT status, COUNT(*) AS count FROM attendance WHERE student_id=? AND date>=DATE_SUB(CURDATE(), INTERVAL 90 DAY) GROUP BY status`, [studentId]),
+            query(`SELECT sar.* FROM student_activity_records sar WHERE sar.student_id=? AND sar.activity_type IN ('discipline','warning','encouragement','unexcused_absence','repeated_late','behavior') ORDER BY sar.created_at DESC LIMIT 100`, [studentId]),
+            query(`SELECT cr.*, requester.name AS requester_name, counselor.name AS counselor_name FROM counseling_requests cr JOIN users requester ON requester.id=cr.requested_by LEFT JOIN users counselor ON counselor.id=cr.assigned_counselor_id WHERE cr.student_id=? ORDER BY cr.created_at DESC`, [studentId]),
+            query(`SELECT cs.*, c.name AS counselor_name FROM counseling_sessions cs JOIN users c ON c.id=cs.counselor_id WHERE cs.student_id=? ORDER BY cs.session_at DESC`, [studentId]),
+            query(`SELECT cr.*, c.name AS counselor_name FROM counseling_records cr JOIN users c ON c.id=cr.counselor_id WHERE cr.student_id=? ORDER BY cr.created_at DESC`, [studentId]),
+            query(`SELECT p.id, p.name, p.phone, p.email, pc.relation, pc.is_primary FROM parent_children pc JOIN users p ON p.id=pc.parent_id WHERE pc.student_id=? ORDER BY pc.is_primary DESC, p.name`, [studentId])
+        ]);
+        safeSuccess(res, { student, grades, attendance, attendanceSummary, discipline, requests, sessions, records, parents }, 'پرونده دانش‌آموز دریافت شد');
+    } catch (error) {
+        console.error('counselor student file:', error);
+        safeError(res, 500, 'خطا در دریافت پرونده دانش‌آموز');
+    }
+});
+
+app.patch('/api/v1/counselor/requests/:id', authenticateToken, checkRole(...COUNSELOR_ROLES), async (req, res) => {
+    try {
+        const id = Number(req.params.id);
+        const current = await queryOne('SELECT * FROM counseling_requests WHERE id=?', [id]);
+        if (!current) return safeError(res, 404, 'درخواست مشاوره یافت نشد');
+        const statuses = ['open', 'scheduled', 'in_progress', 'closed', 'rejected'];
+        const priorities = ['low', 'normal', 'high', 'urgent'];
+        const status = statuses.includes(req.body.status) ? req.body.status : current.status;
+        const priority = priorities.includes(req.body.priority) ? req.body.priority : current.priority;
+        const category = String(req.body.category ?? current.category).trim().slice(0, 100) || 'academic';
+        const summary = String(req.body.summary ?? current.summary).trim().slice(0, 2000);
+        const appointmentAt = Object.prototype.hasOwnProperty.call(req.body, 'appointment_at') ? (req.body.appointment_at || null) : current.appointment_at;
+        const assignedCounselorId = Object.prototype.hasOwnProperty.call(req.body, 'assigned_counselor_id') ? (Number(req.body.assigned_counselor_id) || null) : (current.assigned_counselor_id || req.user.id);
+        await execute(`UPDATE counseling_requests SET status=?, priority=?, category=?, summary=?, appointment_at=?, assigned_counselor_id=?, updated_at=NOW() WHERE id=?`, [status, priority, category, summary, appointmentAt, assignedCounselorId, id]);
+        safeSuccess(res, { id }, 'درخواست مشاوره بروزرسانی شد');
+    } catch (error) {
+        console.error('update counseling request:', error);
+        safeError(res, 500, 'خطا در بروزرسانی درخواست');
+    }
+});
+
+app.patch('/api/v1/counselor/sessions/:id', authenticateToken, checkRole(...COUNSELOR_ROLES), async (req, res) => {
+    try {
+        const id = Number(req.params.id);
+        const current = await queryOne('SELECT * FROM counseling_sessions WHERE id=?', [id]);
+        if (!current) return safeError(res, 404, 'جلسه مشاوره یافت نشد');
+        if (req.user.role === 'counselor' && Number(current.counselor_id) !== Number(req.user.id)) return safeError(res, 403, 'ویرایش این جلسه مجاز نیست');
+        const risk = ['none', 'low', 'medium', 'high'].includes(req.body.risk_level) ? req.body.risk_level : current.risk_level;
+        await execute(`
+            UPDATE counseling_sessions SET session_at=?, public_summary=?, private_notes=?, risk_level=?, follow_up_at=?, updated_at=NOW() WHERE id=?
+        `, [req.body.session_at || current.session_at, String(req.body.public_summary ?? current.public_summary ?? '').slice(0, 2000), String(req.body.private_notes ?? current.private_notes ?? '').slice(0, 5000), risk, Object.prototype.hasOwnProperty.call(req.body, 'follow_up_at') ? (req.body.follow_up_at || null) : current.follow_up_at, id]);
+        safeSuccess(res, { id }, 'جلسه مشاوره بروزرسانی شد');
+    } catch (error) {
+        console.error('update counseling session:', error);
+        safeError(res, 500, 'خطا در بروزرسانی جلسه');
+    }
+});
+
+app.get('/api/v1/counselor/records', authenticateToken, checkRole(...COUNSELOR_ROLES), async (req, res) => {
+    try {
+        const where = ['1=1'];
+        const params = [];
+        const studentId = Number(req.query.student_id || 0);
+        const type = String(req.query.type || '').trim();
+        if (studentId) { where.push('cr.student_id=?'); params.push(studentId); }
+        if (COUNSELOR_RECORD_TYPES.includes(type)) { where.push('cr.record_type=?'); params.push(type); }
+        const records = await query(`
+            SELECT cr.*, s.name AS student_name, c.name AS counselor_name, cls.name AS class_name
+            FROM counseling_records cr JOIN users s ON s.id=cr.student_id JOIN users c ON c.id=cr.counselor_id
+            LEFT JOIN classes cls ON cls.id=s.class_id
+            WHERE ${where.join(' AND ')} ORDER BY cr.created_at DESC LIMIT 200
+        `, params);
+        safeSuccess(res, { records, types: COUNSELOR_RECORD_TYPES }, 'سوابق مشاوره دریافت شدند');
+    } catch (error) {
+        console.error('counselor records:', error);
+        safeError(res, 500, 'خطا در دریافت سوابق مشاوره');
+    }
+});
+
+app.post('/api/v1/counselor/records', authenticateToken, checkRole(...COUNSELOR_ROLES), async (req, res) => {
+    try {
+        const studentId = Number(req.body.student_id);
+        const type = String(req.body.record_type || 'recommendation');
+        const title = String(req.body.title || '').trim();
+        if (!studentId || !title || !COUNSELOR_RECORD_TYPES.includes(type)) return safeError(res, 400, 'دانش‌آموز، عنوان و نوع معتبر الزامی است');
+        const student = await queryOne("SELECT id FROM users WHERE id=? AND role='student'", [studentId]);
+        if (!student) return safeError(res, 404, 'دانش‌آموز یافت نشد');
+        const statuses = ['draft', 'active', 'completed', 'archived'];
+        const visibilities = ['private', 'student', 'parent', 'school'];
+        const metadata = req.body.metadata && typeof req.body.metadata === 'object' ? JSON.stringify(req.body.metadata) : null;
+        const result = await execute(`
+            INSERT INTO counseling_records (student_id,counselor_id,record_type,title,content,status,visibility,score,result_label,due_at,metadata)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?)
+        `, [studentId, req.user.id, type, title.slice(0,200), String(req.body.content || '').slice(0,10000), statuses.includes(req.body.status) ? req.body.status : 'active', visibilities.includes(req.body.visibility) ? req.body.visibility : 'private', Number.isFinite(Number(req.body.score)) && req.body.score !== '' ? Number(req.body.score) : null, String(req.body.result_label || '').slice(0,200) || null, req.body.due_at || null, metadata]);
+        safeSuccess(res, { id: result.insertId }, 'سابقه مشاوره ثبت شد');
+    } catch (error) {
+        console.error('create counselor record:', error);
+        safeError(res, 500, 'خطا در ثبت سابقه مشاوره');
+    }
+});
+
+app.patch('/api/v1/counselor/records/:id', authenticateToken, checkRole(...COUNSELOR_ROLES), async (req, res) => {
+    try {
+        const id = Number(req.params.id);
+        const current = await queryOne('SELECT * FROM counseling_records WHERE id=?', [id]);
+        if (!current) return safeError(res, 404, 'سابقه مشاوره یافت نشد');
+        if (req.user.role === 'counselor' && Number(current.counselor_id) !== Number(req.user.id)) return safeError(res, 403, 'ویرایش این سابقه مجاز نیست');
+        const statuses = ['draft', 'active', 'completed', 'archived'];
+        const visibilities = ['private', 'student', 'parent', 'school'];
+        const metadata = req.body.metadata && typeof req.body.metadata === 'object' ? JSON.stringify(req.body.metadata) : current.metadata;
+        await execute(`UPDATE counseling_records SET title=?,content=?,status=?,visibility=?,score=?,result_label=?,due_at=?,metadata=?,updated_at=NOW() WHERE id=?`, [String(req.body.title ?? current.title).slice(0,200), String(req.body.content ?? current.content ?? '').slice(0,10000), statuses.includes(req.body.status) ? req.body.status : current.status, visibilities.includes(req.body.visibility) ? req.body.visibility : current.visibility, Object.prototype.hasOwnProperty.call(req.body,'score') ? (req.body.score === '' ? null : Number(req.body.score)) : current.score, String(req.body.result_label ?? current.result_label ?? '').slice(0,200) || null, Object.prototype.hasOwnProperty.call(req.body,'due_at') ? (req.body.due_at || null) : current.due_at, metadata, id]);
+        safeSuccess(res, { id }, 'سابقه مشاوره بروزرسانی شد');
+    } catch (error) {
+        console.error('update counselor record:', error);
+        safeError(res, 500, 'خطا در بروزرسانی سابقه');
+    }
+});
+
+app.delete('/api/v1/counselor/records/:id', authenticateToken, checkRole(...COUNSELOR_ROLES), async (req, res) => {
+    try {
+        const id = Number(req.params.id);
+        const current = await queryOne('SELECT * FROM counseling_records WHERE id=?', [id]);
+        if (!current) return safeError(res, 404, 'سابقه مشاوره یافت نشد');
+        if (req.user.role === 'counselor' && Number(current.counselor_id) !== Number(req.user.id)) return safeError(res, 403, 'حذف این سابقه مجاز نیست');
+        await execute('DELETE FROM counseling_records WHERE id=?', [id]);
+        safeSuccess(res, { id }, 'سابقه مشاوره حذف شد');
+    } catch (error) {
+        console.error('delete counselor record:', error);
+        safeError(res, 500, 'خطا در حذف سابقه');
+    }
+});
+
+app.get('/api/v1/counselor/contacts', authenticateToken, checkRole(...COUNSELOR_ROLES), async (req, res) => {
+    try {
+        const allowedRoles = ['student', 'parent', 'teacher', 'admin', 'principal', 'executive_deputy', 'cultural_deputy', 'counselor'];
+        const role = allowedRoles.includes(req.query.role) ? req.query.role : null;
+        const search = String(req.query.search || '').trim().slice(0,100);
+        const where = ['u.id <> ?'];
+        const params = [req.user.id];
+        if (role) { where.push('u.role=?'); params.push(role); }
+        if (search) { where.push('(u.name LIKE ? OR u.username LIKE ?)'); const term=`%${search}%`; params.push(term,term); }
+        const contacts = await query(`
+            SELECT u.id,u.name,u.username,u.role,u.phone,u.email,u.avatar_url,
+                   (SELECT COUNT(*) FROM messages m WHERE m.sender_id=u.id AND m.receiver_id=? AND m.is_read=0) AS unread_count,
+                   (SELECT m.message FROM messages m WHERE (m.sender_id=u.id AND m.receiver_id=?) OR (m.sender_id=? AND m.receiver_id=u.id) ORDER BY m.created_at DESC LIMIT 1) AS last_message,
+                   (SELECT m.created_at FROM messages m WHERE (m.sender_id=u.id AND m.receiver_id=?) OR (m.sender_id=? AND m.receiver_id=u.id) ORDER BY m.created_at DESC LIMIT 1) AS last_message_at
+            FROM users u WHERE ${where.join(' AND ')} ORDER BY last_message_at DESC,u.name LIMIT 200
+        `, [req.user.id,req.user.id,req.user.id,req.user.id,req.user.id,...params]);
+        safeSuccess(res, { contacts }, 'مخاطبان دریافت شدند');
+    } catch (error) {
+        console.error('counselor contacts:', error);
+        safeError(res, 500, 'خطا در دریافت مخاطبان');
+    }
+});
+
+app.get('/api/v1/counselor/messages/:userId', authenticateToken, checkRole(...COUNSELOR_ROLES), async (req, res) => {
+    try {
+        const otherId = Number(req.params.userId);
+        const contact = await queryOne('SELECT id,name,role,avatar_url FROM users WHERE id=?', [otherId]);
+        if (!contact) return safeError(res, 404, 'مخاطب یافت نشد');
+        const messages = await query(`
+            SELECT m.*,s.name AS sender_name,r.name AS receiver_name FROM messages m
+            JOIN users s ON s.id=m.sender_id JOIN users r ON r.id=m.receiver_id
+            WHERE (m.sender_id=? AND m.receiver_id=?) OR (m.sender_id=? AND m.receiver_id=?) ORDER BY m.created_at ASC LIMIT 300
+        `, [req.user.id,otherId,otherId,req.user.id]);
+        await execute('UPDATE messages SET is_read=1 WHERE sender_id=? AND receiver_id=?', [otherId,req.user.id]);
+        safeSuccess(res, { contact, messages }, 'گفتگو دریافت شد');
+    } catch (error) {
+        console.error('counselor messages:', error);
+        safeError(res, 500, 'خطا در دریافت گفتگو');
+    }
+});
+
+app.post('/api/v1/counselor/messages', authenticateToken, checkRole(...COUNSELOR_ROLES), async (req, res) => {
+    try {
+        const receiverId = Number(req.body.receiver_id);
+        const message = String(req.body.message || '').trim();
+        if (!receiverId || !message) return safeError(res, 400, 'گیرنده و متن پیام الزامی است');
+        const receiver = await queryOne("SELECT id FROM users WHERE id=? AND status<>'inactive'", [receiverId]);
+        if (!receiver) return safeError(res, 404, 'گیرنده یافت نشد');
+        const result = await execute('INSERT INTO messages (sender_id,receiver_id,message,is_read) VALUES (?,?,?,0)', [req.user.id,receiverId,message.slice(0,5000)]);
+        safeSuccess(res, { id: result.insertId }, 'پیام ارسال شد');
+    } catch (error) {
+        console.error('send counselor message:', error);
+        safeError(res, 500, 'خطا در ارسال پیام');
+    }
+});
+
+app.get('/api/v1/counselor/profile', authenticateToken, checkRole(...COUNSELOR_ROLES), async (req, res) => {
+    try {
+        const profile = await queryOne('SELECT id,username,name,role,phone,email,avatar_url,last_login,created_at FROM users WHERE id=?', [req.user.id]);
+        safeSuccess(res, { profile }, 'پروفایل دریافت شد');
+    } catch (error) {
+        console.error('counselor profile:', error);
+        safeError(res, 500, 'خطا در دریافت پروفایل');
+    }
+});
+
+app.patch('/api/v1/counselor/profile', authenticateToken, checkRole(...COUNSELOR_ROLES), async (req, res) => {
+    try {
+        const current = await queryOne('SELECT name,phone,email FROM users WHERE id=?', [req.user.id]);
+        await execute('UPDATE users SET name=?,phone=?,email=?,updated_at=NOW() WHERE id=?', [String(req.body.name ?? current.name).trim().slice(0,200), String(req.body.phone ?? current.phone ?? '').trim().slice(0,20) || null, String(req.body.email ?? current.email ?? '').trim().slice(0,200) || null, req.user.id]);
+        safeSuccess(res, {}, 'پروفایل بروزرسانی شد');
+    } catch (error) {
+        console.error('update counselor profile:', error);
+        safeError(res, 500, 'خطا در بروزرسانی پروفایل');
+    }
+});
+
+app.get('/api/v1/counselor/reports', authenticateToken, checkRole(...COUNSELOR_ROLES), async (req, res) => {
+    try {
+        const [requestStatus, requestCategory, sessionRisk, monthlySessions, recordTypes, dueFollowUps] = await Promise.all([
+            query('SELECT status,COUNT(*) AS count FROM counseling_requests GROUP BY status'),
+            query('SELECT category,COUNT(*) AS count FROM counseling_requests GROUP BY category ORDER BY count DESC'),
+            query('SELECT risk_level,COUNT(*) AS count FROM counseling_sessions GROUP BY risk_level'),
+            query("SELECT DATE_FORMAT(session_at,'%Y-%m') AS month,COUNT(*) AS count FROM counseling_sessions WHERE session_at>=DATE_SUB(CURDATE(),INTERVAL 12 MONTH) GROUP BY month ORDER BY month"),
+            query('SELECT record_type,COUNT(*) AS count FROM counseling_records GROUP BY record_type'),
+            queryOne("SELECT COUNT(*) AS count FROM counseling_sessions WHERE follow_up_at IS NOT NULL AND follow_up_at<=DATE_ADD(NOW(),INTERVAL 7 DAY) AND follow_up_at>=DATE_SUB(NOW(),INTERVAL 30 DAY)")
+        ]);
+        safeSuccess(res, { requestStatus,requestCategory,sessionRisk,monthlySessions,recordTypes,dueFollowUps:dueFollowUps?.count||0 }, 'گزارش مشاور دریافت شد');
+    } catch (error) {
+        console.error('counselor reports:', error);
+        safeError(res, 500, 'خطا در دریافت گزارش مشاور');
     }
 });
 

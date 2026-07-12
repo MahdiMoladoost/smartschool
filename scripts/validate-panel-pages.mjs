@@ -79,6 +79,24 @@ for (const [panel, config] of Object.entries(manifest)) {
         }
 
         validateLocalAssets(html, filePath);
+
+        if (panel === 'counselor') {
+            const counselorRequirements = [
+                '/public/assets/css/panel/admin/admin.css',
+                '/public/assets/css/panel/counselor/counselor.css',
+                '/public/assets/js/counselor.js',
+                'id="sidebarLogout"',
+                'id="headerLogout"',
+                'id="notificationPanel"',
+                'id="modalRoot"'
+            ];
+            for (const requirement of counselorRequirements) {
+                if (!html.includes(requirement)) errors.push(`Incomplete counselor shell in ${filePath}: ${requirement}`);
+            }
+            if (html.includes('/public/assets/js/role-panel.js') || html.includes('زیرساخت API و RBAC این بخش آماده است')) {
+                errors.push(`Legacy counselor placeholder remains in ${filePath}`);
+            }
+        }
     }
 }
 
