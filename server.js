@@ -1,4 +1,7 @@
 import { app, PORT } from './src/routes/legacyRoutes.js';
+import { installDashboardExperience } from './src/middleware/dashboardExperience.js';
+
+installDashboardExperience(app);
 
 app.listen(PORT, () => {
     const demoCredentials = process.env.NODE_ENV === 'production' ? '' : `

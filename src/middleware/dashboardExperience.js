@@ -1,29 +1,36 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 const DASHBOARD_PATH = /^\/dashboard\/(admin|teacher|student|parent|principal|executive-deputy|cultural-deputy|counselor|super-admin)(?:\/|$)/;
-const STYLE_HREF = '/public/assets/css/panel/unified-experience.css?v=2026-07-12';
-const SCRIPT_SRC = '/public/assets/js/panel-unified.js?v=2026-07-12';
+const TEACHER_DASHBOARD_PATH = /^\/dashboard\/teacher(?:\/|$)/;
+const SHARED_STYLES = ['/public/assets/css/panel/unified-experience.css?v=2026-07-12'];
+const SHARED_SCRIPTS = ['/public/assets/js/panel-unified.js?v=2026-07-12'];
+const TEACHER_STYLES = ['/public/assets/css/panel/dynamic-pages.css?v=2026-07-12'];
+const TEACHER_SCRIPTS = ['/public/assets/js/panel-dynamic-pages.js?v=2026-07-12'];
 
-function enhanceDashboardHtml(html) {
+function injectStyles(html, hrefs) {
+    return hrefs.reduce((output, href) => {
+        if (output.includes(href) || !/<\/head>/i.test(output)) return output;
+        return output.replace(/<\/head>/i, `  <link rel="stylesheet" href="${href}">\n</head>`);
+    }, html);
+}
+
+function injectScripts(html, sources) {
+    return sources.reduce((output, src) => {
+        if (output.includes(src) || !/<\/body>/i.test(output)) return output;
+        return output.replace(/<\/body>/i, `  <script src="${src}" defer></script>\n</body>`);
+    }, html);
+}
+
+function enhanceDashboardHtml(html, requestPath = '') {
     if (typeof html !== 'string' || !/<html[\s>]/i.test(html)) return html;
 
-    let output = html;
-    if (!output.includes(STYLE_HREF)) {
-        output = output.replace(
-            /<\/head>/i,
-            `  <link rel="stylesheet" href="${STYLE_HREF}">\n</head>`
-        );
-    }
+    const teacherPage = TEACHER_DASHBOARD_PATH.test(requestPath)
+        || /<body\b[^>]*\bdata-panel=["']teacher["']/i.test(html);
+    const styles = teacherPage ? [...SHARED_STYLES, ...TEACHER_STYLES] : SHARED_STYLES;
+    const scripts = teacherPage ? [...SHARED_SCRIPTS, ...TEACHER_SCRIPTS] : SHARED_SCRIPTS;
 
-    if (!output.includes(SCRIPT_SRC)) {
-        output = output.replace(
-            /<\/body>/i,
-            `  <script src="${SCRIPT_SRC}" defer></script>\n</body>`
-        );
-    }
-
-    return output;
+    return injectScripts(injectStyles(html, styles), scripts);
 }
 
 function dashboardEnhancementMiddleware(req, res, next) {
@@ -31,16 +38,13 @@ function dashboardEnhancementMiddleware(req, res, next) {
 
     const originalSend = res.send.bind(res);
     const originalSendFile = res.sendFile.bind(res);
+    const enhance = html => enhanceDashboardHtml(html, req.path);
 
     res.send = function enhancedSend(body) {
-        if (typeof body === 'string') {
-            return originalSend(enhanceDashboardHtml(body));
-        }
+        if (typeof body === 'string') return originalSend(enhance(body));
         if (Buffer.isBuffer(body)) {
             const text = body.toString('utf8');
-            if (/<html[\s>]/i.test(text)) {
-                return originalSend(Buffer.from(enhanceDashboardHtml(text), 'utf8'));
-            }
+            if (/<html[\s>]/i.test(text)) return originalSend(Buffer.from(enhance(text), 'utf8'));
         }
         return originalSend(body);
     };
@@ -52,10 +56,7 @@ function dashboardEnhancementMiddleware(req, res, next) {
             done = options;
             opts = undefined;
         }
-
-        if (!/\.html?$/i.test(filePath)) {
-            return originalSendFile(filePath, opts, done);
-        }
+        if (!/\.html?$/i.test(filePath)) return originalSendFile(filePath, opts, done);
 
         const absolutePath = path.isAbsolute(filePath)
             ? filePath
@@ -66,40 +67,31 @@ function dashboardEnhancementMiddleware(req, res, next) {
                 if (typeof done === 'function') return done(error);
                 return next(error);
             }
-
             try {
                 res.type('html');
-                originalSend(enhanceDashboardHtml(html));
+                originalSend(enhance(html));
                 if (typeof done === 'function') done();
             } catch (sendError) {
                 if (typeof done === 'function') return done(sendError);
                 next(sendError);
             }
         });
-
         return res;
     };
 
     next();
 }
 
-/**
- * Installs the dashboard middleware before registered page routes. The legacy
- * router is already built when server.js imports it, so the newly-created
- * Express layer is moved immediately before the first route layer.
- */
 export function installDashboardExperience(app) {
     if (!app || app.locals.__dashboardExperienceInstalled) return;
     app.locals.__dashboardExperienceInstalled = true;
 
     app.use(dashboardEnhancementMiddleware);
-
     const stack = app._router?.stack;
     if (!Array.isArray(stack) || stack.length === 0) return;
 
     const layer = stack.pop();
     if (!layer) return;
-
     const firstRouteIndex = stack.findIndex(item => Boolean(item.route));
     stack.splice(firstRouteIndex >= 0 ? firstRouteIndex : 0, 0, layer);
 }
