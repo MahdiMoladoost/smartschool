@@ -10187,6 +10187,14 @@ const ADMIN_CONSOLIDATED_PAGE_ALIASES = {
     'mola-ai-actions': 'mola-ai'
 };
 
+const TEACHER_CONSOLIDATED_PAGE_ALIASES = {
+    attendance: 'attendance-create',
+    'ai-exam': 'ai-exam-builder',
+    assistant: 'ai-extra-question-suggestions',
+    'grade-predict': 'ai-student-performance',
+    teacher: 'dashboard'
+};
+
 function panelPageFileExists(panel, page) {
     const safePanel = String(panel || '').replace(/[^a-zA-Z0-9_-]/g, '');
     const safePage = String(page || 'dashboard').replace(/[^a-zA-Z0-9_-]/g, '');
@@ -10200,6 +10208,9 @@ function sendPanelPage(res, panel, page = 'dashboard') {
     const requestedPage = page || 'dashboard';
     if (normalizedPanel === 'admin' && ADMIN_CONSOLIDATED_PAGE_ALIASES[requestedPage]) {
         return res.redirect(302, `/dashboard/admin/${ADMIN_CONSOLIDATED_PAGE_ALIASES[requestedPage]}`);
+    }
+    if (normalizedPanel === 'teacher' && TEACHER_CONSOLIDATED_PAGE_ALIASES[requestedPage]) {
+        return res.redirect(302, `/dashboard/teacher/${TEACHER_CONSOLIDATED_PAGE_ALIASES[requestedPage]}`);
     }
     if (!allowedPages || (!allowedPages.has(requestedPage) && !panelPageFileExists(normalizedPanel, requestedPage))) {
         return res.status(404).send('صفحه مورد نظر پیدا نشد');
@@ -10869,18 +10880,31 @@ app.post('/api/v1/teacher/assignments', authenticateToken, checkRole('teacher'),
     }
 });
 
+app.put('/api/v1/teacher/assignments/:id', authenticateToken, checkRole('teacher'), async (req, res) => {
+    try {
+        const teacherId = req.user.id;
+        const access = await queryOne(`SELECT a.id FROM assignments a JOIN courses co ON co.id=a.course_id LEFT JOIN course_teachers ct ON ct.course_id=co.id WHERE a.id=? AND (a.created_by=? OR co.teacher_id=? OR ct.teacher_id=?) LIMIT 1`, [req.params.id, teacherId, teacherId, teacherId]);
+        if (!access) return res.status(404).json({ success: false, error: 'تکلیف یافت نشد یا دسترسی ندارید' });
+        const { title, class_id, due_date, total_points, description } = req.body || {};
+        let courseId = null;
+        if (class_id) {
+            const course = await queryOne(`SELECT co.id FROM courses co LEFT JOIN course_teachers ct ON ct.course_id=co.id WHERE co.class_id=? AND (co.teacher_id=? OR ct.teacher_id=?) LIMIT 1`, [class_id, teacherId, teacherId]);
+            if (!course) return res.status(400).json({ success: false, error: 'درس معتبری برای کلاس انتخابی یافت نشد' });
+            courseId = course.id;
+        }
+        await execute('UPDATE assignments SET course_id=COALESCE(?,course_id),title=COALESCE(?,title),description=COALESCE(?,description),deadline=COALESCE(?,deadline),total_points=COALESCE(?,total_points) WHERE id=?', [courseId, title || null, description ?? null, due_date || null, total_points || null, req.params.id]);
+        res.json({ success: true, message: 'تکلیف ویرایش شد' });
+    } catch (error) { console.error('teacher update assignment:', error); res.status(500).json({ success: false, error: 'خطای سرور' }); }
+});
+
 // 16. تکالیف - حذف
 app.delete('/api/v1/teacher/assignments/:id', authenticateToken, checkRole('teacher'), async (req, res) => {
     try {
         const teacherId = req.user.id;
         const assignmentId = req.params.id;
         
-        await execute(`
-            DELETE a FROM assignments a
-            JOIN courses co ON co.id = a.course_id
-            WHERE a.id = ? AND co.teacher_id = ?
-        `, [assignmentId, teacherId]);
-        
+        const result = await execute(`DELETE a FROM assignments a JOIN courses co ON co.id=a.course_id LEFT JOIN course_teachers ct ON ct.course_id=co.id WHERE a.id=? AND (a.created_by=? OR co.teacher_id=? OR ct.teacher_id=?)`, [assignmentId, teacherId, teacherId, teacherId]);
+        if (!result.affectedRows) return res.status(404).json({ success: false, error: 'تکلیف یافت نشد یا دسترسی ندارید' });
         res.json({ success: true });
     } catch (error) {
         console.error('Error in DELETE /teacher/assignments:', error);
@@ -10989,11 +11013,30 @@ app.get('/api/v1/teacher/announcements', authenticateToken, checkRole('teacher')
     }
 });
 
+app.post('/api/v1/teacher/announcements', authenticateToken, checkRole('teacher'), async (req, res) => {
+    try {
+        const classId = Number(req.body?.class_id);
+        const title = String(req.body?.title || '').trim();
+        const content = String(req.body?.content || '').trim();
+        if (!classId || !title || !content) return res.status(400).json({ success: false, error: 'کلاس، عنوان و متن اطلاعیه الزامی است' });
+        const access = await queryOne(`SELECT c.id,c.name FROM classes c JOIN courses co ON co.class_id=c.id LEFT JOIN course_teachers ct ON ct.course_id=co.id WHERE c.id=? AND (co.teacher_id=? OR ct.teacher_id=?) LIMIT 1`, [classId, req.user.id, req.user.id]);
+        if (!access) return res.status(403).json({ success: false, error: 'به این کلاس دسترسی ندارید' });
+        const receivers = await query(`SELECT u.id FROM users u JOIN class_students cs ON cs.student_id=u.id WHERE cs.class_id=? AND cs.status='active' AND u.role='student' AND u.status='active'`, [classId]);
+        for (const receiver of receivers) {
+            await execute('INSERT INTO messages(sender_id,receiver_id,message,is_read) VALUES(?,?,?,0)', [req.user.id, receiver.id, `[اطلاعیه ${access.name}] ${title}\n${content}`]);
+        }
+        res.status(201).json({ success: true, sent_count: receivers.length, message: `اطلاعیه برای ${receivers.length} دانش‌آموز ارسال شد` });
+    } catch (error) {
+        console.error('teacher class announcement:', error);
+        res.status(500).json({ success: false, error: 'خطای سرور' });
+    }
+});
+
 // 22. پروفایل معلم - دریافت
 app.get('/api/v1/teacher/profile', authenticateToken, checkRole('teacher'), async (req, res) => {
     try {
         const profile = await queryOne(`
-            SELECT id, username, name, email, phone, status, created_at
+            SELECT id, username, name, email, phone, avatar_url, status, created_at
             FROM users WHERE id = ? AND role = 'teacher'
         `, [req.user.id]);
         
@@ -12403,6 +12446,7 @@ app.post('/api/v1/teacher/profile/avatar', authenticateToken, checkRole('teacher
 
 app.get('/api/v1/teacher/parent/:studentId', authenticateToken, checkRole('teacher'), async (req, res) => {
     try {
+        if (!(await teacherCanAccessStudent(req.user.id, Number(req.params.studentId)))) return res.status(403).json({ success: false, error: 'به این دانش‌آموز دسترسی ندارید' });
         const student = await queryOne('SELECT id, name, class_id, phone, father_name FROM users WHERE id = ? AND role = "student"', [req.params.studentId]);
         if (!student) return res.status(404).json({ success: false, error: 'دانش‌آموز یافت نشد' });
         const parent = await queryOne(`
@@ -12438,6 +12482,7 @@ app.post('/api/v1/teacher/send-to-parent', authenticateToken, checkRole('teacher
     try {
         const { parent_id, student_id, message } = req.body || {};
         if (!parent_id || !message) return res.status(400).json({ success: false, error: 'والد و متن پیام الزامی است' });
+        if (!student_id || !(await teacherCanAccessStudent(req.user.id, Number(student_id)))) return res.status(403).json({ success: false, error: 'به این دانش‌آموز دسترسی ندارید' });
         const parent = await queryOne('SELECT id FROM users WHERE id = ? AND role = "parent"', [parent_id]);
         if (!parent) return res.status(404).json({ success: false, error: 'والد یافت نشد' });
         const body = student_id ? `[دانش‌آموز: ${student_id}] ${message}` : message;
@@ -12451,6 +12496,7 @@ app.post('/api/v1/teacher/send-to-parent', authenticateToken, checkRole('teacher
 
 app.get('/api/v1/teacher/student-report/:studentId', authenticateToken, checkRole('teacher'), async (req, res) => {
     try {
+        if (!(await teacherCanAccessStudent(req.user.id, Number(req.params.studentId)))) return res.status(403).json({ success: false, error: 'به این دانش‌آموز دسترسی ندارید' });
         const { type = 'grades' } = req.query;
         if (type === 'attendance') {
             const attendance = await query('SELECT * FROM attendance WHERE student_id = ? ORDER BY date DESC LIMIT 100', [req.params.studentId]);
@@ -12470,6 +12516,8 @@ app.get('/api/v1/teacher/student-report/:studentId', authenticateToken, checkRol
 
 app.get('/api/v1/teacher/exams/:id/grades', authenticateToken, checkRole('teacher'), async (req, res) => {
     try {
+        const exam = await queryOne(`SELECT e.id FROM exams e JOIN courses c ON c.id=e.course_id LEFT JOIN course_teachers ct ON ct.course_id=c.id WHERE e.id=? AND (e.created_by=? OR c.teacher_id=? OR ct.teacher_id=?) LIMIT 1`, [req.params.id, req.user.id, req.user.id, req.user.id]);
+        if (!exam) return res.status(404).json({ success: false, error: 'آزمون یافت نشد یا دسترسی ندارید' });
         const results = await query(`
             SELECT er.*, u.name AS student_name FROM exam_results er
             JOIN users u ON u.id = er.student_id
@@ -12481,6 +12529,102 @@ app.get('/api/v1/teacher/exams/:id/grades', authenticateToken, checkRole('teache
         res.status(500).json({ success: false, error: 'خطای سرور' });
     }
 });
+
+// Teacher workspace completion: operational contracts for pages that already exist.
+app.get('/api/v1/teacher/assignments/:id/submissions', authenticateToken, checkRole('teacher'), async (req, res) => {
+    try {
+        const assignment = await queryOne(`SELECT a.id, a.title, a.total_points FROM assignments a JOIN courses c ON c.id=a.course_id LEFT JOIN course_teachers ct ON ct.course_id=c.id WHERE a.id=? AND (a.created_by=? OR c.teacher_id=? OR ct.teacher_id=?) LIMIT 1`, [req.params.id, req.user.id, req.user.id, req.user.id]);
+        if (!assignment) return res.status(404).json({ success: false, error: 'تکلیف یافت نشد یا دسترسی ندارید' });
+        const submissions = await query(`SELECT s.*, u.name AS student_name, u.username FROM submissions s JOIN users u ON u.id=s.student_id WHERE s.assignment_id=? ORDER BY s.submitted_at DESC`, [req.params.id]);
+        res.json({ success: true, assignment, submissions });
+    } catch (error) { console.error('teacher assignment submissions:', error); res.status(500).json({ success: false, error: 'خطای سرور' }); }
+});
+
+app.put('/api/v1/teacher/submissions/:id', authenticateToken, checkRole('teacher'), async (req, res) => {
+    try {
+        const submission = await queryOne(`SELECT s.id, a.total_points FROM submissions s JOIN assignments a ON a.id=s.assignment_id JOIN courses c ON c.id=a.course_id LEFT JOIN course_teachers ct ON ct.course_id=c.id WHERE s.id=? AND (a.created_by=? OR c.teacher_id=? OR ct.teacher_id=?) LIMIT 1`, [req.params.id, req.user.id, req.user.id, req.user.id]);
+        if (!submission) return res.status(404).json({ success: false, error: 'پاسخ تکلیف یافت نشد یا دسترسی ندارید' });
+        const grade = req.body?.grade === '' || req.body?.grade == null ? null : Number(req.body.grade);
+        if (grade != null && (!Number.isFinite(grade) || grade < 0 || grade > Number(submission.total_points || 100))) return res.status(400).json({ success: false, error: 'نمره خارج از محدوده مجاز است' });
+        await execute('UPDATE submissions SET grade=?, feedback=?, graded_by=?, graded_at=NOW() WHERE id=?', [grade, String(req.body?.feedback || '').trim() || null, req.user.id, req.params.id]);
+        res.json({ success: true, message: 'ارزیابی تکلیف ذخیره شد' });
+    } catch (error) { console.error('teacher grade submission:', error); res.status(500).json({ success: false, error: 'خطای سرور' }); }
+});
+
+app.get('/api/v1/teacher/contacts', authenticateToken, checkRole('teacher'), async (req, res) => {
+    try {
+        const role = ['student', 'admin', 'principal'].includes(req.query.role) ? req.query.role : 'student';
+        let contacts;
+        if (role === 'student') {
+            contacts = await query(`SELECT DISTINCT u.id,u.name,u.username,u.role,c.name AS class_name FROM users u JOIN class_students cs ON cs.student_id=u.id JOIN classes c ON c.id=cs.class_id JOIN courses co ON co.class_id=c.id LEFT JOIN course_teachers ct ON ct.course_id=co.id WHERE u.role='student' AND u.status='active' AND (co.teacher_id=? OR ct.teacher_id=?) ORDER BY u.name`, [req.user.id, req.user.id]);
+        } else {
+            contacts = await query(`SELECT id,name,username,role FROM users WHERE role IN ('admin','principal') AND status='active' ORDER BY role,name`);
+        }
+        res.json({ success: true, contacts });
+    } catch (error) { console.error('teacher contacts:', error); res.status(500).json({ success: false, error: 'خطای سرور' }); }
+});
+
+app.get('/api/v1/teacher/messages/:receiverId', authenticateToken, checkRole('teacher'), async (req, res) => {
+    try {
+        const messages = await query(`SELECT m.*,s.name AS sender_name,r.name AS receiver_name FROM messages m JOIN users s ON s.id=m.sender_id JOIN users r ON r.id=m.receiver_id WHERE (m.sender_id=? AND m.receiver_id=?) OR (m.sender_id=? AND m.receiver_id=?) ORDER BY m.created_at`, [req.user.id, req.params.receiverId, req.params.receiverId, req.user.id]);
+        await execute('UPDATE messages SET is_read=1 WHERE sender_id=? AND receiver_id=?', [req.params.receiverId, req.user.id]).catch(() => null);
+        res.json({ success: true, messages });
+    } catch (error) { console.error('teacher messages:', error); res.status(500).json({ success: false, error: 'خطای سرور' }); }
+});
+
+app.post('/api/v1/teacher/messages', authenticateToken, checkRole('teacher'), async (req, res) => {
+    try {
+        const receiverId = Number(req.body?.receiver_id); const message = String(req.body?.message || '').trim();
+        if (!receiverId || !message) return res.status(400).json({ success: false, error: 'گیرنده و متن پیام الزامی است' });
+        const receiver = await queryOne("SELECT id,role FROM users WHERE id=? AND role IN ('student','admin','principal') AND status='active'", [receiverId]);
+        if (!receiver) return res.status(404).json({ success: false, error: 'گیرنده معتبر یافت نشد' });
+        if (receiver.role === 'student') {
+            const access = await queryOne(`SELECT u.id FROM users u JOIN class_students cs ON cs.student_id=u.id JOIN courses c ON c.class_id=cs.class_id LEFT JOIN course_teachers ct ON ct.course_id=c.id WHERE u.id=? AND (c.teacher_id=? OR ct.teacher_id=?) LIMIT 1`, [receiverId, req.user.id, req.user.id]);
+            if (!access) return res.status(403).json({ success: false, error: 'به این دانش‌آموز دسترسی ندارید' });
+        }
+        const result = await execute('INSERT INTO messages(sender_id,receiver_id,message,is_read) VALUES(?,?,?,0)', [req.user.id, receiverId, message]);
+        res.status(201).json({ success: true, id: result.insertId, message: 'پیام ارسال شد' });
+    } catch (error) { console.error('teacher send message:', error); res.status(500).json({ success: false, error: 'خطای سرور' }); }
+});
+
+app.get('/api/v1/teacher/student-activities', authenticateToken, checkRole('teacher'), async (req, res) => {
+    try {
+        const type = ['discipline','encouragement'].includes(req.query.type) ? req.query.type : 'discipline';
+        const items = await query(`SELECT sar.*,u.name AS student_name,c.name AS class_name FROM student_activity_records sar JOIN users u ON u.id=sar.student_id LEFT JOIN class_students cs ON cs.student_id=u.id AND cs.status='active' LEFT JOIN classes c ON c.id=cs.class_id WHERE sar.recorded_by=? AND sar.activity_type=? ORDER BY sar.created_at DESC LIMIT 200`, [req.user.id, type]);
+        res.json({ success: true, items });
+    } catch (error) { console.error('teacher activities:', error); res.status(500).json({ success: false, error: 'خطای سرور' }); }
+});
+
+app.post('/api/v1/teacher/student-activities', authenticateToken, checkRole('teacher'), async (req, res) => {
+    try {
+        const { student_id, title, description } = req.body || {}; const type = req.body?.type;
+        if (!['discipline','encouragement'].includes(type) || !student_id || !String(title || '').trim()) return res.status(400).json({ success: false, error: 'اطلاعات گزارش کامل نیست' });
+        const access = await queryOne(`SELECT u.id FROM users u JOIN class_students cs ON cs.student_id=u.id JOIN courses c ON c.class_id=cs.class_id LEFT JOIN course_teachers ct ON ct.course_id=c.id WHERE u.id=? AND (c.teacher_id=? OR ct.teacher_id=?) LIMIT 1`, [student_id, req.user.id, req.user.id]);
+        if (!access) return res.status(403).json({ success: false, error: 'به این دانش‌آموز دسترسی ندارید' });
+        const points = Number(req.body?.points || 0);
+        const result = await execute('INSERT INTO student_activity_records(student_id,activity_type,title,description,points,recorded_by) VALUES(?,?,?,?,?,?)', [student_id, type, String(title).trim(), String(description || '').trim() || null, Number.isFinite(points) ? points : 0, req.user.id]);
+        res.status(201).json({ success: true, id: result.insertId, message: 'گزارش ثبت شد' });
+    } catch (error) { console.error('teacher create activity:', error); res.status(500).json({ success: false, error: 'خطای سرور' }); }
+});
+
+app.delete('/api/v1/teacher/student-activities/:id', authenticateToken, checkRole('teacher'), async (req, res) => {
+    try { const result = await execute('DELETE FROM student_activity_records WHERE id=? AND recorded_by=?', [req.params.id, req.user.id]); if (!result.affectedRows) return res.status(404).json({ success:false,error:'گزارش یافت نشد' }); res.json({ success:true,message:'گزارش حذف شد' }); }
+    catch (error) { console.error('teacher delete activity:', error); res.status(500).json({ success:false,error:'خطای سرور' }); }
+});
+
+app.get('/api/v1/teacher/class-events', authenticateToken, checkRole('teacher'), async (req, res) => {
+    try { const type = req.query.type === 'virtual_class' ? 'virtual_class' : 'online_class'; const events = await query('SELECT * FROM school_events WHERE organizer_id=? AND event_type=? ORDER BY event_date DESC', [req.user.id,type]); res.json({success:true,events}); }
+    catch (error) { console.error('teacher class events:',error); res.status(500).json({success:false,error:'خطای سرور'}); }
+});
+
+app.post('/api/v1/teacher/class-events', authenticateToken, checkRole('teacher'), async (req, res) => {
+    try { const type=req.body?.type==='virtual_class'?'virtual_class':'online_class'; const title=String(req.body?.title||'').trim(); const eventDate=req.body?.event_date; if(!title||!eventDate)return res.status(400).json({success:false,error:'عنوان و زمان کلاس الزامی است'}); const result=await execute('INSERT INTO school_events(title,description,event_type,event_date,location,organizer_id,visibility,status) VALUES(?,?,?,?,?,?,?,?)',[title,String(req.body?.description||'').trim()||null,type,eventDate,String(req.body?.location||'').trim()||null,req.user.id,'school',req.body?.status==='draft'?'draft':'published']); res.status(201).json({success:true,id:result.insertId,message:'کلاس ثبت شد'}); }
+    catch(error){console.error('teacher create class event:',error);res.status(500).json({success:false,error:'خطای سرور'});}
+});
+
+app.delete('/api/v1/teacher/class-events/:id', authenticateToken, checkRole('teacher'), async (req,res)=>{ try{const result=await execute("DELETE FROM school_events WHERE id=? AND organizer_id=? AND event_type IN ('online_class','virtual_class')",[req.params.id,req.user.id]);if(!result.affectedRows)return res.status(404).json({success:false,error:'کلاس یافت نشد'});res.json({success:true,message:'کلاس حذف شد'});}catch(error){console.error('teacher delete class event:',error);res.status(500).json({success:false,error:'خطای سرور'});} });
+
+app.get('/api/v1/teacher/exams/:id/questions', authenticateToken, checkRole('teacher'), async (req,res)=>{ try{const exam=await queryOne(`SELECT e.id FROM exams e JOIN courses c ON c.id=e.course_id LEFT JOIN course_teachers ct ON ct.course_id=c.id WHERE e.id=? AND (e.created_by=? OR c.teacher_id=? OR ct.teacher_id=?) LIMIT 1`,[req.params.id,req.user.id,req.user.id,req.user.id]);if(!exam)return res.status(404).json({success:false,error:'آزمون یافت نشد یا دسترسی ندارید'});const questions=await query('SELECT * FROM exam_questions WHERE exam_id=? ORDER BY id',[req.params.id]);res.json({success:true,questions});}catch(error){console.error('teacher exam questions:',error);res.status(500).json({success:false,error:'خطای سرور'});} });
 
 
 // ==========================================
