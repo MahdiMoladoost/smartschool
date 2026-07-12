@@ -10,7 +10,7 @@
     "db:init": "node init-db.js",
     "db:seed": "node seed-data.js",
     "panels:generate": "node scripts/generate-panel-pages.mjs",
-    "panels:validate": "node scripts/validate-panel-pages.mjs",
+    "panels:validate": "node scripts/validate-panel-pages.mjs && node scripts/validate-teacher-panel.mjs",
     "schema:verify": "node scripts/verify-schema-contracts.mjs",
     "routes:inventory": "node scripts/inventory-routes.mjs",
     "flows:simulate": "node scripts/simulate-enterprise-flows.mjs",
