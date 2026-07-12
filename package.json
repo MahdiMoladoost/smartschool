@@ -17,7 +17,7 @@
     "smoke:nodb": "node scripts/no-db-smoke.mjs",
     "live:verify": "node scripts/live-environment-verify.mjs",
     "security:check": "node scripts/check-production-security.mjs",
-    "verify:ci": "find src scripts \\( -name \"*.js\" -o -name \"*.mjs\" \\) -type f | sort | xargs -n1 node --check && node --check server.js && npm run schema:verify && npm run panels:validate && npm run routes:inventory && npm run flows:simulate && npm run security:check && npm audit --omit=dev",
+    "verify:ci": "node scripts/verify-ci.mjs",
     "module:generate": "node scripts/generate-enterprise-module.mjs",
     "typecheck:discipline": "tsc -p tsconfig.discipline.json",
     "db:fix-local-schema": "node scripts/fix-local-mysql-schema.mjs"
