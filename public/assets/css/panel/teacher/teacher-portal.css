@@ -79,7 +79,7 @@ body[data-panel="teacher"] .ux-chat-list { display:grid; gap:10px; } body[data-p
 body[data-panel="teacher"] .ux-field-hint { color:#64748b; font-size:.7rem; }
 body[data-panel="teacher"] .ux-modal-wide { width:min(920px,100%); }
 body[data-panel="teacher"] #uxQuestionList .ux-dynamic-panel { padding:0; margin-top:12px; border:0; box-shadow:none; }
-/* Exact teacher shell parity with the school-admin reference. */
+/* Smart School teacher portal design system. */
 html[dir="rtl"] body[data-panel="teacher"] { --teacher-sidebar-right:6px; --teacher-sidebar-gap:0px; --teacher-page-x:8px; --teacher-header-height:108px; --teacher-header-top:6px; --teacher-header-gap:18px; --teacher-layout-right-space:calc(var(--sidebar-width) + var(--teacher-sidebar-right) + var(--teacher-sidebar-gap)); }
 body[data-panel="teacher"] .sidebar-brand { position:relative!important; z-index:1!important; display:flex!important; align-items:center!important; justify-content:flex-start!important; gap:10px!important; min-height:76px!important; padding:22px 24px 14px!important; direction:rtl!important; flex:0 0 auto!important; }
 body[data-panel="teacher"] .sidebar-school-logo { width:40px!important; height:40px!important; flex:0 0 40px!important; display:grid!important; place-items:center!important; overflow:hidden!important; border:1px solid rgba(255,255,255,.74)!important; border-radius:12px!important; background:linear-gradient(135deg,#f8fbff,#dbeafe)!important; color:#1d4ed8!important; box-shadow:0 10px 22px rgba(6,18,48,.28),inset 0 0 0 3px rgba(37,99,235,.07)!important; }
@@ -212,3 +212,40 @@ body[data-panel] .ux-dynamic-panel .ux-table-wrap + .ux-form-actions { margin-to
   body[data-panel] .ux-dynamic-panel .ux-toolbar button { width: 100%; }
   body[data-panel] .ux-inline-actions { display: grid; }
 }
+
+/* Rebuilt portal foundation: independent of the removed legacy teacher bundle. */
+@font-face{font-family:Vazir;src:url('/public/assets/fonts/Vazir.woff2') format('woff2');font-display:swap;font-weight:100 900}
+html,body{min-height:100%;margin:0}
+html[dir="rtl"] body[data-panel="teacher"]{--ux-bg:#eef4f9;--ux-surface:#fff;--ux-text:#102033;--ux-muted:#64748b;--ux-line:#dce5ef;--ux-primary:#2563eb;--ux-primary-dark:#1d4ed8;--ux-success:#15803d;--ux-warning:#b45309;--ux-danger:#b91c1c;--ux-shadow:0 12px 34px rgba(15,23,42,.08);font-family:Vazir,Tahoma,Arial,sans-serif;background:var(--ux-bg);color:var(--ux-text);overflow-x:hidden}
+body[data-panel="teacher"] *,body[data-panel="teacher"] *::before,body[data-panel="teacher"] *::after{box-sizing:border-box}
+body[data-panel="teacher"] a{color:inherit;text-decoration:none}
+body[data-panel="teacher"] button,body[data-panel="teacher"] input,body[data-panel="teacher"] select,body[data-panel="teacher"] textarea{font:inherit}
+body[data-panel="teacher"] .teacher-shell{min-height:100vh}
+body[data-panel="teacher"] .sidebar{position:fixed!important;z-index:1000!important}
+body[data-panel="teacher"] .sidebar-brand{display:flex!important}
+body[data-panel="teacher"] .nav-section-title{display:block;margin:0}
+body[data-panel="teacher"] .nav-item{display:flex!important;align-items:center!important;text-decoration:none!important}
+body[data-panel="teacher"] .nav-item i{width:22px;text-align:center}
+body[data-panel="teacher"] .admin-avatar{display:grid!important;place-items:center!important;overflow:hidden}
+body[data-panel="teacher"] .content-area{width:100%;min-height:100vh;padding-right:26px;padding-left:26px;padding-bottom:40px}
+body[data-panel="teacher"] .teacher-skip-link{position:fixed;top:-80px;right:18px;z-index:9000;padding:10px 14px;border-radius:10px;background:#fff;color:#1d4ed8;box-shadow:var(--ux-shadow)}
+body[data-panel="teacher"] .teacher-skip-link:focus{top:12px}
+body[data-panel="teacher"] .page-title p{margin:5px 60px 0 0;color:#64748b;font-size:.73rem}
+body[data-panel="teacher"] .ux-cell-subtitle{display:block;margin-top:4px;color:#94a3b8;font-size:.65rem;font-weight:500}
+body[data-panel="teacher"] .ux-modal-open{overflow:hidden}
+body[data-panel="teacher"] .ux-modal-tabs{display:flex;gap:7px;padding:4px;border-radius:12px;background:#f1f5f9}
+body[data-panel="teacher"] .ux-modal-tabs button{min-height:38px;padding:7px 14px;border:0;border-radius:9px;background:transparent;color:#64748b;cursor:pointer;font-weight:800}
+body[data-panel="teacher"] .ux-modal-tabs button.active{background:#fff;color:#1d4ed8;box-shadow:0 4px 12px rgba(15,23,42,.08)}
+body[data-panel="teacher"] .ux-detail-grid,body[data-panel="teacher"] .ux-profile-summary dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0}
+body[data-panel="teacher"] .ux-detail-grid>div,body[data-panel="teacher"] .ux-profile-summary dl>div{padding:13px;border:1px solid #e2e8f0;border-radius:12px;background:#f8fafc}
+body[data-panel="teacher"] dt{color:#64748b;font-size:.68rem;font-weight:750}body[data-panel="teacher"] dd{margin:6px 0 0;color:#102033;font-weight:850}
+body[data-panel="teacher"] .ux-description-box{padding:16px;border:1px solid #e2e8f0;border-radius:14px;background:#fbfdff}body[data-panel="teacher"] .ux-description-box p{margin:8px 0 0;line-height:1.9;color:#475569}
+body[data-panel="teacher"] .ux-profile-summary{display:grid;gap:14px;padding:16px;border:1px solid #dce5ef;border-radius:16px;background:#fff}body[data-panel="teacher"] .ux-profile-summary>div{display:grid;gap:4px}body[data-panel="teacher"] .ux-profile-summary>div strong{font-size:1.05rem}body[data-panel="teacher"] .ux-profile-summary>div span{color:#64748b}
+body[data-panel="teacher"] .ux-submission-card{display:grid;gap:12px;padding:16px;border:1px solid #dce5ef;border-radius:16px;background:#f8fafc}body[data-panel="teacher"] .ux-submission-card>div{display:flex;align-items:center;justify-content:space-between;gap:12px}body[data-panel="teacher"] .ux-submission-card span{color:#64748b;font-size:.72rem}body[data-panel="teacher"] .ux-submission-card p{margin:0;line-height:1.9;white-space:pre-wrap}
+body[data-panel="teacher"] .ux-message-composer{position:relative;flex:1;display:grid;gap:4px}body[data-panel="teacher"] .ux-message-composer small{color:#94a3b8;font-size:.62rem;text-align:left}
+body[data-panel="teacher"] .ux-file-preview{grid-column:1/-1;display:flex;align-items:center;gap:12px;padding:13px;border:1px dashed #93b4e8;border-radius:14px;background:#f5f9ff}body[data-panel="teacher"] .ux-file-preview>i{width:40px;height:40px;display:grid;place-items:center;border-radius:11px;background:#dbeafe;color:#2563eb}body[data-panel="teacher"] .ux-file-preview>div{display:grid;gap:3px}body[data-panel="teacher"] .ux-file-preview span{color:#64748b;font-size:.68rem}
+body[data-panel="teacher"] .ux-bulk-toolbar{padding:10px 12px;border:1px solid #e2e8f0;border-radius:13px;background:#f8fafc}body[data-panel="teacher"] .ux-bulk-toolbar>span{color:#64748b;font-size:.72rem;font-weight:800}
+body[data-panel="teacher"] .ux-json-preview{max-height:420px;margin:0;padding:16px;overflow:auto;border-radius:13px;background:#0f172a;color:#dbeafe;direction:ltr;text-align:left;white-space:pre-wrap}
+body[data-panel="teacher"] .toast-container{position:fixed;left:20px;bottom:20px;z-index:8000;display:grid;gap:9px}
+@media(max-width:1024px){body[data-panel="teacher"] .content-area{padding-right:16px;padding-left:16px}body[data-panel="teacher"] .page-title p{display:none}}
+@media(max-width:620px){body[data-panel="teacher"] .content-area{padding-right:10px;padding-left:10px}body[data-panel="teacher"] .ux-detail-grid,body[data-panel="teacher"] .ux-profile-summary dl{grid-template-columns:1fr}body[data-panel="teacher"] .ux-modal{max-height:94vh;border-radius:16px}body[data-panel="teacher"] .ux-modal-backdrop{padding:8px}}

@@ -5,8 +5,8 @@ const DASHBOARD_PATH = /^\/dashboard\/(admin|teacher|student|parent|principal|ex
 const TEACHER_DASHBOARD_PATH = /^\/dashboard\/teacher(?:\/|$)/;
 const SHARED_STYLES = ['/public/assets/css/panel/unified-experience.css?v=2026-07-12'];
 const SHARED_SCRIPTS = ['/public/assets/js/panel-unified.js?v=2026-07-12'];
-const TEACHER_STYLES = ['/public/assets/css/panel/dynamic-pages.css?v=2026-07-12-shell-v4'];
-const TEACHER_SCRIPTS = ['/public/assets/js/panel-dynamic-pages.js?v=2026-07-12-shell-v4'];
+const TEACHER_STYLES = ['/public/assets/css/panel/teacher/teacher-portal.css?v=2026-07-12-rebuild-1'];
+const TEACHER_SCRIPTS = ['/public/assets/js/teacher-portal.js?v=2026-07-12-rebuild-1'];
 
 function injectStyles(html, hrefs) {
     return hrefs.reduce((output, href) => {
