@@ -1,338 +1,112 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="theme-color" content="#0b1f46">
     <title>لیست کلاس‌ها | پنل معلم</title>
-    
-<!-- Font Awesome 6 - نسخه پایدار از CDN رسمی -->
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.1/css/all.css">
-    
-    <!-- Chart.js (دیگه نیازی نیست ولی بذار بمونه) -->
-    <script src="/public/assets/js/teacher/chart.umd.min.js"></script>
-    
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    
-    <!-- Flatpickr -->
-    <link rel="stylesheet" href="/public/assets/css/panel/teacher/flatpickr.min.css">
-    <script src="/public/assets/js/teacher/flatpickr.js"></script>
-    <script src="/public/assets/js/teacher/fa.js"></script>
-    
-    <!-- CSS اختصاصی -->
-    <link rel="stylesheet" href="/public/assets/css/panel/teacher/teacher.css?v=admin-like-v2">
-    <style>.nav-item { text-decoration: none; }</style>
+    <link rel="stylesheet" href="/public/assets/css/panel/teacher/all.min.css">
+    <link rel="stylesheet" href="/public/assets/css/panel/teacher/teacher-portal.css?v=2026-07-12-rebuild-1">
 </head>
 <body data-panel="teacher" data-page="classes">
-
-<!-- لودینگ Overlay -->
-<div class="loading-overlay" id="loadingOverlay">
-    <div class="spinner"></div>
-</div>
-
-<!-- دکمه منوی موبایل -->
-<button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleSidebar()">
-    <i class="fas fa-bars"></i>
-</button>
-
-<!-- ============================================ -->
-<!-- سایدبار پنل معلم - طراحی کارتی -->
-<!-- ============================================ -->
-<div class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-        <div class="logo">
-            <div class="logo-icon"><i class="fas fa-chalkboard-user"></i></div>
-            <div>
-                <h3>پنل معلم</h3>
-                <small>نسخه ۲.۰</small>
+    <a class="teacher-skip-link" href="#contentArea">رفتن به محتوای اصلی</a>
+    <div class="teacher-shell">
+        <aside class="sidebar" id="sidebar" aria-label="منوی پنل معلم">
+            <div class="sidebar-brand">
+                <div class="sidebar-school-logo" id="teacherSchoolLogo"><i class="fas fa-school"></i></div>
+                <div class="sidebar-school-text"><strong id="teacherSchoolName">مدرسه هوشمند</strong><small id="teacherSchoolSubtitle">سیستم یکپارچه آموزشی</small></div>
             </div>
-        </div>
-        <div class="user-info" id="userInfo">
-            <div class="user-avatar" id="teacherAvatar"><i class="fas fa-chalkboard-user"></i></div>
-            <div class="user-details">
-                <h4 id="teacherName">معلم</h4>
-                <p id="teacherRole">معلم</p>
+            <nav class="nav-menu" id="navMenu">
+                <section class="nav-section">
+                    <h2 class="nav-section-title">نمای کلی</h2>
+                    <a class="nav-item" data-tab="dashboard" href="/dashboard/teacher/dashboard"><i class="fas fa-chart-line"></i><span>داشبورد معلم</span></a>
+                    <a class="nav-item" data-tab="schedule" href="/dashboard/teacher/schedule"><i class="fas fa-calendar-week"></i><span>برنامه هفتگی تدریس</span></a>
+                </section>
+                <section class="nav-section">
+                    <h2 class="nav-section-title">کلاس و دانش‌آموز</h2>
+                    <a class="nav-item active" data-tab="classes" href="/dashboard/teacher/classes"><i class="fas fa-door-open"></i><span>کلاس‌های من</span></a>
+                    <a class="nav-item" data-tab="students" href="/dashboard/teacher/students"><i class="fas fa-user-graduate"></i><span>دانش‌آموزان</span></a>
+                    <a class="nav-item" data-tab="attendance-create" href="/dashboard/teacher/attendance-create"><i class="fas fa-user-check"></i><span>ثبت حضور و غیاب</span></a>
+                    <a class="nav-item" data-tab="attendance-view" href="/dashboard/teacher/attendance-view"><i class="fas fa-calendar-check"></i><span>سوابق حضور و غیاب</span></a>
+                </section>
+                <section class="nav-section">
+                    <h2 class="nav-section-title">ارزشیابی</h2>
+                    <a class="nav-item" data-tab="grades-create" href="/dashboard/teacher/grades-create"><i class="fas fa-pen-to-square"></i><span>ثبت نمرات</span></a>
+                    <a class="nav-item" data-tab="grades-edit" href="/dashboard/teacher/grades-edit"><i class="fas fa-file-pen"></i><span>ویرایش نمرات</span></a>
+                    <a class="nav-item" data-tab="grades" href="/dashboard/teacher/grades"><i class="fas fa-star"></i><span>دفتر نمرات</span></a>
+                    <a class="nav-item" data-tab="online-exam-create" href="/dashboard/teacher/online-exam-create"><i class="fas fa-square-plus"></i><span>ایجاد آزمون آنلاین</span></a>
+                    <a class="nav-item" data-tab="exams" href="/dashboard/teacher/exams"><i class="fas fa-clipboard-question"></i><span>مدیریت آزمون‌ها</span></a>
+                    <a class="nav-item" data-tab="exam-results" href="/dashboard/teacher/exam-results"><i class="fas fa-square-poll-vertical"></i><span>نتایج آزمون‌ها</span></a>
+                    <a class="nav-item" data-tab="class-performance" href="/dashboard/teacher/class-performance"><i class="fas fa-chart-column"></i><span>تحلیل عملکرد کلاس</span></a>
+                </section>
+                <section class="nav-section">
+                    <h2 class="nav-section-title">تکلیف و محتوا</h2>
+                    <a class="nav-item" data-tab="assignments" href="/dashboard/teacher/assignments"><i class="fas fa-list-check"></i><span>مدیریت تکالیف</span></a>
+                    <a class="nav-item" data-tab="assignment-create" href="/dashboard/teacher/assignment-create"><i class="fas fa-plus"></i><span>ایجاد تکلیف</span></a>
+                    <a class="nav-item" data-tab="assignment-review" href="/dashboard/teacher/assignment-review"><i class="fas fa-clipboard-check"></i><span>تصحیح تکالیف</span></a>
+                    <a class="nav-item" data-tab="student-feedback" href="/dashboard/teacher/student-feedback"><i class="fas fa-comment-dots"></i><span>بازخورد دانش‌آموز</span></a>
+                    <a class="nav-item" data-tab="online-classes" href="/dashboard/teacher/online-classes"><i class="fas fa-video"></i><span>کلاس آنلاین</span></a>
+                    <a class="nav-item" data-tab="virtual-classes" href="/dashboard/teacher/virtual-classes"><i class="fas fa-cloud"></i><span>کلاس مجازی</span></a>
+                    <a class="nav-item" data-tab="content-upload" href="/dashboard/teacher/content-upload"><i class="fas fa-cloud-arrow-up"></i><span>بارگذاری محتوا</span></a>
+                    <a class="nav-item" data-tab="library" href="/dashboard/teacher/library"><i class="fas fa-book-open"></i><span>کتابخانه دیجیتال</span></a>
+                </section>
+                <section class="nav-section">
+                    <h2 class="nav-section-title">ارتباطات</h2>
+                    <a class="nav-item" data-tab="announcements" href="/dashboard/teacher/announcements"><i class="fas fa-bullhorn"></i><span>اطلاعیه کلاس</span></a>
+                    <a class="nav-item" data-tab="student-messenger" href="/dashboard/teacher/student-messenger"><i class="fas fa-comments"></i><span>پیام با دانش‌آموزان</span></a>
+                    <a class="nav-item" data-tab="parent-chat" href="/dashboard/teacher/parent-chat"><i class="fas fa-people-roof"></i><span>پیام با والدین</span></a>
+                    <a class="nav-item" data-tab="admin-messenger" href="/dashboard/teacher/admin-messenger"><i class="fas fa-user-shield"></i><span>پیام با مدیریت</span></a>
+                    <a class="nav-item" data-tab="school-suggestions" href="/dashboard/teacher/school-suggestions"><i class="fas fa-lightbulb"></i><span>پیشنهاد به مدرسه</span></a>
+                </section>
+                <section class="nav-section">
+                    <h2 class="nav-section-title">گزارش و پیگیری</h2>
+                    <a class="nav-item" data-tab="reports" href="/dashboard/teacher/reports"><i class="fas fa-chart-bar"></i><span>گزارش تدریس</span></a>
+                    <a class="nav-item" data-tab="student-report-cards" href="/dashboard/teacher/student-report-cards"><i class="fas fa-award"></i><span>کارنامه دانش‌آموز</span></a>
+                    <a class="nav-item" data-tab="discipline-report-create" href="/dashboard/teacher/discipline-report-create"><i class="fas fa-scale-balanced"></i><span>گزارش انضباطی</span></a>
+                    <a class="nav-item" data-tab="encouragement-create" href="/dashboard/teacher/encouragement-create"><i class="fas fa-medal"></i><span>ثبت تشویقی</span></a>
+                </section>
+                <section class="nav-section">
+                    <h2 class="nav-section-title">دستیار هوشمند</h2>
+                    <a class="nav-item" data-tab="ai-exam-builder" href="/dashboard/teacher/ai-exam-builder"><i class="fas fa-robot"></i><span>آزمون‌ساز هوشمند</span></a>
+                    <a class="nav-item" data-tab="ai-book-question-generator" href="/dashboard/teacher/ai-book-question-generator"><i class="fas fa-book"></i><span>سؤال از متن کتاب</span></a>
+                    <a class="nav-item" data-tab="ai-pdf-question-generator" href="/dashboard/teacher/ai-pdf-question-generator"><i class="fas fa-file-pdf"></i><span>سؤال از PDF</span></a>
+                    <a class="nav-item" data-tab="ai-answer-key-generator" href="/dashboard/teacher/ai-answer-key-generator"><i class="fas fa-file-circle-check"></i><span>تولید پاسخنامه</span></a>
+                    <a class="nav-item" data-tab="ai-auto-grading" href="/dashboard/teacher/ai-auto-grading"><i class="fas fa-wand-magic-sparkles"></i><span>تصحیح خودکار</span></a>
+                    <a class="nav-item" data-tab="ai-student-performance" href="/dashboard/teacher/ai-student-performance"><i class="fas fa-chart-line"></i><span>تحلیل دانش‌آموز</span></a>
+                    <a class="nav-item" data-tab="ai-extra-question-suggestions" href="/dashboard/teacher/ai-extra-question-suggestions"><i class="fas fa-circle-question"></i><span>سؤال‌های تکمیلی</span></a>
+                    <a class="nav-item" data-tab="ai-exam-difficulty-analysis" href="/dashboard/teacher/ai-exam-difficulty-analysis"><i class="fas fa-gauge-high"></i><span>تحلیل سختی آزمون</span></a>
+                </section>
+                <section class="nav-section">
+                    <h2 class="nav-section-title">حساب کاربری</h2>
+                    <a class="nav-item" data-tab="profile" href="/dashboard/teacher/profile"><i class="fas fa-user-circle"></i><span>پروفایل معلم</span></a>
+                    <a class="nav-item" data-tab="change-password" href="/dashboard/teacher/change-password"><i class="fas fa-key"></i><span>تغییر رمز عبور</span></a>
+                </section>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="admin-info">
+                    <div class="admin-avatar" id="teacherAvatar"><i class="fas fa-chalkboard-user"></i></div>
+                    <div class="admin-details"><h4 id="teacherName">معلم</h4><p>معلم</p></div>
+                    <button class="admin-logout-toggle" id="teacherLogout" type="button" title="خروج از حساب" aria-label="خروج از حساب"><i class="fas fa-right-from-bracket"></i></button>
+                </div>
             </div>
-            <div class="user-status online" title="آنلاین"></div>
-        </div>
+        </aside>
+        <div class="teacher-sidebar-overlay" id="teacherSidebarOverlay"></div>
+        <main class="main-content" id="mainContent">
+            <header class="page-header">
+                <div class="page-title"><h1><button class="admin-header-menu-toggle" id="teacherMenuToggle" type="button" aria-label="باز و بسته کردن منو" aria-expanded="true"><i class="fas fa-bars"></i></button><span id="pageTitle">لیست کلاس‌ها | پنل معلم</span></h1><p id="pageSubtitle">فضای کاری یکپارچه معلم</p></div>
+                <div class="header-actions">
+                    <label class="search-global"><i class="fas fa-search"></i><input id="globalSearch" type="search" placeholder="جستجوی سریع در صفحه" aria-label="جستجوی سریع"></label>
+                    <button class="btn-icon" id="teacherRefreshBtn" type="button" title="بروزرسانی"><i class="fas fa-rotate"></i></button>
+                    <button class="btn-icon" id="notificationBtn" type="button" title="اعلانات" aria-expanded="false"><i class="fas fa-bell"></i><span class="notification-badge" id="notifBadge">۰</span></button>
+                    <button class="btn-icon" id="fullscreenBtn" type="button" title="تمام صفحه"><i class="fas fa-expand"></i></button>
+                </div>
+            </header>
+            <section class="content-area" id="contentArea" tabindex="-1"><div class="ux-state loading"><i class="fas fa-spinner fa-spin"></i><h2>در حال آماده‌سازی پنل معلم</h2></div></section>
+        </main>
     </div>
-    
-    <div class="nav-menu" id="navMenu">
-        <div class="nav-section">
-            <div class="nav-section-title">داشبورد</div>
-            <a class="nav-item" data-tab="dashboard" href="/dashboard/teacher/dashboard">
-                <i class="fas fa-chart-line"></i> 
-                <span>داشبورد معلم</span>
-            </a>
-        </div>
-        <div class="nav-section">
-            <div class="nav-section-title">کلاس و دانش‌آموز</div>
-            <a class="nav-item" data-tab="schedule" href="/dashboard/teacher/schedule">
-                <i class="fas fa-calendar-week"></i> 
-                <span>برنامه هفتگی تدریس</span>
-            </a>
-            <a class="nav-item active" data-tab="classes" href="/dashboard/teacher/classes">
-                <i class="fas fa-door-open"></i> 
-                <span>لیست کلاس‌ها</span>
-            </a>
-            <a class="nav-item" data-tab="students" href="/dashboard/teacher/students">
-                <i class="fas fa-user-graduate"></i> 
-                <span>لیست دانش‌آموزان هر کلاس</span>
-            </a>
-            <a class="nav-item" data-tab="attendance-create" href="/dashboard/teacher/attendance-create">
-                <i class="fas fa-user-check"></i> 
-                <span>ثبت حضور و غیاب</span>
-            </a>
-            <a class="nav-item" data-tab="attendance-view" href="/dashboard/teacher/attendance-view">
-                <i class="fas fa-calendar-check"></i> 
-                <span>مشاهده حضور و غیاب</span>
-            </a>
-        </div>
-        <div class="nav-section">
-            <div class="nav-section-title">نمرات و آزمون</div>
-            <a class="nav-item" data-tab="grades-create" href="/dashboard/teacher/grades-create">
-                <i class="fas fa-pen-to-square"></i> 
-                <span>ثبت نمرات</span>
-            </a>
-            <a class="nav-item" data-tab="grades-edit" href="/dashboard/teacher/grades-edit">
-                <i class="fas fa-file-pen"></i> 
-                <span>ویرایش نمرات</span>
-            </a>
-            <a class="nav-item" data-tab="grades" href="/dashboard/teacher/grades">
-                <i class="fas fa-star"></i> 
-                <span>مشاهده نمرات</span>
-            </a>
-            <a class="nav-item" data-tab="online-exam-create" href="/dashboard/teacher/online-exam-create">
-                <i class="fas fa-square-plus"></i> 
-                <span>ایجاد آزمون آنلاین</span>
-            </a>
-            <a class="nav-item" data-tab="exams" href="/dashboard/teacher/exams">
-                <i class="fas fa-clipboard-question"></i> 
-                <span>مدیریت آزمون‌ها</span>
-            </a>
-            <a class="nav-item" data-tab="exam-results" href="/dashboard/teacher/exam-results">
-                <i class="fas fa-square-poll-vertical"></i> 
-                <span>مشاهده نتایج آزمون‌ها</span>
-            </a>
-            <a class="nav-item" data-tab="class-performance" href="/dashboard/teacher/class-performance">
-                <i class="fas fa-chart-column"></i> 
-                <span>تحلیل عملکرد کلاس</span>
-            </a>
-        </div>
-        <div class="nav-section">
-            <div class="nav-section-title">تکلیف و محتوا</div>
-            <a class="nav-item" data-tab="assignments" href="/dashboard/teacher/assignments">
-                <i class="fas fa-list-check"></i> 
-                <span>مدیریت تکالیف</span>
-            </a>
-            <a class="nav-item" data-tab="assignment-create" href="/dashboard/teacher/assignment-create">
-                <i class="fas fa-plus"></i> 
-                <span>ایجاد تکلیف</span>
-            </a>
-            <a class="nav-item" data-tab="assignment-review" href="/dashboard/teacher/assignment-review">
-                <i class="fas fa-clipboard-check"></i> 
-                <span>تصحیح تکالیف</span>
-            </a>
-            <a class="nav-item" data-tab="student-feedback" href="/dashboard/teacher/student-feedback">
-                <i class="fas fa-comment-dots"></i> 
-                <span>ارسال بازخورد به دانش‌آموز</span>
-            </a>
-            <a class="nav-item" data-tab="online-classes" href="/dashboard/teacher/online-classes">
-                <i class="fas fa-video"></i> 
-                <span>کلاس آنلاین</span>
-            </a>
-            <a class="nav-item" data-tab="virtual-classes" href="/dashboard/teacher/virtual-classes">
-                <i class="fas fa-cloud"></i> 
-                <span>کلاس مجازی</span>
-            </a>
-            <a class="nav-item" data-tab="content-upload" href="/dashboard/teacher/content-upload">
-                <i class="fas fa-upload"></i> 
-                <span>بارگذاری محتوای آموزشی</span>
-            </a>
-            <a class="nav-item" data-tab="library" href="/dashboard/teacher/library">
-                <i class="fas fa-book"></i> 
-                <span>کتابخانه دیجیتال</span>
-            </a>
-        </div>
-        <div class="nav-section">
-            <div class="nav-section-title">ارتباطات و گزارش</div>
-            <a class="nav-item" data-tab="announcements" href="/dashboard/teacher/announcements">
-                <i class="fas fa-bullhorn"></i> 
-                <span>ارسال اطلاعیه به کلاس</span>
-            </a>
-            <a class="nav-item" data-tab="student-messenger" href="/dashboard/teacher/student-messenger">
-                <i class="fas fa-comments"></i> 
-                <span>پیام‌رسان با دانش‌آموزان</span>
-            </a>
-            <a class="nav-item" data-tab="parent-chat" href="/dashboard/teacher/parent-chat">
-                <i class="fas fa-users"></i> 
-                <span>پیام‌رسان با والدین</span>
-            </a>
-            <a class="nav-item" data-tab="admin-messenger" href="/dashboard/teacher/admin-messenger">
-                <i class="fas fa-user-shield"></i> 
-                <span>پیام‌رسان با مدیر</span>
-            </a>
-            <a class="nav-item" data-tab="reports" href="/dashboard/teacher/reports">
-                <i class="fas fa-chart-bar"></i> 
-                <span>گزارش عملکرد تدریس</span>
-            </a>
-            <a class="nav-item" data-tab="student-report-cards" href="/dashboard/teacher/student-report-cards">
-                <i class="fas fa-award"></i> 
-                <span>مشاهده کارنامه دانش‌آموزان</span>
-            </a>
-            <a class="nav-item" data-tab="discipline-report-create" href="/dashboard/teacher/discipline-report-create">
-                <i class="fas fa-scale-balanced"></i> 
-                <span>ثبت گزارش انضباطی</span>
-            </a>
-            <a class="nav-item" data-tab="encouragement-create" href="/dashboard/teacher/encouragement-create">
-                <i class="fas fa-medal"></i> 
-                <span>ثبت تشویقی دانش‌آموز</span>
-            </a>
-            <a class="nav-item" data-tab="school-suggestions" href="/dashboard/teacher/school-suggestions">
-                <i class="fas fa-lightbulb"></i> 
-                <span>ثبت پیشنهاد برای مدرسه</span>
-            </a>
-        </div>
-        <div class="nav-section">
-            <div class="nav-section-title">پروفایل و AI</div>
-            <a class="nav-item" data-tab="profile" href="/dashboard/teacher/profile">
-                <i class="fas fa-user-circle"></i> 
-                <span>پروفایل معلم</span>
-            </a>
-            <a class="nav-item" data-tab="change-password" href="/dashboard/teacher/change-password">
-                <i class="fas fa-key"></i> 
-                <span>تغییر رمز عبور</span>
-            </a>
-            <a class="nav-item" data-tab="ai-exam-builder" href="/dashboard/teacher/ai-exam-builder">
-                <i class="fas fa-robot"></i> 
-                <span>آزمون‌ساز هوشمند</span>
-            </a>
-            <a class="nav-item" data-tab="ai-book-question-generator" href="/dashboard/teacher/ai-book-question-generator">
-                <i class="fas fa-book-open"></i> 
-                <span>تولید سوال از متن کتاب</span>
-            </a>
-            <a class="nav-item" data-tab="ai-pdf-question-generator" href="/dashboard/teacher/ai-pdf-question-generator">
-                <i class="fas fa-file-pdf"></i> 
-                <span>تولید سوال از PDF</span>
-            </a>
-            <a class="nav-item" data-tab="ai-answer-key-generator" href="/dashboard/teacher/ai-answer-key-generator">
-                <i class="fas fa-file-circle-check"></i> 
-                <span>تولید پاسخنامه</span>
-            </a>
-            <a class="nav-item" data-tab="ai-auto-grading" href="/dashboard/teacher/ai-auto-grading">
-                <i class="fas fa-wand-magic-sparkles"></i> 
-                <span>تصحیح خودکار آزمون</span>
-            </a>
-            <a class="nav-item" data-tab="ai-student-performance" href="/dashboard/teacher/ai-student-performance">
-                <i class="fas fa-chart-line"></i> 
-                <span>تحلیل عملکرد دانش‌آموزان</span>
-            </a>
-            <a class="nav-item" data-tab="ai-extra-question-suggestions" href="/dashboard/teacher/ai-extra-question-suggestions">
-                <i class="fas fa-circle-question"></i> 
-                <span>پیشنهاد سوالات تکمیلی</span>
-            </a>
-            <a class="nav-item" data-tab="ai-exam-difficulty-analysis" href="/dashboard/teacher/ai-exam-difficulty-analysis">
-                <i class="fas fa-gauge-high"></i> 
-                <span>تحلیل سطح سختی آزمون</span>
-            </a>
-        </div>
-    </div>
-    
-    <div class="sidebar-footer">
-        <div class="system-info">
-            <small><i class="fas fa-server"></i> وضعیت سرور: <span class="status-online">آنلاین</span></small>
-        </div>
-        <button class="btn-logout" id="logoutBtn" onclick="logout()">
-            <i class="fas fa-sign-out-alt"></i> خروج از سیستم
-        </button>
-    </div>
-</div>
-
-<!-- ============================================ -->
-<!-- محتوای اصلی -->
-<!-- ============================================ -->
-<div class="main-content" id="mainContent">
-    <div class="page-header">
-        <div class="page-title">
-            <h1><i class="fas fa-chart-line" id="pageIcon"></i> <span id="pageTitle">داشبورد</span></h1>
-            <p class="page-subtitle" id="pageSubtitle">خلاصه وضعیت آموزشی</p>
-        </div>
-        <div class="header-actions">
-            <div class="search-global">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="جستجوی سریع..." id="globalSearch">
-            </div>
-            <div class="btn-icon" onclick="refreshData()" title="بروزرسانی">
-                <i class="fas fa-sync-alt"></i>
-            </div>
-            <div class="btn-icon" id="fullscreenBtn" title="تمام صفحه">
-                <i class="fas fa-expand"></i>
-            </div>
-        </div>
-    </div>
-    
-    <div class="content-area" id="contentArea">
-        <div class="loading-content">
-            <i class="fas fa-spinner fa-spin"></i>
-            <p>در حال بارگذاری...</p>
-        </div>
-    </div>
-</div>
-
-
-
-<!-- کانتینر توست و مودال‌ها -->
-<div class="toast-container" id="toastContainer"></div>
-<div id="modalsContainer"></div>
-
-<!-- کتابخانه‌های جانبی -->
-<script src="/public/assets/js/jalali-moment.browser.js"></script>
-<script src="/public/assets/js/xlsx.full.min.js"></script>
-
-<!-- اسکریپت اصلی پنل معلم -->
-<script src="/public/assets/js/teacher.js"></script>
-
-<script>
-    // اتصال منوها به توابع
-    (function() {
-        function initManual() {
-            if (typeof window.showTab === 'function') {
-                const navItems = document.querySelectorAll('.nav-item');
-                navItems.forEach(function(item) {
-                    if (item.matches('a[href]')) return;
-                    item.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        const tabName = this.getAttribute('data-tab');
-                        if (tabName) {
-                            window.showTab(tabName);
-                        }
-                    });
-                });
-                console.log('✅ منوهای معلم متصل شدند');
-            } else {
-                setTimeout(initManual, 200);
-            }
-        }
-        initManual();
-    })();
-</script>
-<script>
-    // Fallback برای آیکون‌ها - اگر فونت لود نشد
-    document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
-            var icons = document.querySelectorAll('.fas, .far, .fab');
-            if (icons.length > 0) {
-                var computedStyle = window.getComputedStyle(icons[0]);
-                var fontFamily = computedStyle.getPropertyValue('font-family');
-                if (!fontFamily || fontFamily.indexOf('Font Awesome') === -1) {
-                    console.warn('Font Awesome not loaded, using fallback');
-                    var link = document.createElement('link');
-                    link.rel = 'stylesheet';
-                    link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css';
-                    document.head.appendChild(link);
-                }
-            }
-        }, 500);
-    });
-</script>
+    <aside class="teacher-notification-panel" id="teacherNotificationPanel" aria-hidden="true"><header><strong><i class="fas fa-bell"></i> اعلانات</strong><button type="button" data-close aria-label="بستن"><i class="fas fa-xmark"></i></button></header><div class="teacher-notification-list"></div></aside>
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+    <div id="modalsContainer"></div>
+    <script src="/public/assets/js/teacher-portal.js?v=2026-07-12-rebuild-1" defer></script>
 </body>
 </html>

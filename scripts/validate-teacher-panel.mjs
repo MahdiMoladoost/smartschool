@@ -5,14 +5,15 @@ import { fileURLToPath } from 'node:url';
 import { enhanceDashboardHtml } from '../src/middleware/dashboardExperience.js';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const rendererPath = resolve(root, 'public/assets/js/panel-dynamic-pages.js');
-const cssPath = resolve(root, 'public/assets/css/panel/dynamic-pages.css');
+const rendererPath = resolve(root, 'public/assets/js/teacher-portal.js');
+const cssPath = resolve(root, 'public/assets/css/panel/teacher/teacher-portal.css');
 const serverPath = resolve(root, 'server.js');
 const middlewarePath = resolve(root, 'src/middleware/dashboardExperience.js');
 const manifestPath = resolve(root, 'pages/dashboard/panel/shared/panel-pages.json');
+const interactionSpecPath = resolve(root, 'TEACHER_PANEL_INTERACTION_SPEC.md');
 const errors = [];
 
-for (const file of [rendererPath, cssPath, serverPath, middlewarePath]) {
+for (const file of [rendererPath, cssPath, serverPath, middlewarePath, interactionSpecPath]) {
     if (!existsSync(file)) errors.push(`Missing required file: ${file}`);
 }
 
@@ -21,6 +22,11 @@ const server = existsSync(serverPath) ? readFileSync(serverPath, 'utf8') : '';
 if (!server.includes('installDashboardExperience(app)')) errors.push('server.js does not activate dashboardExperience.');
 if (!source.includes("body?.dataset?.panel !== 'teacher'")) errors.push('Dynamic renderer is not scoped to the teacher panel.');
 if (!source.includes('PLACEHOLDER_PATTERN')) errors.push('Placeholder detector is missing.');
+if (!source.includes('initializeTeacherShell')) errors.push('Rebuilt teacher shell initializer is missing.');
+if (!source.includes('renderEntityComplete')) errors.push('Complete assignment/exam workflow is missing.');
+if (!source.includes('renderAssignmentReviewComplete')) errors.push('Assignment grading workflow is missing.');
+if (!source.includes('renderResourcesComplete')) errors.push('Resource management workflow is missing.');
+if (!source.includes('confirmOperation')) errors.push('Accessible confirmation workflow is missing.');
 if (!source.includes('new MutationObserver(queue)')) errors.push('Placeholder mutation observer is missing.');
 
 const syntax = spawnSync(process.execPath, ['--check', rendererPath], { cwd: root, encoding: 'utf8' });
@@ -28,7 +34,7 @@ if (syntax.status !== 0) errors.push(`Renderer syntax check failed: ${syntax.std
 
 const teacherHtml = '<!doctype html><html><head></head><body data-panel="teacher"></body></html>';
 const enhancedTeacher = enhanceDashboardHtml(teacherHtml, '/dashboard/teacher/attendance-create');
-for (const asset of ['unified-experience.css', 'dynamic-pages.css', 'panel-unified.js', 'panel-dynamic-pages.js']) {
+for (const asset of ['unified-experience.css', 'teacher-portal.css', 'panel-unified.js', 'teacher-portal.js']) {
     const count = enhancedTeacher.split(asset).length - 1;
     if (count !== 1) errors.push(`Expected ${asset} exactly once on teacher pages; found ${count}.`);
 }
@@ -37,7 +43,7 @@ if (enhanceDashboardHtml(enhancedTeacher, '/dashboard/teacher/attendance-create'
 }
 
 const nonTeacher = enhanceDashboardHtml('<!doctype html><html><head></head><body data-panel="student"></body></html>', '/dashboard/student/dashboard');
-for (const teacherAsset of ['dynamic-pages.css', 'panel-dynamic-pages.js']) {
+for (const teacherAsset of ['teacher-portal.css', 'teacher-portal.js']) {
     if (nonTeacher.includes(teacherAsset)) errors.push(`Teacher-only asset leaked into another panel: ${teacherAsset}`);
 }
 
