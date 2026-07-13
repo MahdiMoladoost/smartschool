@@ -46,6 +46,14 @@ jobs:
               echo "ANDROID_KEY_ALIAS=$RELEASE_KEY_ALIAS"
               echo "ANDROID_KEY_PASSWORD=$RELEASE_KEY_PASSWORD"
             } >> "$GITHUB_ENV"
+          else
+            keytool -genkeypair -noprompt -keystore "$RUNNER_TEMP/codm-test-release.jks" -storepass codmacademy-ci -keypass codmacademy-ci -alias codm-academy -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=CODM Academy CI,OU=Android,O=MahdiMoladoost,L=Tehran,C=IR"
+            {
+              echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/codm-test-release.jks"
+              echo "ANDROID_KEYSTORE_PASSWORD=codmacademy-ci"
+              echo "ANDROID_KEY_ALIAS=codm-academy"
+              echo "ANDROID_KEY_PASSWORD=codmacademy-ci"
+            } >> "$GITHUB_ENV"
           fi
 
       - name: Unit tests, lint and release build
